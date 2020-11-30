@@ -1,3 +1,4 @@
+import 'package:bbmsg_mobile/backend/server.dart';
 import 'package:bbmsg_mobile/services/connectvity_service.dart';
 import 'package:bbmsg_mobile/ui/widgets/TextField.dart';
 import 'package:bbmsg_mobile/ui/widgets/primary_button.dart';
@@ -16,11 +17,11 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
-  String mobileNumber;
+  String credintial;
   String password;
   saveMobikeNumber(String value) {
     print(value);
-    this.mobileNumber = value;
+    this.credintial = value;
   }
 
   savePassword(String password) {
@@ -47,6 +48,8 @@ class _SignInState extends State<SignIn> {
       formKey.currentState.save();
       if (ConnectivityService.connectivityStatus !=
           ConnectivityStatus.Offline) {
+        getUserToken(
+            credintial: credintial, password: password, strategy: 'local');
       } else {}
     }
   }
@@ -88,28 +91,28 @@ class _SignInState extends State<SignIn> {
             // backgroundColor: Colors.white,
             body: Container(
               padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 15.h),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Image.asset(
-                    'assets/pngs/logo.png',
-                    height: 160.h,
-                    color: primaryColor,
-                  ),
-                  SizedBox(
-                    height: 30.h,
-                  ),
-                  Text(
-                    translator.translate('Sign in'),
-                    style: Styles.titleTextStyle
-                        .copyWith(fontSize: 30, fontWeight: FontWeight.w500),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(
-                    height: 25.h,
-                  ),
-                  Expanded(
-                    child: Column(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Image.asset(
+                      'assets/pngs/logo.png',
+                      height: 160.h,
+                      color: primaryColor,
+                    ),
+                    SizedBox(
+                      height: 30.h,
+                    ),
+                    Text(
+                      translator.translate('Sign in'),
+                      style: Styles.titleTextStyle
+                          .copyWith(fontSize: 30, fontWeight: FontWeight.w500),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(
+                      height: 25.h,
+                    ),
+                    Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Form(
@@ -142,6 +145,9 @@ class _SignInState extends State<SignIn> {
                             ),
                           ),
                         ),
+                        SizedBox(
+                          height: 40.h,
+                        ),
                         Container(
                           width: double.infinity,
                           child: PrimaryButton(
@@ -150,6 +156,9 @@ class _SignInState extends State<SignIn> {
                             buttonPressFun: saveForm,
                             textKey: 'Login',
                           ),
+                        ),
+                        SizedBox(
+                          height: 30.h,
                         ),
                         GestureDetector(
                           onTap: () {
@@ -162,6 +171,9 @@ class _SignInState extends State<SignIn> {
                             textAlign: TextAlign.center,
                           ),
                         ),
+                        SizedBox(
+                          height: 40.h,
+                        ),
                         Row(
                           children: <Widget>[
                             Expanded(child: Divider()),
@@ -171,10 +183,16 @@ class _SignInState extends State<SignIn> {
                             Expanded(child: Divider()),
                           ],
                         ),
+                        SizedBox(
+                          height: 20.h,
+                        ),
                         SocialMediaLogin(
                           facebookLoginFun: this.facebookLogin,
                           gmailLoginFun: this.gmailLogin,
                           twitterLoginFun: this.twiterLogin,
+                        ),
+                        SizedBox(
+                          height: 40.h,
                         ),
                         GestureDetector(
                           onTap: () {
@@ -190,8 +208,8 @@ class _SignInState extends State<SignIn> {
                         ),
                       ],
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

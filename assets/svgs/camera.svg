@@ -1,0 +1,13 @@
+<svg id="Component_36_1" data-name="Component 36 – 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="16.667" viewBox="0 0 20 16.667">
+  <defs>
+    <clipPath id="clip-path">
+      <path id="Combined_Shape" data-name="Combined Shape" d="M17.5,16.667H2.5a2.5,2.5,0,0,1-2.5-2.5V5A2.5,2.5,0,0,1,2.5,2.5H5.387L6.806.371A.835.835,0,0,1,7.5,0h5a.832.832,0,0,1,.693.371L14.613,2.5H17.5A2.5,2.5,0,0,1,20,5v9.166A2.5,2.5,0,0,1,17.5,16.667Zm-15-12.5A.834.834,0,0,0,1.666,5v9.166A.834.834,0,0,0,2.5,15h15a.834.834,0,0,0,.833-.833V5a.834.834,0,0,0-.833-.833H14.167a.833.833,0,0,1-.694-.371L12.054,1.666H7.946L6.526,3.8a.832.832,0,0,1-.693.371ZM10,13.333a4.167,4.167,0,1,1,4.167-4.167A4.171,4.171,0,0,1,10,13.333Zm0-6.667a2.5,2.5,0,1,0,2.5,2.5A2.5,2.5,0,0,0,10,6.667Z" transform="translate(0 0)"/>
+    </clipPath>
+  </defs>
+  <g id="Group_4287" data-name="Group 4287" clip-path="url(#clip-path)">
+    <g id="COLOR_black" data-name="COLOR/ black" transform="translate(0 -1.667)">
+      <rect id="COLOR_black_background" data-name="COLOR/ black background" width="20" height="20" fill="rgba(0,0,0,0)"/>
+      <rect id="Rectangle" width="20" height="20" fill="#fff"/>
+    </g>
+  </g>
+</svg>

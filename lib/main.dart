@@ -1,3 +1,7 @@
+import 'package:bbmsg_mobile/Splash.dart';
+import 'package:bbmsg_mobile/backend/appGet.dart';
+import 'package:bbmsg_mobile/services%20copy/shared_prefrences_helper.dart';
+import 'package:bbmsg_mobile/testApi.dart';
 import 'package:bbmsg_mobile/ui/pages/Sign_in.dart';
 import 'package:bbmsg_mobile/ui/pages/forget_password.dart';
 import 'package:bbmsg_mobile/ui/pages/register_page.dart';
@@ -7,9 +11,18 @@ import 'package:bbmsg_mobile/values/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await translator.init(
+    localeDefault: LocalizationDefaultType.device,
+    languagesList: <String>['ar', 'en'],
+    assetsDirectory: 'assets/langs/',
+  );
+  await SPHelper.spHelper.initSharedPreferences();
   runApp(MyApp());
 }
 
@@ -17,19 +30,29 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return MaterialApp(
-      home: MiddlePage(),
+    return GetMaterialApp(
+      title: 'BBMSG',
+      debugShowCheckedModeBanner: false,
+      localizationsDelegates: translator.delegates,
+      locale: translator.locale,
+      supportedLocales: translator.locals(),
+      home: MaterialApp(
+        home: MiddlePage(),
+      ),
     );
   }
 }
 
 class MiddlePage extends StatelessWidget {
+  AppGet appGet = Get.find();
   @override
   Widget build(BuildContext context) {
+    appGet.screenHeight = MediaQuery.of(context).size.height;
+    appGet.screenWidth = MediaQuery.of(context).size.width;
     ScreenUtil.init(context,
         designSize: Size(392.72727272727275, 850.9090909090909),
         allowFontScaling: true);
-    return RegisterPage();
+    return Splash();
   }
 }
 
@@ -97,41 +120,56 @@ class MainPage extends StatelessWidget {
                     horizontal: ScreenUtil().setHeight(15)),
                 child: Column(
                   children: [
-                    Container(
-                      margin: EdgeInsets.symmetric(
-                          vertical: ScreenUtil().setHeight(15)),
-                      alignment: Alignment.center,
-                      width: double.infinity,
-                      padding: EdgeInsets.symmetric(
-                          vertical: ScreenUtil().setHeight(20)),
-                      child: Text(
-                        'Register',
-                        style: TextStyle(
-                            fontFamily: 'second_header',
-                            color: Colors.white,
-                            fontSize: 18),
-                      ),
-                      decoration: BoxDecoration(
-                          color: primaryColor, borderRadius: Radii.k8pxRadius),
-                    ),
-                    Container(
-                      margin: EdgeInsets.symmetric(
-                          vertical: ScreenUtil().setHeight(15)),
-                      alignment: Alignment.center,
-                      width: double.infinity,
-                      padding: EdgeInsets.symmetric(
-                          vertical: ScreenUtil().setHeight(20)),
-                      child: Text(
-                        'Login',
-                        style: TextStyle(
-                            fontFamily: 'second_header',
+                    GestureDetector(
+                      onTap: () {
+                        Get.off(RegisterPage());
+                        //  Navigator.pushReplacement(context,
+                        //     MaterialPageRoute(builder: (context) {
+                        //   return RegisterPage();
+                        // }));
+                      },
+                      child: Container(
+                        margin: EdgeInsets.symmetric(
+                            vertical: ScreenUtil().setHeight(15)),
+                        alignment: Alignment.center,
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(
+                            vertical: ScreenUtil().setHeight(20)),
+                        child: Text(
+                          'Register',
+                          style: TextStyle(
+                              fontFamily: 'second_header',
+                              color: Colors.white,
+                              fontSize: 18),
+                        ),
+                        decoration: BoxDecoration(
                             color: primaryColor,
-                            fontSize: 18),
+                            borderRadius: Radii.k8pxRadius),
                       ),
-                      decoration: BoxDecoration(
-                          border: Border.all(color: primaryColor),
-                          color: Colors.white,
-                          borderRadius: Radii.k8pxRadius),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Get.off(SignIn());
+                      },
+                      child: Container(
+                        margin: EdgeInsets.symmetric(
+                            vertical: ScreenUtil().setHeight(15)),
+                        alignment: Alignment.center,
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(
+                            vertical: ScreenUtil().setHeight(20)),
+                        child: Text(
+                          'Login',
+                          style: TextStyle(
+                              fontFamily: 'second_header',
+                              color: primaryColor,
+                              fontSize: 18),
+                        ),
+                        decoration: BoxDecoration(
+                            border: Border.all(color: primaryColor),
+                            color: Colors.white,
+                            borderRadius: Radii.k8pxRadius),
+                      ),
                     ),
                   ],
                 ),

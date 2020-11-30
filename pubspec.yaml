@@ -29,6 +29,14 @@ dependencies:
   localize_and_translate: ^3.0.2
   connectivity: ^0.4.9+2
   auto_size_text: ^2.1.0
+  dio: ^3.0.10
+  dio_http_cache: ^0.2.11
+  get: ^3.20.0
+  progress_dialog: ^1.2.4
+  cached_network_image: ^2.3.3
+  logger: ^0.9.4
+  shared_preferences: ^0.5.12+4
+  string_validator: ^0.1.4
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -60,6 +68,7 @@ flutter:
   assets:
     - assets/svgs/
     - assets/pngs/
+    - assets/langs/
  
 
   

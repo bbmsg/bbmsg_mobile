@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:bbmsg_mobile/backend/server.dart';
 import 'package:bbmsg_mobile/services/connectvity_service.dart';
 import 'package:bbmsg_mobile/ui/widgets/TextField.dart';
 import 'package:bbmsg_mobile/ui/widgets/primary_button.dart';
@@ -54,11 +55,19 @@ class RegisterPage extends StatelessWidget {
     }
   }
 
+  validateConformPassword(String value) {
+    if (password2 != password) {
+      return 'passwords are not matched';
+    }
+  }
+
   saveForm() {
     if (formKey.currentState.validate()) {
       formKey.currentState.save();
       if (ConnectivityService.connectivityStatus !=
           ConnectivityStatus.Offline) {
+        registerNewUser(
+            credintial: email, password: password, userName: userName);
       } else {}
     }
   }
@@ -81,28 +90,27 @@ class RegisterPage extends StatelessWidget {
         child: Container(
           child: Scaffold(
             key: scaffoldKey,
-            // backgroundColor: Colors.white,
             body: Container(
               padding: EdgeInsets.symmetric(horizontal: 25.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Image.asset(
-                    'assets/pngs/logo.png',
-                    height: 150.h,
-                    color: primaryColor,
-                  ),
-                  Text(
-                    translator.translate('Sign up'),
-                    style: Styles.titleTextStyle
-                        .copyWith(fontSize: 30, fontWeight: FontWeight.w500),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(
-                    height: 25.h,
-                  ),
-                  Expanded(
-                    child: Column(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Image.asset(
+                      'assets/pngs/logo.png',
+                      height: 150.h,
+                      color: primaryColor,
+                    ),
+                    Text(
+                      translator.translate('Sign up'),
+                      style: Styles.titleTextStyle
+                          .copyWith(fontSize: 30, fontWeight: FontWeight.w500),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(
+                      height: 25.h,
+                    ),
+                    Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Form(
@@ -151,12 +159,15 @@ class RegisterPage extends StatelessWidget {
                                   borderColor: primaryColor,
                                   hintTextKey: 'Confirm Password',
                                   iconData: Icons.lock,
-                                  validateFunction: validatepasswordFunction,
+                                  validateFunction: validateConformPassword,
                                   saveFunction: savePasword2,
                                 ),
                               ],
                             ),
                           ),
+                        ),
+                        SizedBox(
+                          height: 20.h,
                         ),
                         GestureDetector(
                           onTap: () {
@@ -170,6 +181,9 @@ class RegisterPage extends StatelessWidget {
                             maxLines: 1,
                           ),
                         ),
+                        SizedBox(
+                          height: 30.h,
+                        ),
                         Container(
                           width: double.infinity,
                           child: PrimaryButton(
@@ -178,6 +192,9 @@ class RegisterPage extends StatelessWidget {
                             buttonPressFun: saveForm,
                             textKey: 'Sign up',
                           ),
+                        ),
+                        SizedBox(
+                          height: 30.h,
                         ),
                         Row(
                           children: <Widget>[
@@ -188,10 +205,16 @@ class RegisterPage extends StatelessWidget {
                             Expanded(child: Divider()),
                           ],
                         ),
+                        SizedBox(
+                          height: 20.h,
+                        ),
                         SocialMediaLogin(
                           facebookLoginFun: this.facebookLogin,
                           gmailLoginFun: this.gmailLogin,
                           twitterLoginFun: this.twiterLogin,
+                        ),
+                        SizedBox(
+                          height: 20.h,
                         ),
                         GestureDetector(
                           onTap: () {
@@ -207,8 +230,8 @@ class RegisterPage extends StatelessWidget {
                         ),
                       ],
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
