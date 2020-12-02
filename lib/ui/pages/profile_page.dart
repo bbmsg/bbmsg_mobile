@@ -25,7 +25,7 @@ class ProfilePage extends StatelessWidget {
                         colorFilter: new ColorFilter.mode(
                             Colors.black.withOpacity(0.4), BlendMode.dstATop),
                         image: CachedNetworkImageProvider(
-                            'https://image.freepik.com/free-photo/portrait-beautiful-man-business-clothes-standing-outside-office_146671-18679.jpg'),
+                            appGet.userMap['user']['profile_picture']),
                         fit: BoxFit.cover)),
                 child: Column(
                   children: [
@@ -60,8 +60,8 @@ class ProfilePage extends StatelessWidget {
                                   Border.all(color: Colors.white, width: 5.w),
                               shape: BoxShape.circle,
                               image: DecorationImage(
-                                  image: CachedNetworkImageProvider(
-                                      'https://image.freepik.com/free-photo/portrait-beautiful-man-business-clothes-standing-outside-office_146671-18679.jpg'),
+                                  image: CachedNetworkImageProvider(appGet
+                                      .userMap['user']['profile_picture']),
                                   fit: BoxFit.cover)),
                         ),
                         SizedBox(

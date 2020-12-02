@@ -1,13 +1,13 @@
 import 'package:bbmsg_mobile/Splash.dart';
 import 'package:bbmsg_mobile/backend/appGet.dart';
-import 'package:bbmsg_mobile/services%20copy/shared_prefrences_helper.dart';
-import 'package:bbmsg_mobile/testApi.dart';
+import 'package:bbmsg_mobile/services/shared_prefrences_helper.dart';
 import 'package:bbmsg_mobile/ui/pages/Sign_in.dart';
-import 'package:bbmsg_mobile/ui/pages/forget_password.dart';
+import 'package:bbmsg_mobile/ui/pages/app_settings.dart';
 import 'package:bbmsg_mobile/ui/pages/register_page.dart';
 import 'package:bbmsg_mobile/values/app_colors.dart';
 import 'package:bbmsg_mobile/values/radii.dart';
 import 'package:bbmsg_mobile/values/styles.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -17,6 +17,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await translator.init(
     localeDefault: LocalizationDefaultType.device,
     languagesList: <String>['ar', 'en'],
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
 
 class MiddlePage extends StatelessWidget {
   AppGet appGet = Get.find();
+  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
   @override
   Widget build(BuildContext context) {
     appGet.screenHeight = MediaQuery.of(context).size.height;
@@ -52,7 +54,30 @@ class MiddlePage extends StatelessWidget {
     ScreenUtil.init(context,
         designSize: Size(392.72727272727275, 850.9090909090909),
         allowFontScaling: true);
-    return Splash();
+    return FutureBuilder(
+      // Initialize FlutterFire:
+      future: _initialization,
+      builder: (context, snapshot) {
+        // Check for errors
+        if (snapshot.hasError) {
+          return Scaffold(
+              body: Center(
+            child: Text('Error'),
+          ));
+        }
+
+        // Once complete, show your application
+        if (snapshot.connectionState == ConnectionState.done) {
+          return AppSettings();
+        }
+
+        // Otherwise, show something whilst waiting for initialization to complete
+        return Scaffold(
+            body: Center(
+          child: CircularProgressIndicator(),
+        ));
+      },
+    );
   }
 }
 

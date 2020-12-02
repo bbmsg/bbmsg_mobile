@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "558723805226",
+    "firebase_url": "https://bbmsg-3fbda.firebaseio.com",
+    "project_id": "bbmsg-3fbda",
+    "storage_bucket": "bbmsg-3fbda.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:558723805226:android:26ee36da132a9a8f915353",
+        "android_client_info": {
+          "package_name": "com.example.bbmsg_mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "558723805226-03v6nkcjm63fis9jicklqgb2v67erm26.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bbmsg_mobile",
+            "certificate_hash": "ab30d85c460e1a5edd9898e797528b6b6418b2ab"
+          }
+        },
+        {
+          "client_id": "558723805226-b120j1e0p7tdahfbij7q4sqpdutbp5f3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrLbXfrpVhT_Kvu2TjYSWycyuYLeY5wpA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "558723805226-b120j1e0p7tdahfbij7q4sqpdutbp5f3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

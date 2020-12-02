@@ -1,19 +1,39 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:bbmsg_mobile/backend/appGet.dart';
+import 'package:bbmsg_mobile/backend/server.dart';
 import 'package:bbmsg_mobile/values/app_colors.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 
-class ProfileEdit extends StatelessWidget {
+class ProfileEdit extends StatefulWidget {
+  @override
+  _ProfileEditState createState() => _ProfileEditState();
+}
+
+class _ProfileEditState extends State<ProfileEdit> {
   AppGet appGet = Get.find();
-  Map map;
-  addValueToMap(String label, String value) {
+
+  Map map = {};
+
+  addValueToMap(String label, dynamic value) {
+    Logger().d(label);
+    Logger().d(value);
     map[label] = value;
     Logger().d(map);
   }
+
+  bool isNewImage = false;
+
+  File file;
 
   @override
   Widget build(BuildContext context) {
@@ -21,16 +41,23 @@ class ProfileEdit extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 10.w),
-            alignment: Alignment.center,
-            child: Text(
-              'Save',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: primaryColor,
-                  fontSize: 17,
-                  fontWeight: FontWeight.w400),
+          GestureDetector(
+            onTap: () {
+              updateUser('${appGet.userMap['user']['id']}', map);
+              // // print(map);
+              print('$map');
+            },
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 10.w),
+              alignment: Alignment.center,
+              child: Text(
+                'Save',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: primaryColor,
+                    fontSize: 17,
+                    fontWeight: FontWeight.w400),
+              ),
             ),
           )
         ],
@@ -49,27 +76,46 @@ class ProfileEdit extends StatelessWidget {
         alignment: Alignment.center,
         child: ListView(
           children: [
-            Container(
-              child: SvgPicture.asset(
-                'assets/svgs/camera.svg',
-                height: 25.h,
+            GestureDetector(
+              onTap: () async {
+                PickedFile pickedFile =
+                    await ImagePicker().getImage(source: ImageSource.gallery);
+                file = File(pickedFile.path);
+
+                dio.MultipartFile multipartFile =
+                    await dio.MultipartFile.fromFile(file.path,
+                        filename: file.path
+                            .substring(file.path.lastIndexOf('/') + 1));
+
+                map['profile_picture'] = multipartFile;
+
+                setState(() {
+                  isNewImage = true;
+                });
+              },
+              child: Container(
+                child: SvgPicture.asset(
+                  'assets/svgs/camera.svg',
+                  height: 25.h,
+                ),
+                alignment: Alignment.center,
+                height: 150.h,
+                width: 150.w,
+                decoration: BoxDecoration(
+                    color: Color(0xff000000),
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                        colorFilter: new ColorFilter.mode(
+                            Colors.black.withOpacity(0.4), BlendMode.dstATop),
+                        fit: BoxFit.contain,
+                        image: isNewImage == false
+                            ? CachedNetworkImageProvider(
+                                appGet.userMap['user']['profile_picture'])
+                            : FileImage(file))),
               ),
-              alignment: Alignment.center,
-              height: 150.h,
-              width: 150.w,
-              decoration: BoxDecoration(
-                  color: Color(0xff000000),
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                      colorFilter: new ColorFilter.mode(
-                          Colors.black.withOpacity(0.4), BlendMode.dstATop),
-                      fit: BoxFit.contain,
-                      image: appGet.userMap['user']['profile_picture'] != null
-                          ? CachedNetworkImageProvider(
-                              appGet.userMap['user']['profile_picture'])
-                          : AssetImage('assets/pngs/logo.png'))),
             ),
             //////////////////////////////
+
             Divider(),
             EditableCustomText(
                 'name', 'Name', appGet.userMap['user']['name'], addValueToMap),
@@ -92,31 +138,151 @@ class ProfileEdit extends StatelessWidget {
             Divider(),
             EditableCustomText(
                 'phone_number',
-                'Name',
+                'Mobile',
                 appGet.userMap['user']['phone_number'] != null
                     ? appGet.userMap['user']['phone_number']
                     : 'No Mobile Number',
                 addValueToMap),
             Divider(),
-            EditableCustomText(
-                'gender',
-                'Gender',
-                appGet.userMap['user']['gender'] != null
-                    ? appGet.userMap['user']['gender']
-                    : 'No Gender',
-                addValueToMap),
+            GenderDisplay(appGet.userMap['user']['gender'], addValueToMap),
+
             Divider(),
-            EditableCustomText(
-                'birthdate',
-                'BirthDate',
+            BirthDate(
                 appGet.userMap['user']['birthdate'] != null
                     ? appGet.userMap['user']['birthdate']
                     : 'No Birthdate',
                 addValueToMap),
+
 //////////////////////////////////////
           ],
         ),
       ),
+    );
+  }
+}
+
+// class GenderDisplay extends StatefulWidget {
+//   String genderValue;
+//   Function fun;
+//   GenderDisplay(this.genderValue, this.fun);
+
+//   @override
+//   _EditableTextState createState() => _EditableTextState();
+// }
+
+// class _GenderDisplay extends State<GenderDisplay> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Text('ff');
+//     // return Container(
+//     //   padding: EdgeInsets.symmetric(vertical: 10.h),
+//     //   child: Column(
+//     //     crossAxisAlignment: CrossAxisAlignment.stretch,
+//     //     children: [
+//     //       // Text(
+//     //       //   'Gender',
+//     //       //   style: TextStyle(color: Colors.black, fontSize: 17),
+//     //       // ),
+//     //       // Row(
+//     //       //   children: [
+//     //       //     Expanded(
+//     //       //       child: RadioListTile(
+//     //       //           title: Text('Male'),
+//     //       //           value: 'male',
+//     //       //           groupValue: widget.genderValue,
+//     //       //           onChanged: (String value) {
+//     //       //             widget.genderValue = value;
+//     //       //             widget.fun('gender', 'male');
+//     //       //             setState(() {});
+//     //       //           }),
+//     //       //     ),
+//     //       //     Expanded(
+//     //       //       child: RadioListTile(
+//     //       //           title: Text('Female'),
+//     //       //           value: 'female',
+//     //       //           groupValue: widget.genderValue,
+//     //       //           onChanged: (String value) {
+//     //       //             widget.genderValue = value;
+//     //       //             widget.fun('gender', 'female');
+//     //       //             setState(() {});
+//     //       //           }),
+//     //       //     )
+//     //       //   ],
+//     //       // )
+//     //     ],
+//     //   ),
+//     // );
+//   }
+// }
+class GenderDisplay extends StatefulWidget {
+  String genderValue;
+  Function fun;
+
+  GenderDisplay(this.genderValue, this.fun);
+
+  @override
+  _GenderDisplayState createState() => _GenderDisplayState();
+}
+
+class _GenderDisplayState extends State<GenderDisplay> {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          'Gender',
+          style: TextStyle(color: Colors.black, fontSize: 17),
+        ),
+        Row(
+          children: [
+            Row(
+              children: [
+                Text(
+                  'Male',
+                  style: TextStyle(
+                      color: widget.genderValue != 'male'
+                          ? Colors.black
+                          : primaryColor,
+                      fontSize: 17),
+                ),
+                Radio(
+                    value: 'male',
+                    groupValue: widget.genderValue,
+                    onChanged: (value) {
+                      this.widget.genderValue = value;
+                      widget.fun('gender', value);
+                      setState(() {});
+                    }),
+              ],
+            ),
+            SizedBox(
+              width: 20.w,
+            ),
+            Row(
+              children: [
+                Text(
+                  'FeMale',
+                  style: TextStyle(
+                      color: widget.genderValue != 'female'
+                          ? Colors.black
+                          : primaryColor,
+                      fontSize: 17),
+                ),
+                Radio(
+                    value: 'female',
+                    groupValue: widget.genderValue,
+                    onChanged: (value) {
+                      this.widget.genderValue = value;
+                      widget.fun('gender', value);
+                      setState(() {});
+                    }),
+              ],
+            )
+          ],
+        ),
+      ],
     );
   }
 }
@@ -162,6 +328,64 @@ class _EditableTextState extends State<EditableCustomText> {
                       widget.fun(widget.label, value);
                     },
                   ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class BirthDate extends StatefulWidget {
+  String value;
+  Function fun;
+  BirthDate(this.value, this.fun);
+
+  @override
+  _BirthDateState createState() => _BirthDateState();
+}
+
+class _BirthDateState extends State<BirthDate> {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return GestureDetector(
+      onTap: () {
+        DatePicker.showDatePicker(context,
+            theme: DatePickerTheme(
+              itemHeight: 50,
+            ),
+            showTitleActions: true,
+            minTime: DateTime(1950, 1, 1),
+            maxTime: DateTime.now(), onChanged: (date) {
+          widget.value = '${date.day}-${date.month}-${date.year}';
+
+          setState(() {});
+          // addValueToMap('birthdate', date.);
+        }, onConfirm: (date) {
+          widget.value = '${date.day}-${date.month}-${date.year}';
+          widget.fun('birthdate', date.toIso8601String());
+        }, currentTime: DateTime.now(), locale: LocaleType.en);
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 10.h),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              'Birthdate',
+              style: TextStyle(color: Colors.black, fontSize: 17),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(widget.value,
+                    style: TextStyle(color: primaryColor, fontSize: 17)),
+                SvgPicture.asset(
+                  'assets/svgs/calender.svg',
+                  height: 17.h,
+                )
+              ],
+            ),
           ],
         ),
       ),

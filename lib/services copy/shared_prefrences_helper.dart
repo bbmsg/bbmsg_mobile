@@ -1,45 +1,56 @@
-import 'package:bbmsg_mobile/backend/appGet.dart';
-import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:bbmsg_mobile/backend/appGet.dart';
+// import 'package:get/get.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 
-class SPHelper {
-  SPHelper._();
-  AppGet appGet = Get.put(AppGet());
+// class SPHelper {
+//   SPHelper._();
+//   AppGet appGet = Get.put(AppGet());
 
-  static final SPHelper spHelper = SPHelper._();
-  SharedPreferences prefs;
+//   static final SPHelper spHelper = SPHelper._();
+//   SharedPreferences prefs;
 
-  Future<SharedPreferences> initSharedPreferences() async {
-    if (prefs == null) {
-      prefs = await SharedPreferences.getInstance();
-    }
-    return prefs;
-  }
+//   Future<SharedPreferences> initSharedPreferences() async {
+//     if (prefs == null) {
+//       prefs = await SharedPreferences.getInstance();
+//     }
+//     return prefs;
+//   }
 
-  bool showTermAndCondition() {
-    bool showTermCondition = prefs.getBool('showTermCondition');
-    return showTermCondition != null ? showTermCondition : true;
-  }
+//   setLanguage(String lan) async {
+//     prefs = await spHelper.initSharedPreferences();
+//     prefs.setString('language', lan);
+//   }
 
-  setShowTermAndCondition(bool value) {
-    prefs.setBool('showTermCondition', value);
-  }
+//   Future<String> getLanguage() async {
+//     prefs = await spHelper.initSharedPreferences();
+//     String language = prefs.getString('language');
+//     return language;
+//   }
 
-  saveToken(String token) {
-    prefs.setString('token', token);
-  }
+//   bool showTermAndCondition() {
+//     bool showTermCondition = prefs.getBool('showTermCondition');
+//     return showTermCondition != null ? showTermCondition : true;
+//   }
 
-  String getToken() {
-    String token = prefs.getString('token');
+//   setShowTermAndCondition(bool value) {
+//     prefs.setBool('showTermCondition', value);
+//   }
 
-    if (token != null) {
-      return token;
-    } else {
-      return null;
-    }
-  }
+//   saveToken(String token) {
+//     prefs.setString('token', token);
+//   }
 
-  clearSp() {
-    prefs.clear();
-  }
-}
+//   String getToken() {
+//     String token = prefs.getString('token');
+
+//     if (token != null) {
+//       return token;
+//     } else {
+//       return null;
+//     }
+//   }
+
+//   clearSp() {
+//     prefs.clear();
+//   }
+// }

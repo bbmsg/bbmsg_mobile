@@ -1,8 +1,7 @@
-import 'dart:io';
-
-import 'package:bbmsg_mobile/services%20copy/shared_prefrences_helper.dart';
+import 'package:bbmsg_mobile/services/shared_prefrences_helper.dart';
 import 'package:bbmsg_mobile/utils/ProgressDialogUtils.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 
 class AppGet extends GetxController {
   double screenWidth;
@@ -13,6 +12,7 @@ class AppGet extends GetxController {
   var followers = {}.obs;
   var following = {}.obs;
   var posts = {}.obs;
+  Map testMap = {};
   setFollowers(Map map) {
     this.followers.value = map;
   }
@@ -27,6 +27,7 @@ class AppGet extends GetxController {
 
   setUserMap(Map map) {
     this.userMap = map;
+    Logger().e(userMap);
   }
 
   String token =

@@ -1,0 +1,13 @@
+<svg id="Component_36_1" data-name="Component 36 – 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="9.197" height="10.117" viewBox="0 0 9.197 10.117">
+  <defs>
+    <clipPath id="clip-path">
+      <path id="Combined_Shape" data-name="Combined Shape" d="M1.379,10.117A1.381,1.381,0,0,1,0,8.737V2.3A1.381,1.381,0,0,1,1.379.92H2.3V.46a.46.46,0,0,1,.92,0V.92H5.978V.46a.46.46,0,0,1,.92,0V.92h.92A1.381,1.381,0,0,1,9.2,2.3V8.737a1.381,1.381,0,0,1-1.379,1.379ZM.92,8.737a.46.46,0,0,0,.46.46H7.818a.46.46,0,0,0,.46-.46V4.6H.92ZM8.278,3.679V2.3a.46.46,0,0,0-.46-.46H6.9V2.3a.46.46,0,0,1-.92,0v-.46H3.219V2.3a.46.46,0,0,1-.92,0v-.46h-.92a.46.46,0,0,0-.46.46V3.679Z" transform="translate(0)" fill="#047af2"/>
+    </clipPath>
+  </defs>
+  <path id="Combined_Shape-2" data-name="Combined Shape" d="M1.379,10.117A1.381,1.381,0,0,1,0,8.737V2.3A1.381,1.381,0,0,1,1.379.92H2.3V.46a.46.46,0,0,1,.92,0V.92H5.978V.46a.46.46,0,0,1,.92,0V.92h.92A1.381,1.381,0,0,1,9.2,2.3V8.737a1.381,1.381,0,0,1-1.379,1.379ZM.92,8.737a.46.46,0,0,0,.46.46H7.818a.46.46,0,0,0,.46-.46V4.6H.92ZM8.278,3.679V2.3a.46.46,0,0,0-.46-.46H6.9V2.3a.46.46,0,0,1-.92,0v-.46H3.219V2.3a.46.46,0,0,1-.92,0v-.46h-.92a.46.46,0,0,0-.46.46V3.679Z" fill="#047af2"/>
+  <g id="Mask_Group_169" data-name="Mask Group 169" clip-path="url(#clip-path)">
+    <g id="COLOR_black" data-name="COLOR/ black" transform="translate(-0.92 -0.46)">
+      <rect id="Rectangle" width="11.037" height="11.037" fill="#047af2"/>
+    </g>
+  </g>
+</svg>

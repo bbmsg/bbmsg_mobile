@@ -2,6 +2,11 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSPhotoLibraryUsageDescription </key>
+	<string>user have to access to his gallery so he can share any media he want</string>
+	<key>NSCameraUsageDescription </key>
+	<string>user can use camera to capture images and share it as posts</string>
+	<key>NSMicrophoneUsageDescription </key>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>

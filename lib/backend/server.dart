@@ -1,19 +1,21 @@
-import 'package:bbmsg_mobile/Splash.dart';
 import 'package:bbmsg_mobile/backend/appGet.dart';
 import 'package:bbmsg_mobile/main.dart';
 import 'package:bbmsg_mobile/main_page_mockup.dart';
-import 'package:bbmsg_mobile/services%20copy/shared_prefrences_helper.dart';
+import 'package:bbmsg_mobile/services/shared_prefrences_helper.dart';
 import 'package:bbmsg_mobile/utils/custom_dialoug.dart';
 import 'package:dio/dio.dart';
-import 'package:dio_http_cache/dio_http_cache.dart';
-import 'package:get/get.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:flutter_twitter_login/flutter_twitter_login.dart';
+import 'package:get/get.dart' as myget;
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logger/logger.dart';
 import 'package:string_validator/string_validator.dart';
 
 String baseUrl = 'http://ec2-3-23-216-129.us-east-2.compute.amazonaws.com:7425';
 var dio = Dio();
-AppGet appGet = Get.put(AppGet());
-DioCacheManager profileCach = DioCacheManager(CacheConfig());
+AppGet appGet = myget.Get.put(AppGet());
+// DioCacheManager profileCach = DioCacheManager(CacheConfig());
 Logger logger = Logger();
 
 registerNewUser({String userName, String credintial, String password}) async {
@@ -31,8 +33,8 @@ registerNewUser({String userName, String credintial, String password}) async {
     appGet.setToken(resultMap['accessToken']);
     appGet.setUserMap(resultMap);
     appGet.pr.hide();
-    logger.d(resultMap);
-    Get.off(MainPageMock());
+
+    myget.Get.off(MainPageMock());
   } on DioError catch (e) {
     appGet.pr.hide();
     logger.e(e.response.data['message']);
@@ -59,8 +61,8 @@ getUserToken(
     appGet.setToken(resultMap['accessToken']);
     appGet.setUserMap(resultMap);
     appGet.pr.hide();
-    logger.d(resultMap);
-    Get.off(MainPageMock());
+
+    myget.Get.off(MainPageMock());
   } on DioError catch (e) {
     appGet.pr.hide();
     logger.e(e.response.data['message']);
@@ -72,25 +74,20 @@ getUserToken(
 ///////////////////////////////////////////////////////////////////////////////////
 Future<Map<String, dynamic>> retrieveUser(
     {String strategy = 'jwt', String token}) async {
-  dio.interceptors.add(
-      DioCacheManager(CacheConfig(baseUrl: baseUrl + '/auth')).interceptor);
+  // dio.interceptors.add(
+  //     DioCacheManager(CacheConfig(baseUrl: baseUrl + '/auth')).interceptor);
   try {
-    var response = await dio.post(
-      baseUrl + '/auth',
-      data: {
-        "strategy": strategy,
-        "accessToken": token,
-      },
-      options: buildCacheOptions(Duration(days: 7),
-          primaryKey: 'token$token',
-          subKey: 'userInfo',
-          options: Options(headers: {'Content-Type': 'application/json'})),
-    );
+    var response = await dio.post(baseUrl + '/auth',
+        data: {
+          "strategy": strategy,
+          "accessToken": token,
+        },
+        options: Options(headers: {'Content-Type': 'application/json'}));
     Map<String, dynamic> resultMap = response.data;
     appGet.setToken(resultMap['accessToken']);
     appGet.setUserMap(resultMap);
     appGet.pr.hide();
-    logger.d(resultMap);
+
     return resultMap;
   } on DioError catch (e) {
     logger.e(e.response.data['message']);
@@ -101,31 +98,30 @@ Future<Map<String, dynamic>> retrieveUser(
 ///////////////////////////////////////////////////////////////////////////////
 signOut() {
   SPHelper.spHelper.clearSp();
-  Get.off(MainPage());
+  FirebaseAuth.instance.signOut();
+  myget.Get.off(MainPage());
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 updateUser(String userId, Map map) async {
   try {
-    profileCach.delete('token${appGet.token}', subKey: 'userInfo');
+    print(FormData.fromMap({...map}));
+    // print(map);
+    // profileCach.delete('token${appGet.token}', subKey: 'userInfo');
+
+    appGet.pr.show();
     var response = await dio.put(
       baseUrl + '/users/$userId',
-      data: map,
-      options: buildCacheOptions(Duration(days: 7),
-          primaryKey: 'token${appGet.token}',
-          subKey: 'userInfo',
-          options: Options(headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ${appGet.token}'
-          })),
+      data: FormData.fromMap({...map}),
+      options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}),
     );
     Map<String, dynamic> resultMap = response.data;
-    appGet.setToken(resultMap['accessToken']);
-    appGet.setUserMap(resultMap);
+
+    appGet.setUserMap({'user': resultMap});
+
     appGet.pr.hide();
-    logger.d(resultMap);
   } on DioError catch (e) {
-    logger.e(e.response.data['message']);
+    logger.e(e.response);
   }
 }
 
@@ -139,7 +135,6 @@ getUsers({String limit = '10', String skip = '0'}) async {
           'Authorization': 'Bearer ${appGet.token}'
         }));
     Map<String, dynamic> mmnlist1 = response.data;
-    logger.d(mmnlist1);
   } on DioError catch (e) {
     logger.e(e.response.data['message']);
   }
@@ -154,7 +149,6 @@ getUser(String userId) async {
           'Authorization': 'Bearer ${appGet.token}'
         }));
     Map<String, dynamic> mmnlist1 = response.data;
-    logger.d(mmnlist1);
   } on DioError catch (e) {
     logger.e(e.response.data['message']);
   }
@@ -170,7 +164,6 @@ deleteUser(String userId) async {
         }));
     Map<String, dynamic> mmnlist1 = response.data;
     SPHelper.spHelper.clearSp();
-    logger.d(mmnlist1);
   } on DioError catch (e) {
     logger.e(e.response.data['message']);
   }
@@ -187,14 +180,13 @@ getFollowers(bool followers) async {
         }));
     Map<String, dynamic> mmnlist1 = response.data;
     appGet.setFollowers(mmnlist1);
-    logger.d(mmnlist1);
   } on DioError catch (e) {
     logger.e(e.response.data['message']);
   }
 }
 
 /////////////////////////////////////////////////////////////////////////////////////
-GetFollowing(bool followers) async {
+getFollowing(bool followers) async {
   try {
     var response = await dio.get(baseUrl + '/follows?following=$followers',
         options: Options(headers: {
@@ -203,7 +195,6 @@ GetFollowing(bool followers) async {
         }));
     Map<String, dynamic> mmnlist1 = response.data;
     appGet.setFollowing(mmnlist1);
-    logger.d(mmnlist1);
   } on DioError catch (e) {
     logger.e(e.response.data['message']);
   }
@@ -213,7 +204,6 @@ GetFollowing(bool followers) async {
 getPosts({String userId}) async {
   String prefix = userId != null ? '/posts?user_id=$userId' : '/posts';
   String url = baseUrl + prefix;
-  logger.e(url);
 
   try {
     var response = await dio.get(url,
@@ -223,7 +213,6 @@ getPosts({String userId}) async {
         }));
     Map<String, dynamic> mmnlist1 = response.data;
     appGet.setPosts(mmnlist1);
-    logger.d(mmnlist1);
   } on DioError catch (e) {
     logger.e(e.response);
   }
@@ -239,7 +228,6 @@ followUser(String userId) async {
           'Authorization': 'Bearer ${appGet.token}'
         }));
     Map<String, dynamic> mmnlist1 = response.data;
-    logger.d(mmnlist1);
   } on DioError catch (e) {
     logger.e(e.response.data['message']);
   }
@@ -254,11 +242,73 @@ unFollowUser(String userId) async {
           'Authorization': 'Bearer ${appGet.token}'
         }));
     Map<String, dynamic> mmnlist1 = response.data;
-    logger.d(mmnlist1);
   } on DioError catch (e) {
     logger.e(e.response.data['message']);
   }
 }
+
+/////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////
+Future<UserCredential> signInWithGoogle() async {
+  // Trigger the authentication flow
+  final GoogleSignInAccount googleUser =
+      await GoogleSignIn(scopes: []).signIn();
+
+  // Obtain the auth details from the request
+  final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
+  // Create a new credential
+  final GoogleAuthCredential credential = GoogleAuthProvider.credential(
+    accessToken: googleAuth.accessToken,
+    idToken: googleAuth.idToken,
+  );
+  UserCredential userCredential =
+      await FirebaseAuth.instance.signInWithCredential(credential);
+  String tken = await userCredential.user.getIdToken();
+  logger.e(tken);
+  // Once signed in, return the UserCredential
+  return userCredential;
+}
+
+Future<UserCredential> signInWithFacebook() async {
+  final AccessToken result = await FacebookAuth.instance.login();
+
+  final FacebookAuthCredential facebookAuthCredential =
+      FacebookAuthProvider.credential(result.token);
+
+  return await FirebaseAuth.instance
+      .signInWithCredential(facebookAuthCredential);
+}
+
+Future<UserCredential> signInWithTwitter() async {
+  // Create a TwitterLogin instance
+  final TwitterLogin twitterLogin = new TwitterLogin(
+    consumerKey: '<your consumer key>',
+    consumerSecret: ' <your consumer secret>',
+  );
+
+  // Trigger the sign-in flow
+  final TwitterLoginResult loginResult = await twitterLogin.authorize();
+
+  // Get the Logged In session
+  final TwitterSession twitterSession = loginResult.session;
+
+  // Create a credential from the access token
+  final AuthCredential twitterAuthCredential = TwitterAuthProvider.credential(
+      accessToken: twitterSession.token, secret: twitterSession.secret);
+
+  // Once signed in, return the UserCredential
+  return await FirebaseAuth.instance
+      .signInWithCredential(twitterAuthCredential);
+}
+
+User checkUser() {
+  User user = FirebaseAuth.instance.currentUser;
+  return user;
+}
+/////////////////////////////////////////////////////////////////////////////////////
+
 /////////////////////////////////////////////////////////////////////////////////////
 //  var response = await dio.post(url + '/user/update_password',
 //         data: {"old_password": oldPassword, "new_password": newPassword},

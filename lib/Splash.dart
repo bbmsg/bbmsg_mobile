@@ -2,18 +2,13 @@ import 'dart:async';
 
 import 'package:bbmsg_mobile/backend/appGet.dart';
 import 'package:bbmsg_mobile/backend/server.dart';
-import 'package:bbmsg_mobile/main.dart';
-import 'package:bbmsg_mobile/main_page_mockup.dart';
 import 'package:bbmsg_mobile/services/connectvity_service.dart';
-import 'package:bbmsg_mobile/ui/pages/profile_edit.dart';
-import 'package:bbmsg_mobile/ui/pages/profile_page.dart';
+import 'package:bbmsg_mobile/services/shared_prefrences_helper.dart';
 import 'package:bbmsg_mobile/utils/custom_dialoug.dart';
 import 'package:bbmsg_mobile/values/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:bbmsg_mobile/ui/pages/following_page.dart';
 import 'package:get/get.dart';
-
-import 'services copy/shared_prefrences_helper.dart';
 
 class Splash extends StatefulWidget {
   @override
@@ -26,15 +21,20 @@ class _SplashState extends State<Splash> {
   getAllVariables() async {
     token = SPHelper.spHelper.getToken();
     appGet.setToken(token);
+    logger.e(token);
     if (token != null) {
       Map<String, dynamic> map =
           await retrieveUser(token: token, strategy: 'jwt');
+      logger.e(token);
+      logger.e(map);
+
       if (map == null) {
+        // case the user has been deleted from the database but it still saved in the user sp
         token = null;
         SPHelper.spHelper.clearSp();
       } else {
         getFollowers(true);
-        GetFollowing(true);
+        getFollowing(true);
         getPosts(userId: '${map['user']['id']}');
       }
     }
@@ -52,7 +52,8 @@ class _SplashState extends State<Splash> {
     Future.delayed(Duration(seconds: 3)).then((value) {
       if (ConnectivityService.connectivityStatus !=
           ConnectivityStatus.Offline) {
-        Get.off(ProfileEdit());
+        // logger.e(appGet.userMap['user']['profile_picture']);
+        Get.to(FollowingPage());
         // token == null ? Get.off(MainPage()) : Get.off(MainPageMock());
       } else {
         CustomDialougs.utils
