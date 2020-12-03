@@ -2,6 +2,7 @@ import 'package:bbmsg_mobile/backend/server.dart';
 import 'package:bbmsg_mobile/ui/widgets/follow_user_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 
 class TestApi extends StatelessWidget {
   List<User> users = [
@@ -41,8 +42,9 @@ class TestApi extends StatelessWidget {
     // TODO: implement build
     return Scaffold(body: Center(
       child: RaisedButton(onPressed: () async {
-        UserCredential userData = await signInWithFacebook();
-        logger.e(userData);
+        UserCredential userCredential = await signInWithTwitter();
+        String token = await userCredential.user.getIdToken();
+        Logger().e(token);
 
         // checkUser();
       }),

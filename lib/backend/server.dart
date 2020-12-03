@@ -284,8 +284,8 @@ Future<UserCredential> signInWithFacebook() async {
 Future<UserCredential> signInWithTwitter() async {
   // Create a TwitterLogin instance
   final TwitterLogin twitterLogin = new TwitterLogin(
-    consumerKey: '<your consumer key>',
-    consumerSecret: ' <your consumer secret>',
+    consumerKey: 'wih4kklIITuTvGAeYdNcDg0oY',
+    consumerSecret: 'LLloRbpQRFd5vOKRIPoeJIfPvSvsgqrw958FaxZXogpLq1xq9n',
   );
 
   // Trigger the sign-in flow

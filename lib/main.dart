@@ -1,6 +1,7 @@
 import 'package:bbmsg_mobile/Splash.dart';
 import 'package:bbmsg_mobile/backend/appGet.dart';
 import 'package:bbmsg_mobile/services/shared_prefrences_helper.dart';
+import 'package:bbmsg_mobile/testApi.dart';
 import 'package:bbmsg_mobile/ui/pages/Sign_in.dart';
 import 'package:bbmsg_mobile/ui/pages/app_settings.dart';
 import 'package:bbmsg_mobile/ui/pages/register_page.dart';
@@ -68,7 +69,7 @@ class MiddlePage extends StatelessWidget {
 
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          return AppSettings();
+          return TestApi();
         }
 
         // Otherwise, show something whilst waiting for initialization to complete
