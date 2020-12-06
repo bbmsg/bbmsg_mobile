@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:bbmsg_mobile/backend/appGet.dart';
 import 'package:bbmsg_mobile/main.dart';
 import 'package:bbmsg_mobile/main_page_mockup.dart';
 import 'package:bbmsg_mobile/services/shared_prefrences_helper.dart';
+import 'package:bbmsg_mobile/ui/newPages/screen/home/body/insta_home.dart';
 import 'package:bbmsg_mobile/utils/custom_dialoug.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -34,7 +37,7 @@ registerNewUser({String userName, String credintial, String password}) async {
     appGet.setUserMap(resultMap);
     appGet.pr.hide();
 
-    myget.Get.off(MainPageMock());
+    myget.Get.off(InstaHome());
   } on DioError catch (e) {
     appGet.pr.hide();
     logger.e(e.response.data['message']);
@@ -62,7 +65,7 @@ getUserToken(
     appGet.setUserMap(resultMap);
     appGet.pr.hide();
 
-    myget.Get.off(MainPageMock());
+    myget.Get.off(InstaHome());
   } on DioError catch (e) {
     appGet.pr.hide();
     logger.e(e.response.data['message']);
@@ -201,7 +204,7 @@ getFollowing(bool followers) async {
 }
 
 //////////////////////////////////////////////////////////////////////////////////////
-getPosts({String userId}) async {
+Future<Map<String, dynamic>> getPosts({String userId}) async {
   String prefix = userId != null ? '/posts?user_id=$userId' : '/posts';
   String url = baseUrl + prefix;
 
@@ -213,6 +216,8 @@ getPosts({String userId}) async {
         }));
     Map<String, dynamic> mmnlist1 = response.data;
     appGet.setPosts(mmnlist1);
+    logger.e(mmnlist1);
+    return mmnlist1;
   } on DioError catch (e) {
     logger.e(e.response);
   }
@@ -252,63 +257,103 @@ unFollowUser(String userId) async {
 ////////////////////////////////////////////////////////////////////////////////////////
 Future<UserCredential> signInWithGoogle() async {
   // Trigger the authentication flow
-  final GoogleSignInAccount googleUser =
-      await GoogleSignIn(scopes: []).signIn();
+  try {
+    final GoogleSignInAccount googleUser =
+        await GoogleSignIn(scopes: []).signIn();
 
-  // Obtain the auth details from the request
-  final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser.authentication;
 
-  // Create a new credential
-  final GoogleAuthCredential credential = GoogleAuthProvider.credential(
-    accessToken: googleAuth.accessToken,
-    idToken: googleAuth.idToken,
-  );
-  UserCredential userCredential =
-      await FirebaseAuth.instance.signInWithCredential(credential);
-  String tken = await userCredential.user.getIdToken();
-  logger.e(tken);
-  // Once signed in, return the UserCredential
-  return userCredential;
+    // Create a new credential
+    final GoogleAuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+    UserCredential userCredential =
+        await FirebaseAuth.instance.signInWithCredential(credential);
+    String token = await userCredential.user.getIdToken();
+    socialMediaAuth(strategy: 'google', token: googleAuth.accessToken);
+
+    // Once signed in, return the UserCredential
+    return userCredential;
+  } catch (e) {
+    CustomDialougs.utils.showDialoug(titleKey: 'Error', messageKey: e.message);
+  }
 }
 
 Future<UserCredential> signInWithFacebook() async {
-  final AccessToken result = await FacebookAuth.instance.login();
+  try {
+    final AccessToken result = await FacebookAuth.instance.login();
 
-  final FacebookAuthCredential facebookAuthCredential =
-      FacebookAuthProvider.credential(result.token);
-
-  return await FirebaseAuth.instance
-      .signInWithCredential(facebookAuthCredential);
+    final FacebookAuthCredential facebookAuthCredential =
+        FacebookAuthProvider.credential(result.token);
+    UserCredential userCredential = await FirebaseAuth.instance
+        .signInWithCredential(facebookAuthCredential);
+    String token = await userCredential.user.getIdToken();
+    socialMediaAuth(strategy: 'facebook', token: result.token);
+    return userCredential;
+  } catch (e) {
+    CustomDialougs.utils.showDialoug(titleKey: 'Error', messageKey: e.message);
+  }
 }
 
 Future<UserCredential> signInWithTwitter() async {
   // Create a TwitterLogin instance
-  final TwitterLogin twitterLogin = new TwitterLogin(
-    consumerKey: 'wih4kklIITuTvGAeYdNcDg0oY',
-    consumerSecret: 'LLloRbpQRFd5vOKRIPoeJIfPvSvsgqrw958FaxZXogpLq1xq9n',
-  );
+  try {
+    final TwitterLogin twitterLogin = new TwitterLogin(
+      consumerKey: 'wih4kklIITuTvGAeYdNcDg0oY',
+      consumerSecret: 'LLloRbpQRFd5vOKRIPoeJIfPvSvsgqrw958FaxZXogpLq1xq9n',
+    );
 
-  // Trigger the sign-in flow
-  final TwitterLoginResult loginResult = await twitterLogin.authorize();
+    // Trigger the sign-in flow
+    final TwitterLoginResult loginResult = await twitterLogin.authorize();
 
-  // Get the Logged In session
-  final TwitterSession twitterSession = loginResult.session;
+    // Get the Logged In session
+    final TwitterSession twitterSession = loginResult.session;
 
-  // Create a credential from the access token
-  final AuthCredential twitterAuthCredential = TwitterAuthProvider.credential(
-      accessToken: twitterSession.token, secret: twitterSession.secret);
+    // Create a credential from the access token
+    final AuthCredential twitterAuthCredential = TwitterAuthProvider.credential(
+        accessToken: twitterSession.token, secret: twitterSession.secret);
 
-  // Once signed in, return the UserCredential
-  return await FirebaseAuth.instance
-      .signInWithCredential(twitterAuthCredential);
+    UserCredential userCredential =
+        await FirebaseAuth.instance.signInWithCredential(twitterAuthCredential);
+    String token = await userCredential.user.getIdToken();
+    socialMediaAuth(strategy: 'twitter', token: token);
+    return userCredential;
+  } catch (e) {
+    CustomDialougs.utils.showDialoug(titleKey: 'Error', messageKey: e.message);
+  }
 }
 
 User checkUser() {
   User user = FirebaseAuth.instance.currentUser;
   return user;
 }
-/////////////////////////////////////////////////////////////////////////////////////
 
+/////////////////////////////////////////////////////////////////////////////////////
+socialMediaAuth({String token, String strategy}) async {
+  appGet.pr.show();
+  try {
+    Map map = {"strategy": strategy, "accessToken": token};
+
+    var response = await dio.post(baseUrl + '/auth',
+        data: map,
+        options: Options(headers: {'Content-Type': 'application/json'}));
+    Map<String, dynamic> resultMap = response.data;
+    appGet.setToken(resultMap['accessToken']);
+    appGet.setUserMap(resultMap);
+    appGet.pr.hide();
+    logger.e(resultMap);
+
+    myget.Get.off(InstaHome());
+  } on DioError catch (e) {
+    appGet.pr.hide();
+    logger.e(e.response.data['message']);
+    CustomDialougs.utils
+        .showDialoug(titleKey: 'Error', messageKey: e.response.data['message']);
+  }
+}
 /////////////////////////////////////////////////////////////////////////////////////
 //  var response = await dio.post(url + '/user/update_password',
 //         data: {"old_password": oldPassword, "new_password": newPassword},
@@ -316,3 +361,260 @@ User checkUser() {
 //           'Content-Type': 'application/json',
 //           'Authorization': 'Bearer ${appGet.token}'
 //         }));
+/////////////////////////////////////////////////////////////////////////////////////////
+
+createPost(String content, File img) async {
+  String fileName = img.path.split('/').last;
+  try {
+    var response = await dio.post(baseUrl + '/posts',
+        data: {
+          'content': content,
+          // 'media': await MultipartFile.fromFile(img.path, filename: fileName),
+        },
+        options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
+    Map<String, dynamic> mmnlist1 = response.data;
+    logger.d(mmnlist1);
+  } on DioError catch (e) {
+    logger.e(e.response.data['message']);
+  }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+editPost(int id, String content, File img, int tags) async {
+  String fileName = img.path.split('/').last;
+  try {
+    var response = await dio.put(baseUrl + '/posts/$id',
+        data: {
+          'content': content,
+          // 'media': await MultipartFile.fromFile(img.path, filename: fileName),
+          'tags': tags,
+        },
+        options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
+    Map<String, dynamic> mmnlist1 = response.data;
+    logger.d(mmnlist1);
+  } on DioError catch (e) {
+    logger.e(e.response.data['message']);
+  }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+deletepost(int id) async {
+  try {
+    var response = await dio.delete(baseUrl + '/posts/$id',
+        options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
+    Map<String, dynamic> mmnlist1 = response.data;
+    logger.d(mmnlist1);
+  } on DioError catch (e) {
+    logger.e(e.response.data['message']);
+  }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+getcomments() async {
+  try {
+    var response = await dio.get(baseUrl + '/comments',
+        options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
+    Map<String, dynamic> mmnlist1 = response.data;
+    appGet.setcommentpost(mmnlist1);
+    logger.d(mmnlist1);
+  } on DioError catch (e) {
+    logger.e(e.response.data['message']);
+  }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+getAcomment(int id) async {
+  try {
+    var response = await dio.get(baseUrl + '/comments/$id',
+        options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
+    Map<String, dynamic> mmnlist1 = response.data;
+    appGet.setcommentpostbyid(mmnlist1);
+    logger.d(mmnlist1);
+  } on DioError catch (e) {
+    logger.e(e.response.data['message']);
+  }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+createComment(
+  int postId,
+) async {
+  // String fileName = img.path.split('/').last;
+  try {
+    var response = await dio.post(baseUrl + '/comments',
+        data: {
+          'post_id': postId,
+          // 'media': await MultipartFile.fromFile(img.path, filename: fileName),
+          // 'tags': tags
+        },
+        options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
+    Map<String, dynamic> mmnlist1 = response.data;
+    logger.d(mmnlist1);
+  } on DioError catch (e) {
+    logger.e(e.response.data['message']);
+  }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+editComment(int id, String content) async {
+  try {
+    var response = await dio.put(baseUrl + '/comments/$id',
+        data: {
+          'content': content,
+        },
+        options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
+    Map<String, dynamic> mmnlist1 = response.data;
+    logger.d(mmnlist1);
+  } on DioError catch (e) {
+    logger.e(e.response.data['message']);
+  }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+deleteComment(int id) async {
+  try {
+    var response = await dio.delete(baseUrl + '/comments/$id',
+        options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
+    Map<String, dynamic> mmnlist1 = response.data;
+    logger.d(mmnlist1);
+  } on DioError catch (e) {
+    logger.e(e.response.data['message']);
+  }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+getReplies() async {
+  try {
+    var response = await dio.get(baseUrl + '/replies',
+        options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
+    Map<String, dynamic> mmnlist1 = response.data;
+    logger.d(mmnlist1);
+  } on DioError catch (e) {
+    logger.e(e.response.data['message']);
+  }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+getAreplay(int id) async {
+  try {
+    var response = await dio.get(baseUrl + '/replies/$id',
+        options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
+    Map<String, dynamic> mmnlist1 = response.data;
+    logger.d(mmnlist1);
+  } on DioError catch (e) {
+    logger.e(e.response.data['message']);
+  }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+createreplay(int commentId, int tags, File img) async {
+  String fileName = img.path.split('/').last;
+  try {
+    var response = await dio.post(baseUrl + '/replies',
+        data: {
+          'comment_id': commentId,
+          // 'media': await MultipartFile.fromFile(img.path, filename: fileName),
+          'tags': tags
+        },
+        options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
+    Map<String, dynamic> mmnlist1 = response.data;
+    logger.d(mmnlist1);
+  } on DioError catch (e) {
+    logger.e(e.response.data['message']);
+  }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+editReplay(int id, String content) async {
+  try {
+    var response = await dio.put(baseUrl + '/replies/$id',
+        data: {
+          'content': content,
+        },
+        options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
+    Map<String, dynamic> mmnlist1 = response.data;
+    logger.d(mmnlist1);
+  } on DioError catch (e) {
+    logger.e(e.response.data['message']);
+  }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+deleteReplay(int id) async {
+  try {
+    var response = await dio.delete(baseUrl + '/replies/$id',
+        options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
+    Map<String, dynamic> mmnlist1 = response.data;
+    logger.d(mmnlist1);
+  } on DioError catch (e) {
+    logger.e(e.response.data['message']);
+  }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+getLikes(int id) async {
+  try {
+    var response = await dio.get(baseUrl + '/likes?post_id=$id',
+        options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
+    Map<String, dynamic> mmnlist1 = response.data;
+    logger.d(mmnlist1);
+  } on DioError catch (e) {
+    logger.e(e.response.data['message']);
+  }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+like(int postId) async {
+  try {
+    var response = await dio.post(baseUrl + '/likes',
+        data: {
+          'post_id': postId,
+        },
+        options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
+    Map<String, dynamic> mmnlist1 = response.data;
+    logger.d(mmnlist1);
+  } on DioError catch (e) {
+    logger.e(e.response.data['message']);
+  }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+removelike(int id) async {
+  try {
+    var response = await dio.delete(baseUrl + '/likes/$id',
+        options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
+    Map<String, dynamic> mmnlist1 = response.data;
+    logger.d(mmnlist1);
+  } on DioError catch (e) {
+    logger.e(e.response.data['message']);
+  }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+getActivity(int id) async {
+  String limit;
+  try {
+    var response = await dio.get(baseUrl + '/activity?$limit=$id',
+        options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
+    Map<String, dynamic> mmnlist1 = response.data;
+    logger.d(mmnlist1);
+  } on DioError catch (e) {
+    logger.e(e.response.data['message']);
+  }
+}

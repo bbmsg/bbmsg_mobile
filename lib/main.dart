@@ -28,11 +28,14 @@ void main() async {
   runApp(MyApp());
 }
 
+ThemeData themeData = ThemeData(scaffoldBackgroundColor: Colors.white);
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return GetMaterialApp(
+      theme: themeData,
       title: 'BBMSG',
       debugShowCheckedModeBanner: false,
       localizationsDelegates: translator.delegates,
@@ -69,7 +72,7 @@ class MiddlePage extends StatelessWidget {
 
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          return TestApi();
+          return Splash();
         }
 
         // Otherwise, show something whilst waiting for initialization to complete

@@ -1,5 +1,6 @@
 import 'package:bbmsg_mobile/services/shared_prefrences_helper.dart';
 import 'package:bbmsg_mobile/utils/ProgressDialogUtils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 
@@ -13,6 +14,8 @@ class AppGet extends GetxController {
   var following = {}.obs;
   var posts = {}.obs;
   Map testMap = {};
+  var appBarTitleStyle = TextStyle().obs;
+  bool isFingerprint;
   setFollowers(Map map) {
     this.followers.value = map;
   }
@@ -39,4 +42,20 @@ class AppGet extends GetxController {
   }
 
   var pr = ProgressDialogUtils.createProgressDialog(Get.context);
+
+  Map myPost = {};
+  Map commentpost = {};
+  Map commentpostbyid = {};
+
+  setPostMap(Map map) {
+    this.myPost = map;
+  }
+
+  setcommentpost(Map map) {
+    this.commentpost = map;
+  }
+
+  setcommentpostbyid(Map map) {
+    this.commentpostbyid = map;
+  }
 }

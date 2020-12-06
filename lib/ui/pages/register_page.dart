@@ -76,11 +76,18 @@ class RegisterPage extends StatelessWidget {
 
   createNewAccount() {}
 
-  facebookLogin() {}
+  facebookLogin() {
+    signInWithFacebook();
+  }
 
-  gmailLogin() {}
+  gmailLogin() {
+    signInWithGoogle();
+  }
 
-  twiterLogin() {}
+  twiterLogin() {
+    signInWithTwitter();
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build

@@ -2,8 +2,12 @@ import 'dart:async';
 
 import 'package:bbmsg_mobile/backend/appGet.dart';
 import 'package:bbmsg_mobile/backend/server.dart';
+import 'package:bbmsg_mobile/main.dart';
+import 'package:bbmsg_mobile/main_page_mockup.dart';
 import 'package:bbmsg_mobile/services/connectvity_service.dart';
 import 'package:bbmsg_mobile/services/shared_prefrences_helper.dart';
+import 'package:bbmsg_mobile/ui/newPages/screen/home/body/insta_home.dart';
+import 'package:bbmsg_mobile/ui/pages/app_settings.dart';
 import 'package:bbmsg_mobile/utils/custom_dialoug.dart';
 import 'package:bbmsg_mobile/values/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +24,7 @@ class _SplashState extends State<Splash> {
   AppGet appGet = Get.put(AppGet());
   getAllVariables() async {
     token = SPHelper.spHelper.getToken();
+    SPHelper.spHelper.getFingerprintSetingd();
     appGet.setToken(token);
     logger.e(token);
     if (token != null) {
@@ -53,8 +58,8 @@ class _SplashState extends State<Splash> {
       if (ConnectivityService.connectivityStatus !=
           ConnectivityStatus.Offline) {
         // logger.e(appGet.userMap['user']['profile_picture']);
-        Get.to(FollowingPage());
-        // token == null ? Get.off(MainPage()) : Get.off(MainPageMock());
+
+        token == null ? Get.off(MainPage()) : Get.off(InstaHome());
       } else {
         CustomDialougs.utils
             .showDialoug(messageKey: 'network_error', titleKey: 'alert');

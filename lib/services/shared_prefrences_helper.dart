@@ -16,13 +16,21 @@ class SPHelper {
     return prefs;
   }
 
+  fingerPrintSettings(bool value) {
+    prefs.setBool('isFingerPrint', value);
+    getFingerprintSetingd();
+  }
+
+  getFingerprintSetingd() {
+    bool isFingerprint = prefs.getBool('isFingerPrint') ?? false;
+    appGet.isFingerprint = isFingerprint;
+  }
+
   setLanguage(String lan) async {
-    prefs = await spHelper.initSharedPreferences();
     prefs.setString('language', lan);
   }
 
-  Future<String> getLanguage() async {
-    prefs = await spHelper.initSharedPreferences();
+  String getLanguage() {
     String language = prefs.getString('language');
     return language;
   }
