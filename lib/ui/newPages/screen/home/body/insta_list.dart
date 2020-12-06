@@ -18,8 +18,8 @@ class InstaList extends StatefulWidget {
 
 class _InstaListState extends State<InstaList> {
   AppGet appGet = Get.find();
-  bool isPressed = false;
-
+  // bool isPressed = false;
+  TextEditingController commentcontroller = new TextEditingController();
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context,
@@ -32,6 +32,7 @@ class _InstaListState extends State<InstaList> {
                 itemCount: snapshot.data.length + 1,
                 itemBuilder: (BuildContext context, int index) {
                   getAcomment(snapshot.data['data'][index]['id']);
+
                   return index == 0
                       ? new SizedBox(
                           child: InstaStories(),
@@ -178,10 +179,7 @@ class _InstaListState extends State<InstaList> {
                             ),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                  width: 200,
-                                  height: 200,
-                                  child: Commentbyid()),
+                              child: Container(child: Commentbyid()),
                             ),
                             Padding(
                               padding: const EdgeInsets.fromLTRB(
@@ -224,7 +222,7 @@ class _InstaListState extends State<InstaList> {
                                               Expanded(
                                                 child: TextField(
                                                   textAlign: TextAlign.left,
-                                                  // controller: searchCtrl,
+                                                  controller: commentcontroller,
                                                   keyboardType:
                                                       TextInputType.text,
                                                   decoration: InputDecoration(
@@ -256,12 +254,23 @@ class _InstaListState extends State<InstaList> {
                                                               onPressed: () {}),
                                                           IconButton(
                                                               icon: Icon(
-                                                                Icons.favorite,
-                                                                color:
-                                                                    Colors.red,
+                                                                Icons
+                                                                    .add_to_queue_outlined,
+                                                                color: Colors
+                                                                    .black,
                                                                 size: 12,
                                                               ),
-                                                              onPressed: () {})
+                                                              onPressed: () {
+                                                                createComment(
+                                                                    snapshot.data['data']
+                                                                            [
+                                                                            index]
+                                                                        ['id'],
+                                                                    commentcontroller
+                                                                        .text,
+                                                                    null,
+                                                                    null);
+                                                              })
                                                         ],
                                                       ),
                                                     ),

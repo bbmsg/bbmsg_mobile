@@ -8,14 +8,29 @@ class Postlike extends StatefulWidget {
   final int id;
   final String like;
   final String comment;
-  Postlike(this.id,this.like,this.comment,{Key key}) : super(key: key);
+  Postlike(this.id, this.like, this.comment, {Key key}) : super(key: key);
 
   @override
   _PostlikeState createState() => _PostlikeState();
 }
 
 class _PostlikeState extends State<Postlike> {
-  bool isPressed = false;
+  int isPressed = 0;
+  int totalsint;
+  int likeid;
+  @override
+  void initState() {
+    super.initState();
+    getLikes(widget.id).then((value) {
+      if (value['data'].length == 0) {
+        isPressed = 0;
+      } else {
+        isPressed = 1;
+        likeid = value['data'][0]['id'];
+      }
+      totalsint = value['total'];
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,21 +50,62 @@ class _PostlikeState extends State<Postlike> {
             children: <Widget>[
               new IconButton(
                 icon: new Icon(
-                    isPressed ? Icons.favorite : FontAwesomeIcons.heart),
-                color: isPressed ? Colors.red : Colors.black,
+                    isPressed == 0 ? FontAwesomeIcons.heart : Icons.favorite),
+                color: isPressed == 0 ? Colors.black : Colors.red,
                 onPressed: () {
-                  like(widget.id);
-                  setState(() {
-                    isPressed = !isPressed;
-                  });
+                  if (isPressed == 0) {
+                    print(isPressed);
+                    setState(() {
+                      isPressed = 1;
+                    });
+                    totalsint = totalsint + 1;
+                    like(widget.id).then((value) {
+                      getLikes(widget.id).then((ee) {
+                        print('long' + widget.id.toString());
+                        if (ee['data'].length == 0) {
+                          isPressed = 0;
+                        } else {
+                          isPressed = 1;
+                          likeid = ee['data'][0]['id'];
+                        }
+                        totalsint = ee['total'];
+                        print('totadd' + totalsint.toString());
+                      });
+                    });
+                    setState(() {
+                      // totalsint;
+                    });
+                  } else {
+                    print(isPressed);
+                    setState(() {
+                      isPressed = 0;
+                    });
+
+                    totalsint = totalsint - 1;
+                    removelike(likeid).then((value) {
+                      getLikes(widget.id).then((ee) {
+                        print('long' + widget.id.toString());
+                        if (ee['data'].length == 0) {
+                          isPressed = 0;
+                        } else {
+                          isPressed = 1;
+                          likeid = ee['data'][0]['id'];
+                        }
+                        totalsint = ee['total'];
+                        print('totmin' + totalsint.toString());
+                      });
+                    });
+
+                    setState(() {
+                      // totalsint;
+                    });
+                  }
                 },
               ),
               new SizedBox(
                 width: ScreenUtil().setWidth(12),
               ),
-              Text(
-               widget.like
-              ),
+              Text(totalsint.toString()),
               new SizedBox(
                 width: ScreenUtil().setWidth(12),
               ),
@@ -64,7 +120,7 @@ class _PostlikeState extends State<Postlike> {
                 width: ScreenUtil().setWidth(12),
               ),
               Text(
-               widget.comment,
+                widget.comment,
               ),
             ],
           ),

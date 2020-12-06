@@ -1,3 +1,4 @@
+import 'package:bbmsg_mobile/backend/server.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -13,33 +14,38 @@ class Activityscr extends StatefulWidget {
 
 class _ActivityscrState extends State<Activityscr> {
   @override
+  void initState() {
+    super.initState();
+   
+  }
+
+  @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context,
         designSize: Size(375, 812), allowFontScaling: false);
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SvgPicture.asset(
-              'assets/images/camera.svg',
-            ),
-            Text(
-              'Activity',
-              style: TextStyle(
-                  color: HexColor('#1A1818'),
-                  fontSize: isPortrait
-                      ? ScreenUtil().setSp(16)
-                      : ScreenUtil().setSp(10)),
-            ),
-            SvgPicture.asset('assets/images/send.svg')
-          ],
-        ),
-      ),
-      body: ListView(
+     
+
+      body:
+    //  FutureBuilder(
+    //    future:  getActivity(20),
+       
+    //    builder: (BuildContext context, AsyncSnapshot snapshot) {
+    //      return
+    //      ListView.builder(
+    //        itemCount: snapshot.data.length,
+    //        itemBuilder: (BuildContext context, int index) {
+    //        return ;
+    //       },
+    //      )
+         
+    //       ;
+    //    },
+    //  ),
+      
+      
+       ListView(
         children: [
           Padding(
             padding: EdgeInsets.only(
@@ -63,7 +69,6 @@ class _ActivityscrState extends State<Activityscr> {
                 ? ScreenUtil().setHeight(11)
                 : ScreenUtil().setHeight(22),
           ),
-          
           Activitycard(),
           Padding(
             padding: EdgeInsets.only(

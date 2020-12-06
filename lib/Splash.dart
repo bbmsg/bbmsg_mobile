@@ -59,7 +59,7 @@ class _SplashState extends State<Splash> {
           ConnectivityStatus.Offline) {
         // logger.e(appGet.userMap['user']['profile_picture']);
 
-        token == null ? Get.off(MainPage()) : Get.off(InstaHome());
+        token == null ? Get.off(MainPage()) : Get.off(InstaHome(0));
       } else {
         CustomDialougs.utils
             .showDialoug(messageKey: 'network_error', titleKey: 'alert');
