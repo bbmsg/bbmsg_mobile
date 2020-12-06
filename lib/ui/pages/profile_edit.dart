@@ -11,6 +11,7 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 
@@ -25,10 +26,7 @@ class _ProfileEditState extends State<ProfileEdit> {
   Map map = {};
 
   addValueToMap(String label, dynamic value) {
-    Logger().d(label);
-    Logger().d(value);
     map[label] = value;
-    Logger().d(map);
   }
 
   bool isNewImage = false;
@@ -84,8 +82,9 @@ class _ProfileEditState extends State<ProfileEdit> {
 
                 dio.MultipartFile multipartFile =
                     await dio.MultipartFile.fromFile(file.path,
-                        filename: file.path
-                            .substring(file.path.lastIndexOf('/') + 1));
+                        filename:
+                            file.path.substring(file.path.lastIndexOf('/') + 1),
+                        contentType: MediaType('image', 'jpeg'));
 
                 map['profile_picture'] = multipartFile;
 

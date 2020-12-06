@@ -26,12 +26,10 @@ class _SplashState extends State<Splash> {
     token = SPHelper.spHelper.getToken();
     SPHelper.spHelper.getFingerprintSetingd();
     appGet.setToken(token);
-    logger.e(token);
+
     if (token != null) {
       Map<String, dynamic> map =
           await retrieveUser(token: token, strategy: 'jwt');
-      logger.e(token);
-      logger.e(map);
 
       if (map == null) {
         // case the user has been deleted from the database but it still saved in the user sp
@@ -40,7 +38,8 @@ class _SplashState extends State<Splash> {
       } else {
         getFollowers(true);
         getFollowing(true);
-        getPosts(userId: '${map['user']['id']}');
+        getPosts();
+        getMyPosts(myId: '${map['user']['id']}');
       }
     }
   }

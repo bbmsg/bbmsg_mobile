@@ -1,347 +1,221 @@
-import 'package:bbmsg_mobile/ui/newPages/editprofile.dart';
-import 'package:flutter/material.dart';
+import 'package:bbmsg_mobile/backend/appGet.dart';
+import 'package:bbmsg_mobile/ui/pages/app_settings.dart';
+import 'package:bbmsg_mobile/ui/pages/profile_edit.dart';
+import 'package:bbmsg_mobile/values/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:hexcolor/hexcolor.dart';
-import 'Likes.dart';
-import 'grid.dart';
+import 'package:logger/logger.dart';
 
-class Profilescreen extends StatefulWidget {
-  Profilescreen({Key key}) : super(key: key);
-
-  @override
-  _ProfilescreenState createState() => _ProfilescreenState();
-}
-
-class _ProfilescreenState extends State<Profilescreen> {
-  int scrno = 1;
-  getscreen(int scr) {
-    if (scr == 1) {
-      return ImageGrids();
-    }
-    if (scr == 2) {
-      return Likes();
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getscreen(1);
-  }
-
-  bool pressed = false;
-
+class Profilescreen extends StatelessWidget {
+  AppGet appGet = Get.find();
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context,
-        designSize: Size(375, 812), allowFontScaling: false);
-    var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
-    return SafeArea(
+    // TODO: implement build
+    return DefaultTabController(
+      length: 2,
       child: Scaffold(
-        backgroundColor: HexColor('#FBFCFE'),
-        body: ListView(
-          padding: EdgeInsets.only(bottom: ScreenUtil().setHeight(49)),
-          children: [
-            Stack(
+        body: SafeArea(
+          child: Container(
+            child: Column(
               children: [
                 Container(
-                    height: ScreenUtil().setHeight(289.63),
-                    width: double.infinity,
-                    child: Image.asset(
-                      'assets/pngs/1.png',
-                      fit: BoxFit.fill,
-                      width: ScreenUtil().setWidth(375),
-                      height: ScreenUtil().setHeight(289.63),
-                    )),
-                Positioned(
-                    right: 0,
-                    bottom: 0,
-                    top: 0,
-                    left: 0,
-                    child: Opacity(
-                      opacity: 0.4,
-                      child: new Container(
-                        width: ScreenUtil().setWidth(375),
-                        height: ScreenUtil().setHeight(289.63),
-                        decoration: new BoxDecoration(
-                          gradient: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [
-                                HexColor('#00ADEE'),
-                                HexColor('#7850FF'),
-                              ]),
+                  alignment: Alignment.center,
+                  height: appGet.screenHeight / 3,
+                  decoration: BoxDecoration(
+                      color: Color(0xff047AF2),
+                      image: DecorationImage(
+                          colorFilter: new ColorFilter.mode(
+                              Colors.black.withOpacity(0.4), BlendMode.dstATop),
+                          image: CachedNetworkImageProvider(
+                              appGet.userMap['user']['profile_picture']),
+                          fit: BoxFit.cover)),
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Get.to(AppSettings());
+                              },
+                              child: SvgPicture.asset(
+                                'assets/svgs/Iconly-Light-Setting.svg',
+                                semanticsLabel: 'Acme Logo',
+                                color: Colors.white,
+                                height: 20.h,
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Get.to(ProfileEdit());
+                              },
+                              child: SvgPicture.asset(
+                                'assets/svgs/edit.svg',
+                                semanticsLabel: 'Acme Logo',
+                                color: Colors.white,
+                                height: 20.h,
+                              ),
+                            )
+                          ],
                         ),
                       ),
-                    )),
-                Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(
-                        top: ScreenUtil().setHeight(28),
-                        left: ScreenUtil().setWidth(18),
-                        right: ScreenUtil().setWidth(18),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SvgPicture.asset(
-                            'assets/svgs/settings.svg',
-                            color: Colors.white,
+                          Container(
+                            height: 150.h,
+                            width: 150.w,
+                            decoration: BoxDecoration(
+                                border:
+                                    Border.all(color: Colors.white, width: 5.w),
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                    image: CachedNetworkImageProvider(appGet
+                                        .userMap['user']['profile_picture']),
+                                    fit: BoxFit.cover)),
+                          ),
+                          SizedBox(
+                            height: 7.h,
                           ),
                           Text(
-                            'Profile',
+                            appGet.userMap['user']['name'],
                             style: TextStyle(
-                                fontSize: isPortrait
-                                    ? ScreenUtil().setSp(16)
-                                    : ScreenUtil().setSp(10),
+                                fontFamily: 'second_header',
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
                                 color: Colors.white),
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              Get.to(Editprofilescr());
-                            },
-                            child: SvgPicture.asset(
-                              'assets/svgs/edit.svg',
-                              color: Colors.white,
-                            ),
+                          SizedBox(
+                            height: 7.h,
                           ),
+                          appGet.userMap['user']['address'] != null
+                              ? Text(appGet.userMap['user']['address'],
+                                  style: TextStyle(
+                                      fontFamily: 'second_header',
+                                      fontWeight: FontWeight.w300,
+                                      fontSize: 17,
+                                      color: Colors.white))
+                              : Container(),
+                          // IconButton(
+                          //     icon: Icon(Icons.insert_chart),
+                          //     onPressed: () {
+                          //       print(appGet.userMap['user']['name']);
+                          //     })
                         ],
                       ),
-                    ),
-                    SizedBox(
-                      height: ScreenUtil().setHeight(20),
-                    ),
-                    Container(
-                      width: ScreenUtil().setWidth(96.31),
-                      height: ScreenUtil().setHeight(96.31),
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.white,
-                            width: 2,
+                    ],
+                  ),
+                ),
+                Container(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+                  color: Colors.white,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            '${appGet.myPosts['total']}',
+                            style: TextStyle(color: primaryColor, fontSize: 20),
                           ),
-                          shape: BoxShape.circle),
-                      child: CircleAvatar(
-                          radius: 50,
-                          backgroundImage: AssetImage(
-                            'assets/pngs/1.png',
-                          )),
-                    ),
-                    SizedBox(
-                      height: ScreenUtil().setHeight(13),
-                    ),
-                    Text(
-                      'Linda I. Hartz',
+                          Text(
+                            'Posts',
+                            style: TextStyle(
+                                fontSize: 15, fontFamily: 'second_header'),
+                          )
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            '${appGet.followers['total']}',
+                            style: TextStyle(color: primaryColor, fontSize: 20),
+                          ),
+                          Text(
+                            'Followers',
+                            style: TextStyle(
+                                fontSize: 15, fontFamily: 'second_header'),
+                          )
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            '${appGet.following['total']}',
+                            style: TextStyle(color: primaryColor, fontSize: 20),
+                          ),
+                          Text(
+                            'Following',
+                            style: TextStyle(
+                                fontSize: 15, fontFamily: 'second_header'),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                Container(
+                    child: TabBar(tabs: [
+                  Tab(
+                    child: Text(
+                      'Posts',
                       style: TextStyle(
-                          fontSize: isPortrait
-                              ? ScreenUtil().setSp(16)
-                              : ScreenUtil().setSp(10),
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
                     ),
-                    SizedBox(
-                      height: ScreenUtil().setHeight(14),
-                    ),
-                    Text(
-                      'New York',
+                  ),
+                  Tab(
+                    child: Text(
+                      'Likes',
                       style: TextStyle(
-                          fontSize: isPortrait
-                              ? ScreenUtil().setSp(13)
-                              : ScreenUtil().setSp(8),
-                          color: Colors.white),
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
                     ),
-                  ],
+                  )
+                ])),
+                Expanded(
+                  child: TabBarView(children: [
+                    GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          crossAxisSpacing: 2.w,
+                          mainAxisSpacing: 2.h),
+                      itemCount: appGet.myPosts['data'].where((e) {
+                        Logger().e(e['media']);
+                        return e['media'] != null;
+                      }).length,
+                      itemBuilder: (context, index) {
+                        return CachedNetworkImage(
+                            imageUrl: appGet.myPosts['data'][index]['media']);
+                      },
+                    ),
+                    GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          crossAxisSpacing: 2.w,
+                          mainAxisSpacing: 2.h),
+                      itemCount: appGet.posts.length,
+                      itemBuilder: (context, index) {
+                        return CachedNetworkImage(
+                            imageUrl: appGet.posts[index]);
+                      },
+                    )
+                  ]),
                 )
               ],
             ),
-            Container(
-              width: ScreenUtil().setWidth(96.31),
-              height: isPortrait
-                  ? ScreenUtil().setHeight(130)
-                  : ScreenUtil().setHeight(200),
-              color: Colors.white,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: ScreenUtil().setWidth(59),
-                      right: ScreenUtil().setWidth(59),
-                      top: ScreenUtil().setHeight(23),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          children: [
-                            Text(
-                              '21',
-                              style: TextStyle(
-                                  fontSize: isPortrait
-                                      ? ScreenUtil().setSp(16)
-                                      : ScreenUtil().setSp(10),
-                                  color: HexColor('#00ADEE')),
-                            ),
-                            SizedBox(
-                              height: ScreenUtil().setHeight(10),
-                            ),
-                            Text(
-                              'Posts',
-                              style: TextStyle(
-                                  fontSize: isPortrait
-                                      ? ScreenUtil().setSp(11)
-                                      : ScreenUtil().setSp(7),
-                                  color: HexColor('#161F3D')),
-                            ),
-                          ],
-                        ),
-                        Container(
-                          width: ScreenUtil().setWidth(1),
-                          height: ScreenUtil().setHeight(18.13),
-                          color: HexColor('#D8D8D8'),
-                        ),
-                        Column(
-                          children: [
-                            Text(
-                              '981',
-                              style: TextStyle(
-                                  fontSize: isPortrait
-                                      ? ScreenUtil().setSp(16)
-                                      : ScreenUtil().setSp(10),
-                                  color: HexColor('#00ADEE')),
-                            ),
-                            SizedBox(
-                              height: ScreenUtil().setHeight(10),
-                            ),
-                            Text(
-                              'Followers',
-                              style: TextStyle(
-                                  fontSize: isPortrait
-                                      ? ScreenUtil().setSp(11)
-                                      : ScreenUtil().setSp(7),
-                                  color: HexColor('#161F3D')),
-                            ),
-                          ],
-                        ),
-                        Container(
-                          width: ScreenUtil().setWidth(1),
-                          height: ScreenUtil().setHeight(18.13),
-                          color: HexColor('#D8D8D8'),
-                        ),
-                        Column(
-                          children: [
-                            Text(
-                              '63',
-                              style: TextStyle(
-                                  fontSize: isPortrait
-                                      ? ScreenUtil().setSp(16)
-                                      : ScreenUtil().setSp(10),
-                                  color: HexColor('#00ADEE')),
-                            ),
-                            SizedBox(
-                              height: ScreenUtil().setHeight(10),
-                            ),
-                            Text(
-                              'Following',
-                              style: TextStyle(
-                                  fontSize: isPortrait
-                                      ? ScreenUtil().setSp(11)
-                                      : ScreenUtil().setSp(7),
-                                  color: HexColor('#161F3D')),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: ScreenUtil().setHeight(31),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: ScreenUtil().setWidth(39),
-                      right: ScreenUtil().setWidth(39),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              pressed = false;
-                              scrno = 1;
-                            });
-                          },
-                          child: Column(
-                            children: [
-                              Text(
-                                'Posts',
-                                style: TextStyle(
-                                    fontSize: isPortrait
-                                        ? ScreenUtil().setSp(14)
-                                        : ScreenUtil().setSp(9),
-                                    color: pressed == true
-                                        ? Colors.grey[400]
-                                        : HexColor('#161F3D')),
-                              ),
-                              Container(
-                                height: ScreenUtil().setHeight(3),
-                                width: ScreenUtil().setWidth(140),
-                                decoration: BoxDecoration(
-                                    color: pressed == true
-                                        ? Colors.transparent
-                                        : HexColor('#00ADEE'),
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(20),
-                                      topRight: Radius.circular(20),
-                                    )),
-                              )
-                            ],
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              pressed = true;
-                              scrno = 2;
-                            });
-                          },
-                          child: Column(
-                            children: [
-                              Text(
-                                'Liked',
-                                style: TextStyle(
-                                    fontSize: isPortrait
-                                        ? ScreenUtil().setSp(14)
-                                        : ScreenUtil().setSp(9),
-                                    color: pressed == false
-                                        ? Colors.grey[400]
-                                        : HexColor('#161F3D')),
-                              ),
-                              Container(
-                                height: ScreenUtil().setHeight(3),
-                                width: ScreenUtil().setWidth(140),
-                                decoration: BoxDecoration(
-                                    color: pressed == false
-                                        ? Colors.transparent
-                                        : HexColor('#00ADEE'),
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(20),
-                                      topRight: Radius.circular(20),
-                                    )),
-                              )
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-            getscreen(scrno)
-          ],
+          ),
         ),
       ),
     );

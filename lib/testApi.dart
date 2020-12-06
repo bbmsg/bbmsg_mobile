@@ -44,7 +44,6 @@ class TestApi extends StatelessWidget {
       child: RaisedButton(onPressed: () async {
         UserCredential userCredential = await signInWithTwitter();
         String token = await userCredential.user.getIdToken();
-        Logger().e(token);
 
         // checkUser();
       }),

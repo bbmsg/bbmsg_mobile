@@ -1,6 +1,7 @@
 import 'package:bbmsg_mobile/backend/server.dart';
 import 'package:bbmsg_mobile/ui/newPages/createpost.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/home/body/insta_home.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -19,6 +20,7 @@ class _PostnewState extends State<Postnew> {
     ScreenUtil.init(context,
         designSize: Size(375, 812), allowFontScaling: false);
 
+
     return GestureDetector(
       onTap: () {
         print('vvv');
@@ -36,6 +38,7 @@ class _PostnewState extends State<Postnew> {
                   image: new NetworkImage(
                       appGet.userMap['profile_picture'].toString())),
             ),
+
           ),
           Flexible(
             child: Column(
@@ -51,6 +54,7 @@ class _PostnewState extends State<Postnew> {
                     ),
                   ),
                 ),
+
                 SizedBox(
                   width: ScreenUtil().setWidth(270),
                   height: ScreenUtil().setHeight(29),
@@ -84,6 +88,7 @@ class _PostnewState extends State<Postnew> {
                                 EdgeInsets.only(top: 0, left: 10, right: 10),
                             // fillColor: Colors.grey[200],
                           ),
+
                         ),
                       ))),
                 ),
