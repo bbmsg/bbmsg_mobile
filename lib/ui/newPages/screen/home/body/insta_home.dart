@@ -1,4 +1,5 @@
 import 'package:bbmsg_mobile/backend/server.dart';
+import 'package:bbmsg_mobile/ui/newPages/activity.dart';
 import 'package:bbmsg_mobile/ui/newPages/createpost.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/profile/profile.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/search/searchscr.dart';
@@ -10,6 +11,8 @@ import 'package:flutter_svg/svg.dart';
 import 'insta_body.dart';
 
 class InstaHome extends StatefulWidget {
+  final int scrindex;
+  InstaHome(this.scrindex, {Key key}) : super(key: key);
   @override
   _InstaHomeState createState() => _InstaHomeState();
 }
@@ -21,28 +24,21 @@ class _InstaHomeState extends State<InstaHome> {
     super.initState();
     titles = 'post';
     getcomments();
+    currentIndex = widget.scrindex;
+    if (widget.scrindex == 2) {
+      hiapp = false;
+    }
   }
-  // final topBar = new AppBar(
-  //   backgroundColor: new Color(0xfff8faf8),
-  //   centerTitle: true,
-  //   elevation: 1.0,
-  //   leading: new Icon(Icons.camera_alt_outlined),
-  //   title: SizedBox(
-  //       height: 35.0, child:
-  //       // Text(titles),
-  //       Image.asset("assets/images/insta_logo.png")
-  //       ),
-  //   actions: <Widget>[
-  //     Padding(
-  //       padding: const EdgeInsets.only(right: 12.0),
-  //       child: Icon(FontAwesomeIcons.paperPlane),
-  //     )
-  //   ],
-  // );
 
   int currentIndex = 0;
   bool hiapp = true;
-  var _pages = [InstaBody(), Searchscr(), Createpostscr(), ProfilePage(), Profilescreen()];
+  var _pages = [
+    InstaBody(),
+    Searchscr(),
+    Createpostscr(),
+    Activityscr(),
+    Profilescreen()
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -135,7 +131,13 @@ class _InstaHomeState extends State<InstaHome> {
                   // Icon(
                   //   Icons.favorite,
                   // ),
-                  onPressed: null,
+                  onPressed: () {
+                    setState(() {
+                      currentIndex = 3;
+                      titles = 'Activity';
+                      hiapp = true;
+                    });
+                  },
                 ),
                 new IconButton(
                   icon:

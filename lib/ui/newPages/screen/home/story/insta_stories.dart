@@ -1,3 +1,4 @@
+import 'package:bbmsg_mobile/backend/server.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/home/post/postnew.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -39,7 +40,8 @@ class InstaStories extends StatelessWidget {
                   image: new DecorationImage(
                       fit: BoxFit.fill,
                       image: new NetworkImage(
-                          "https://pbs.twimg.com/profile_images/916384996092448768/PF1TSFOE_400x400.jpg")),
+                          appGet.commentpost['data'][index]['author']['name']
+                          .toString())),
                 ),
                 margin:
                     EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(7)),

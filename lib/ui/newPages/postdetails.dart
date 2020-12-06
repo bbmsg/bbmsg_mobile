@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bbmsg_mobile/backend/server.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -304,11 +306,10 @@ class _PostDetailscrState extends State<PostDetailscr> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      createComment(
-                        int.parse(widget.id),
-
-                        
-                      );
+                      // File fff;
+                      // createComment(
+                      //   int.parse(widget.id),
+                      // );
                     },
                     child: Text(
                       'Send',

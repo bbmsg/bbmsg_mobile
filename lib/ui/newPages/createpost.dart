@@ -1,3 +1,4 @@
+import 'package:bbmsg_mobile/backend/appGet.dart';
 import 'package:bbmsg_mobile/backend/server.dart';
 import 'package:bbmsg_mobile/services/getimage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -16,6 +17,9 @@ class Createpostscr extends StatefulWidget {
 }
 
 class _CreatepostscrState extends State<Createpostscr> {
+  AppGet appget = Get.find();
+  String dropdownValue = 'Public';
+
   TextEditingController contentController = new TextEditingController();
   List<Asset> images = List<Asset>();
 
@@ -120,9 +124,11 @@ class _CreatepostscrState extends State<Createpostscr> {
                       shape: BoxShape.circle),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(100),
+
                     child: CachedNetworkImage(
                         fit: BoxFit.cover,
                         imageUrl: appGet.userMap['user']['profile_picture']),
+
                   ),
                 ),
                 SizedBox(
@@ -134,7 +140,9 @@ class _CreatepostscrState extends State<Createpostscr> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
+
                       appGet.userMap['user']['name'],
+
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: isPortrait
@@ -167,16 +175,44 @@ class _CreatepostscrState extends State<Createpostscr> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               SvgPicture.asset('assets/svgs/Shield Done.svg'),
-                              Text(
-                                'Public',
-                                style: TextStyle(
-                                    color: HexColor('#9B9B9B'),
-                                    fontSize: isPortrait
-                                        ? ScreenUtil().setSp(10)
-                                        : ScreenUtil().setSp(6)),
+                              SizedBox(
+                                width: 55.w,
+                                child: DropdownButton<String>(
+                                  isExpanded: true,
+                                  value: dropdownValue,
+                                  //   icon: Icon(Icons.arrow_downward),
+                                  //  iconSize: 24,
+                                  elevation: 16,
+                                  style: TextStyle(color: Colors.deepPurple),
+                                  // underline: Container(
+                                  //   height: 2,
+                                  //   color: Colors.deepPurpleAccent,
+                                  // ),
+                                  onChanged: (String newValue) {
+                                    setState(() {
+                                      dropdownValue = newValue;
+                                    });
+                                  },
+                                  items: <String>['Public', 'Private', 'Frind']
+                                      .map<DropdownMenuItem<String>>(
+                                          (String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                ),
                               ),
-                              Icon(Icons.keyboard_arrow_down,
-                                  color: HexColor('#9B9B9B')),
+                              // Text(
+                              //   'Public',
+                              //   style: TextStyle(
+                              //       color: HexColor('#9B9B9B'),
+                              //       fontSize: isPortrait
+                              //           ? ScreenUtil().setSp(10)
+                              //           : ScreenUtil().setSp(6)),
+                              // ),
+                              // Icon(Icons.keyboard_arrow_down,
+                              //     color: HexColor('#9B9B9B')),
                             ],
                           ),
                         ),

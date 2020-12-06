@@ -39,7 +39,7 @@ registerNewUser({String userName, String credintial, String password}) async {
     appGet.setUserMap(resultMap);
     appGet.pr.hide();
 
-    myget.Get.off(InstaHome());
+    myget.Get.off(InstaHome(0));
   } on DioError catch (e) {
     appGet.pr.hide();
     logger.e(e.response.data['message']);
@@ -67,7 +67,7 @@ getUserToken(
     appGet.setUserMap(resultMap);
     appGet.pr.hide();
 
-    myget.Get.off(InstaHome());
+    myget.Get.off(InstaHome(0));
   } on DioError catch (e) {
     appGet.pr.hide();
 
@@ -367,7 +367,7 @@ socialMediaAuth({String token, String strategy}) async {
     appGet.setUserMap(resultMap);
     appGet.pr.hide();
 
-    myget.Get.off(InstaHome());
+    myget.Get.off(InstaHome(0));
   } on DioError catch (e) {
     appGet.pr.hide();
     logger.e(e.response.data['message']);
@@ -480,19 +480,28 @@ getAcomment(int id) async {
 
 /////////////////////////////////////////////////////////////////////////////////////
 
-createComment(
-  int postId,
-) async {
-  // String fileName = img.path.split('/').last;
+createComment(int postId, String content, File img, File img2) async {
+  String fileName = img == null ? null : img.path.split('/').last;
+  String fileName2 = img2 == null ? null : img2.path.split('/').last;
   try {
     var response = await dio.post(baseUrl + '/comments',
         data: {
           'post_id': postId,
-          // 'media': await MultipartFile.fromFile(img.path, filename: fileName),
+          'content': content,
+
+          'media': img == null
+              ? null
+              : await MultipartFile.fromFile(img.path, filename: fileName),
+
+          'media': img2 == null
+              ? null
+              : await MultipartFile.fromFile(img2.path, filename: fileName2),
+
           // 'tags': tags
         },
         options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
     Map<String, dynamic> mmnlist1 = response.data;
+
   } on DioError catch (e) {
     logger.e(e.response.data['message']);
   }
@@ -596,11 +605,14 @@ deleteReplay(int id) async {
 
 /////////////////////////////////////////////////////////////////////////////////////
 
-getLikes(int id) async {
+Future getLikes(int id) async {
   try {
     var response = await dio.get(baseUrl + '/likes?post_id=$id',
         options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
     Map<String, dynamic> mmnlist1 = response.data;
+
+    return mmnlist1;
+
   } on DioError catch (e) {
     logger.e(e.response.data['message']);
   }
@@ -608,7 +620,8 @@ getLikes(int id) async {
 
 /////////////////////////////////////////////////////////////////////////////////////
 
-like(int postId) async {
+Future like(int postId) async {
+  print(postId);
   try {
     var response = await dio.post(baseUrl + '/likes',
         data: {
@@ -616,6 +629,9 @@ like(int postId) async {
         },
         options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
     Map<String, dynamic> mmnlist1 = response.data;
+
+    return mmnlist1;
+
   } on DioError catch (e) {
     logger.e(e.response.data['message']);
   }
@@ -623,7 +639,7 @@ like(int postId) async {
 
 /////////////////////////////////////////////////////////////////////////////////////
 
-removelike(int id) async {
+Future removelike(int id) async {
   try {
     var response = await dio.delete(baseUrl + '/likes/$id',
         options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
@@ -635,12 +651,15 @@ removelike(int id) async {
 
 /////////////////////////////////////////////////////////////////////////////////////
 
-getActivity(int id) async {
+Future getActivity(int id) async {
   String limit;
   try {
     var response = await dio.get(baseUrl + '/activity?$limit=$id',
         options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
     Map<String, dynamic> mmnlist1 = response.data;
+
+    return mmnlist1;
+
   } on DioError catch (e) {
     logger.e(e.response.data['message']);
   }

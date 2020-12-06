@@ -12,30 +12,37 @@ class Commentbyid extends StatefulWidget {
 }
 
 class _CommentbyidState extends State<Commentbyid> {
+  NeverScrollableScrollPhysics noscroll=new NeverScrollableScrollPhysics();
   AppGet appGet = Get.find();
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context,
         designSize: Size(375, 812), allowFontScaling: false);
-    return new ListView.builder(
-      shrinkWrap: true,
-      itemCount: 1,
-      // appGet.commentpost != null ? appGet.commentpost['data'].length : 0,
-      itemBuilder: (BuildContext context, int index) {
-        print(appGet.commentpost['data'][index]['content'].toString());
-        return Column(
+    // return
+    //  new ListView.builder(
+    //   physics:noscroll,
+    //   shrinkWrap: true,
+    //   itemCount: 1,
+    //   // appGet.commentpost != null ? appGet.commentpost['data'].length : 0,
+    //   itemBuilder: (BuildContext context, int index) {
+    //     print(appGet.commentpost['data'][index]['content'].toString());
+       
+    //   },
+    // );
+ 
+  return Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              padding: EdgeInsets.only(left: 10, right: 10),
-              width: 300.h,
-              height: 30,
+              padding: EdgeInsets.only(left: 10.w, right: 10.w),
+              width: 300.w,
+              height: 100.h,
               child: Row(
                 children: [
                   Flexible(
                     child: Text(
-                      appGet.commentpost['data'][index]['author']['name']
+                      appGet.commentpost['data'][0]['author']['name']
                           .toString(),
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(fontWeight: FontWeight.bold),
@@ -43,7 +50,7 @@ class _CommentbyidState extends State<Commentbyid> {
                   ),
                   Flexible(
                       child: Text(
-                    appGet.commentpost['data'][index]['content'].toString(),
+                    appGet.commentpost['data'][0]['content'].toString(),
                     overflow: TextOverflow.ellipsis,
                   )),
                 ],
@@ -65,7 +72,6 @@ class _CommentbyidState extends State<Commentbyid> {
             )
           ],
         );
-      },
-    );
+ 
   }
 }
