@@ -1,3 +1,5 @@
+import 'package:bbmsg_mobile/backend/server.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -24,8 +26,8 @@ class _PostnewState extends State<Postnew> {
             shape: BoxShape.circle,
             image: new DecorationImage(
                 fit: BoxFit.fill,
-                image: new NetworkImage(
-                    "https://pbs.twimg.com/profile_images/916384996092448768/PF1TSFOE_400x400.jpg")),
+                image: CachedNetworkImageProvider(
+                    appGet.userMap['user']['profile_picture'])),
           ),
         ),
         Flexible(
@@ -50,9 +52,8 @@ class _PostnewState extends State<Postnew> {
                     child: Center(
                         child: Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(11),
-                          border: Border.all(
-                              width: .5, color: Colors.white)),
+                          borderRadius: BorderRadius.circular(11),
+                          border: Border.all(width: .5, color: Colors.white)),
                       child: TextField(
                         textAlign: TextAlign.left,
                         // controller: searchCtrl,
@@ -61,16 +62,17 @@ class _PostnewState extends State<Postnew> {
                           hintText: 'Whats in your mind?',
                           hintStyle: TextStyle(fontSize: 12),
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(11),
-                            borderSide: BorderSide(color: HexColor('#B8B7B7'))
-                            //   borderSide: BorderSide(
-                            // //     // color: Colors.grey[200],
-                            //     width: 0,
-                            //     style: BorderStyle.none,
-                            //   ),
-                          ),
+                              borderRadius: BorderRadius.circular(11),
+                              borderSide: BorderSide(color: HexColor('#B8B7B7'))
+                              //   borderSide: BorderSide(
+                              // //     // color: Colors.grey[200],
+                              //     width: 0,
+                              //     style: BorderStyle.none,
+                              //   ),
+                              ),
                           // filled: true,
-                          contentPadding: EdgeInsets.only(top: 0, left: 10, right: 10),
+                          contentPadding:
+                              EdgeInsets.only(top: 0, left: 10, right: 10),
                           // fillColor: Colors.grey[200],
                         ),
                       ),

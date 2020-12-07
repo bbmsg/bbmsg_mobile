@@ -16,6 +16,11 @@ class AppGet extends GetxController {
   Map testMap = {};
   var appBarTitleStyle = TextStyle().obs;
   bool isFingerprint;
+  var myPosts = {}.obs;
+  setMyPosts(Map map) {
+    this.myPosts.value = map;
+  }
+
   setFollowers(Map map) {
     this.followers.value = map;
   }
@@ -30,7 +35,6 @@ class AppGet extends GetxController {
 
   setUserMap(Map map) {
     this.userMap = map;
-    Logger().e(userMap);
   }
 
   String token =

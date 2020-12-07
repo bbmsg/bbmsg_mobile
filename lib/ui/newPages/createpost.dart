@@ -1,10 +1,12 @@
 import 'package:bbmsg_mobile/backend/server.dart';
 import 'package:bbmsg_mobile/services/getimage.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:multi_image_picker/multi_image_picker.dart';
 
 class Createpostscr extends StatefulWidget {
   Createpostscr({Key key}) : super(key: key);
@@ -15,10 +17,39 @@ class Createpostscr extends StatefulWidget {
 
 class _CreatepostscrState extends State<Createpostscr> {
   TextEditingController contentController = new TextEditingController();
+  List<Asset> images = List<Asset>();
+
+  Future<void> loadAssets() async {
+    List<Asset> resultList = List<Asset>();
+
+    try {
+      resultList = await MultiImagePicker.pickImages(
+        maxImages: 300,
+        enableCamera: true,
+        selectedAssets: images,
+        cupertinoOptions: CupertinoOptions(takePhotoIcon: "chat"),
+        materialOptions: MaterialOptions(
+          actionBarColor: "#abcdef",
+          actionBarTitle: "Example App",
+          allViewTitle: "All Photos",
+          useDetailsView: false,
+          selectCircleStrokeColor: "#000000",
+        ),
+      );
+    } on Exception catch (e) {}
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
+    setState(() {
+      images = resultList;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context,
-        designSize: Size(375, 812), allowFontScaling: false);
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
     return Scaffold(
       appBar: AppBar(
@@ -45,8 +76,13 @@ class _CreatepostscrState extends State<Createpostscr> {
                       : ScreenUtil().setSp(10)),
             ),
             GestureDetector(
-              onTap: () {
-                createPost(contentController.text, pickedImages);
+              onTap: () async {
+                bool result = await createPost(contentController.text, images);
+                if (result == true) {
+                  this.images = [];
+                  contentController.clear();
+                  setState(() {});
+                }
               },
               child: Text(
                 'Post',
@@ -60,7 +96,7 @@ class _CreatepostscrState extends State<Createpostscr> {
           ],
         ),
       ),
-      body: ListView(
+      body: Column(
         children: [
           Padding(
             padding: EdgeInsets.only(
@@ -84,10 +120,9 @@ class _CreatepostscrState extends State<Createpostscr> {
                       shape: BoxShape.circle),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(100),
-                    child: Image.asset(
-                      'assets/svgs/person.webp',
-                      fit: BoxFit.fill,
-                    ),
+                    child: CachedNetworkImage(
+                        fit: BoxFit.cover,
+                        imageUrl: appGet.userMap['user']['profile_picture']),
                   ),
                 ),
                 SizedBox(
@@ -99,7 +134,7 @@ class _CreatepostscrState extends State<Createpostscr> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Antonia Berger',
+                      appGet.userMap['user']['name'],
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: isPortrait
@@ -152,52 +187,92 @@ class _CreatepostscrState extends State<Createpostscr> {
               ],
             ),
           ),
-          Padding(
-            padding: EdgeInsets.only(
-                top: isPortrait
-                    ? ScreenUtil().setHeight(20)
-                    : ScreenUtil().setHeight(40),
-                left: isPortrait
-                    ? ScreenUtil().setWidth(10)
-                    : ScreenUtil().setWidth(10),
-                right: isPortrait
-                    ? ScreenUtil().setWidth(10)
-                    : ScreenUtil().setWidth(10)),
-            child: Container(
-              width: ScreenUtil().setWidth(326),
-              height: ScreenUtil().setHeight(82),
-              decoration: BoxDecoration(),
-              child: TextField(
-                controller: contentController,
-                maxLines: 10,
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.only(
-                    top: isPortrait
-                        ? ScreenUtil().setHeight(15)
-                        : ScreenUtil().setHeight(10),
-                    left: isPortrait
-                        ? ScreenUtil().setWidth(16)
-                        : ScreenUtil().setWidth(10),
+          images.length == 0
+              ? Expanded(
+                  child: Container(
+                    width: ScreenUtil().setWidth(326),
+                    height: ScreenUtil().setHeight(82),
+                    decoration: BoxDecoration(),
+                    child: TextField(
+                      controller: contentController,
+                      maxLines: 10,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.only(
+                          top: isPortrait
+                              ? ScreenUtil().setHeight(15)
+                              : ScreenUtil().setHeight(10),
+                          left: isPortrait
+                              ? ScreenUtil().setWidth(16)
+                              : ScreenUtil().setWidth(10),
+                        ),
+                        hintText: 'What\'s in your mind?',
+                        hintStyle: TextStyle(
+                            fontSize: isPortrait
+                                ? ScreenUtil().setSp(14)
+                                : ScreenUtil().setSp(8),
+                            color: HexColor('#606060')),
+                        border: InputBorder.none,
+                      ),
+                    ),
                   ),
-                  hintText: 'What\'s in your mind?',
-                  hintStyle: TextStyle(
-                      fontSize: isPortrait
-                          ? ScreenUtil().setSp(14)
-                          : ScreenUtil().setSp(8),
-                      color: HexColor('#606060')),
-                  border: InputBorder.none,
+                )
+              : Expanded(
+                  child: ListView(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(),
+                        child: TextField(
+                          controller: contentController,
+                          maxLines: 2,
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.only(
+                              top: isPortrait
+                                  ? ScreenUtil().setHeight(15)
+                                  : ScreenUtil().setHeight(10),
+                              left: isPortrait
+                                  ? ScreenUtil().setWidth(16)
+                                  : ScreenUtil().setWidth(10),
+                            ),
+                            hintText: 'What\'s in your mind?',
+                            hintStyle: TextStyle(
+                                fontSize: isPortrait
+                                    ? ScreenUtil().setSp(14)
+                                    : ScreenUtil().setSp(8),
+                                color: HexColor('#606060')),
+                            border: InputBorder.none,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 20.w),
+                        child: GridView.builder(
+                          shrinkWrap: true,
+                          physics: ClampingScrollPhysics(),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 5.w,
+                                  mainAxisSpacing: 5.h),
+                          itemCount: images.length,
+                          itemBuilder: (context, index) {
+                            return AssetThumb(
+                              asset: images[index],
+                              height: 300,
+                              width: 300,
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ),
-          ),
+
           SizedBox(
-            height: isPortrait
-                ? ScreenUtil().setHeight(321)
-                : ScreenUtil().setHeight(321),
+            height: 20.h,
           ),
           GestureDetector(
             onTap: () {
-              getimagdata(context);
+              loadAssets();
             },
             child: Padding(
               padding: EdgeInsets.only(

@@ -7,7 +7,7 @@ import 'package:bbmsg_mobile/values/styles.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:bbmsg_mobile/backend/server.dart';
 import 'package:get/get.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:settings_ui/settings_ui.dart';
@@ -165,6 +165,9 @@ class _AppSettingsState extends State<AppSettings> {
                   ),
                   title: Text(translator.translate('Privacy policy'))),
               ListTile(
+                  onTap: () {
+                    signOut();
+                  },
                   leading: Image.asset(
                     'assets/pngs/logout.png',
                   ),
