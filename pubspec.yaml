@@ -27,7 +27,7 @@ dependencies:
   flutter_svg: ^0.19.1
   smooth_page_indicator: ^0.2.0
   localize_and_translate: ^3.0.2
-  connectivity: ^0.4.9+2
+  connectivity: ^2.0.2
   auto_size_text: ^2.1.0
   dio: ^3.0.10
   dio_http_cache: ^0.2.11
