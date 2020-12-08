@@ -42,7 +42,8 @@ registerNewUser({String userName, String credintial, String password}) async {
     myget.Get.off(InstaHome(0));
   } on DioError catch (e) {
     appGet.pr.hide();
-    logger.e(e.response.data['message']);
+    CustomDialougs.utils
+        .showDialoug(titleKey: 'error', messageKey: e.response.data['message']);
   }
 }
 
@@ -65,6 +66,10 @@ getUserToken(
     Map<String, dynamic> resultMap = response.data;
     appGet.setToken(resultMap['accessToken']);
     appGet.setUserMap(resultMap);
+    getFollowers(true);
+    getFollowing(true);
+    getPosts();
+    getMyPosts(myId: '${resultMap['user']['id']}');
     appGet.pr.hide();
 
     myget.Get.off(InstaHome(0));
@@ -110,10 +115,6 @@ signOut() {
 ///////////////////////////////////////////////////////////////////////////////
 updateUser(String userId, Map map) async {
   try {
-    print(FormData.fromMap({...map}));
-    // print(map);
-    // profileCach.delete('token${appGet.token}', subKey: 'userInfo');
-
     appGet.pr.show();
     var response = await dio.put(
       baseUrl + '/users/$userId',
@@ -412,6 +413,7 @@ Future<bool> createPost(String content, List<Asset> images) async {
         data: FormData.fromMap({'content': content, 'media': multiParts}),
         options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
     Map<String, dynamic> mmnlist1 = response.data;
+    getMyPosts(myId: appGet.userMap['user']['id'].toString());
     appGet.pr.hide();
     logger.e(mmnlist1);
     return true;
@@ -501,7 +503,6 @@ createComment(int postId, String content, File img, File img2) async {
         },
         options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
     Map<String, dynamic> mmnlist1 = response.data;
-
   } on DioError catch (e) {
     logger.e(e.response.data['message']);
   }
@@ -612,7 +613,6 @@ Future getLikes(int id) async {
     Map<String, dynamic> mmnlist1 = response.data;
 
     return mmnlist1;
-
   } on DioError catch (e) {
     logger.e(e.response.data['message']);
   }
@@ -631,7 +631,6 @@ Future like(int postId) async {
     Map<String, dynamic> mmnlist1 = response.data;
 
     return mmnlist1;
-
   } on DioError catch (e) {
     logger.e(e.response.data['message']);
   }
@@ -659,7 +658,6 @@ Future getActivity(int id) async {
     Map<String, dynamic> mmnlist1 = response.data;
 
     return mmnlist1;
-
   } on DioError catch (e) {
     logger.e(e.response.data['message']);
   }

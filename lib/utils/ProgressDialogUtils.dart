@@ -15,7 +15,7 @@ class ProgressDialogUtils extends ProgressDialog {
     pr = pr = ProgressDialog(context,
         type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
     pr.style(
-      message: translator.translate("processing_order"),
+      message: translator.translate("processing"),
       borderRadius: 10.0,
       backgroundColor: Colors.white,
       progressTextStyle: TextStyle(

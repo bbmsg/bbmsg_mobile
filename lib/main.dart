@@ -10,6 +10,7 @@ import 'package:bbmsg_mobile/values/radii.dart';
 import 'package:bbmsg_mobile/values/styles.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -18,7 +19,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await translator.init(
     localeDefault: LocalizationDefaultType.device,
     languagesList: <String>['ar', 'en'],

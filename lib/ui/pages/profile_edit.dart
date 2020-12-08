@@ -108,8 +108,10 @@ class _ProfileEditState extends State<ProfileEdit> {
                             Colors.black.withOpacity(0.4), BlendMode.dstATop),
                         fit: BoxFit.contain,
                         image: isNewImage == false
-                            ? CachedNetworkImageProvider(
-                                appGet.userMap['user']['profile_picture'])
+                            ? appGet.userMap['user']['profile_picture'] != null
+                                ? CachedNetworkImageProvider(
+                                    appGet.userMap['user']['profile_picture'])
+                                : AssetImage('assets/pngs/logo.png')
                             : FileImage(file))),
               ),
             ),

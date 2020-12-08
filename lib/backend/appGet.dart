@@ -9,7 +9,7 @@ class AppGet extends GetxController {
   double screenHeight;
   var testArray = [1, 2, 3, 4, 5, 6, 7].obs;
   var isLoading = false.obs;
-  Map userMap = {};
+  var userMap = Map().obs;
   var followers = {}.obs;
   var following = {}.obs;
   var posts = {}.obs;
@@ -34,7 +34,7 @@ class AppGet extends GetxController {
   }
 
   setUserMap(Map map) {
-    this.userMap = map;
+    this.userMap.value = map;
   }
 
   String token =

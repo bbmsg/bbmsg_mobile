@@ -124,11 +124,9 @@ class _CreatepostscrState extends State<Createpostscr> {
                       shape: BoxShape.circle),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(100),
-
                     child: CachedNetworkImage(
                         fit: BoxFit.cover,
                         imageUrl: appGet.userMap['user']['profile_picture']),
-
                   ),
                 ),
                 SizedBox(
@@ -140,9 +138,7 @@ class _CreatepostscrState extends State<Createpostscr> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-
                       appGet.userMap['user']['name'],
-
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: isPortrait
@@ -158,7 +154,7 @@ class _CreatepostscrState extends State<Createpostscr> {
                       onTap: () {},
                       child: Container(
                         width: isPortrait
-                            ? ScreenUtil().setWidth(73)
+                            ? ScreenUtil().setWidth(90)
                             : ScreenUtil().setWidth(45),
                         height: isPortrait
                             ? ScreenUtil().setHeight(21)
@@ -176,8 +172,9 @@ class _CreatepostscrState extends State<Createpostscr> {
                             children: [
                               SvgPicture.asset('assets/svgs/Shield Done.svg'),
                               SizedBox(
-                                width: 55.w,
+                                width: 70.w,
                                 child: DropdownButton<String>(
+                                  underline: Container(),
                                   isExpanded: true,
                                   value: dropdownValue,
                                   //   icon: Icon(Icons.arrow_downward),
@@ -193,7 +190,7 @@ class _CreatepostscrState extends State<Createpostscr> {
                                       dropdownValue = newValue;
                                     });
                                   },
-                                  items: <String>['Public', 'Private', 'Frind']
+                                  items: <String>{'Public', 'Private', 'Freind'}
                                       .map<DropdownMenuItem<String>>(
                                           (String value) {
                                     return DropdownMenuItem<String>(
