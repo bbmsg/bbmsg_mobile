@@ -4,11 +4,13 @@ import 'package:bbmsg_mobile/backend/server.dart';
 import 'package:bbmsg_mobile/ui/newPages/postdetails.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/home/body/commentbyid.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/home/body/postlike.dart';
+import 'package:bbmsg_mobile/ui/pages/profile_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 
 import '../story/insta_stories.dart';
 
@@ -78,7 +80,7 @@ class _InstaListState extends State<InstaList> {
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         return snapshot.hasData
             ? ListView.builder(
-                itemCount: snapshot.data.length,
+                itemCount: snapshot.data['data'].length,
                 itemBuilder: (BuildContext context, int index) {
                   getAcomment(snapshot.data['data'][index]['id']);
 
@@ -100,30 +102,14 @@ class _InstaListState extends State<InstaList> {
                                     children: <Widget>[
                                       GestureDetector(
                                         onTap: () {
-                                          print(snapshot.data['data'][index]);
-                                          // Get.to(PostDetailscr(
-                                          //   snapshot.data['data'][index]['id']
-                                          //       .toString(),
-                                          //   snapshot.data['data'][index]
-                                          //           ['author']
-                                          //           ['profile_picture']
-                                          //       .toString(),
-                                          //   snapshot.data['data'][index]
-                                          //           ['author']['name']
-                                          //       .toString(),
-                                          //   snapshot.data['data'][index]
-                                          //           ['media']
-                                          //       .toString(),
-                                          //   snapshot.data['data'][index]
-                                          //           ['likes']
-                                          //       .toString(),
-                                          //   snapshot.data['data'][index]
-                                          //           ['comments']
-                                          //       .toString(),
-                                          //   snapshot.data['data'][index]
-                                          //           ['content']
-                                          //       .toString(),
-                                          // ));
+                                          appGet.setOtherUserMap(snapshot
+                                              .data['data'][index]['id']
+                                              .toString());
+                                          Get.to(ProfilePage(
+                                            snapshot.data['data'][index]
+                                                    ['author']['name']
+                                                .toString(),
+                                          ));
                                         },
                                         child: Row(
                                           children: [
@@ -323,7 +309,8 @@ class _InstaListState extends State<InstaList> {
                                   const EdgeInsets.symmetric(horizontal: 16.0),
                               child: Text("1 Day Ago",
                                   style: TextStyle(color: Colors.grey)),
-                            )
+                            ),
+                            Divider()
                           ],
                         );
                 })
