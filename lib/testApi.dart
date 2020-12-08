@@ -42,8 +42,9 @@ class TestApi extends StatelessWidget {
     // TODO: implement build
     return Scaffold(body: Center(
       child: RaisedButton(onPressed: () async {
-        UserCredential userCredential = await signInWithTwitter();
-        String token = await userCredential.user.getIdToken();
+        getMyLikes(myId: appGet.userMap['user']['id'].toString());
+        // UserCredential userCredential = await signInWithTwitter();
+        // String token = await userCredential.user.getIdToken();
 
         // checkUser();
       }),

@@ -21,7 +21,7 @@ class InstaStories extends StatelessWidget {
     ],
   );
 
-  final stories = Expanded(
+  final deprecateStories = Expanded(
     child: new Padding(
       padding: EdgeInsets.only(top: ScreenUtil().setHeight(8)),
       child: new ListView.builder(
@@ -39,8 +39,8 @@ class InstaStories extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                   image: new DecorationImage(
                       fit: BoxFit.fill,
-                      image: new NetworkImage(
-                          appGet.commentpost['data'][index]['author']['name']
+                      image: new NetworkImage(appGet.commentpost['data'][index]
+                              ['author']['name']
                           .toString())),
                 ),
                 margin:
@@ -86,24 +86,7 @@ class InstaStories extends StatelessWidget {
         designSize: Size(375, 812), allowFontScaling: false);
     return new Container(
       margin: const EdgeInsets.all(16.0),
-      child: new Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Postnew(),
-          // topText,
-          stories,
-          SizedBox(
-            height: ScreenUtil().setHeight(16),
-          ),
-          Container(
-            height: ScreenUtil().setHeight(8),
-            width: double.infinity,
-            color: Colors.grey[200],
-          ),
-        ],
-      ),
+      child: Postnew(),
     );
   }
 }

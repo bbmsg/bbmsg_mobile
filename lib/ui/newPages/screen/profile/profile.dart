@@ -208,35 +208,37 @@ class Profilescreen extends StatelessWidget {
                                       crossAxisSpacing: 2.w,
                                       mainAxisSpacing: 2.h),
                               itemCount: appGet.myPosts['data'].where((e) {
-                                return e['media'] != null;
+                                List images = e['media'];
+                                return images.isNotEmpty;
                               }).length,
                               itemBuilder: (context, index) {
-                                return CachedNetworkImage(
-                                    fit: BoxFit.cover,
-                                    imageUrl: appGet
-                                        .myPosts['data'][index]['media']
-                                        .first['url']);
+                                return GestureDetector(
+                                  onTap: () {},
+                                  child: CachedNetworkImage(
+                                      fit: BoxFit.cover,
+                                      imageUrl: appGet
+                                          .myPosts['data'][index]['media']
+                                          .first['url']),
+                                );
                               },
                             )
                           : Container(),
-                      appGet.myPosts['data'] != null
-                          ? GridView.builder(
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 3,
-                                      crossAxisSpacing: 2.w,
-                                      mainAxisSpacing: 2.h),
-                              itemCount: appGet.myPosts['data'].where((e) {
-                                Logger().e(e['media']);
-                                return e['media'] != null;
-                              }).length,
-                              itemBuilder: (context, index) {
-                                return CachedNetworkImage(
-                                    imageUrl: appGet.myPosts['data'][index]
-                                        ['media']);
-                              },
-                            )
-                          : Container(),
+                      GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            crossAxisSpacing: 2.w,
+                            mainAxisSpacing: 2.h),
+                        itemCount: appGet.myLikes.where((e) {
+                          Logger().e('hhhhhhhh $e');
+                          List images = e['media'];
+                          return images.isNotEmpty;
+                        }).length,
+                        itemBuilder: (context, index) {
+                          return CachedNetworkImage(
+                              imageUrl:
+                                  appGet.myLikes[index]['media'].first['url']);
+                        },
+                      ),
                     ]),
                   )
                 ],

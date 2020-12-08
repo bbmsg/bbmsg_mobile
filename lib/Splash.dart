@@ -6,6 +6,7 @@ import 'package:bbmsg_mobile/main.dart';
 import 'package:bbmsg_mobile/main_page_mockup.dart';
 import 'package:bbmsg_mobile/services/connectvity_service.dart';
 import 'package:bbmsg_mobile/services/shared_prefrences_helper.dart';
+import 'package:bbmsg_mobile/testApi.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/home/body/insta_home.dart';
 import 'package:bbmsg_mobile/ui/pages/app_settings.dart';
 import 'package:bbmsg_mobile/utils/custom_dialoug.dart';
@@ -40,6 +41,7 @@ class _SplashState extends State<Splash> {
         getFollowing(true);
         getPosts();
         getMyPosts(myId: '${map['user']['id']}');
+        getMyLikes(myId: '${map['user']['id']}');
       }
     }
   }
@@ -57,7 +59,7 @@ class _SplashState extends State<Splash> {
       if (ConnectivityService.connectivityStatus !=
           ConnectivityStatus.Offline) {
         // logger.e(appGet.userMap['user']['profile_picture']);
-
+        // Get.to(TestApi());
         token == null ? Get.off(MainPage()) : Get.off(InstaHome(0));
       } else {
         CustomDialougs.utils

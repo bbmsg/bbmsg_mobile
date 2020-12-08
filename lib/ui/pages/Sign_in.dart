@@ -59,24 +59,16 @@ class _SignInState extends State<SignIn> {
   createNewAccount() {}
 
   facebookLogin() {
-    translator.setNewLanguage(
-      context,
-      newLanguage: 'en',
-      restart: true,
-      remember: true,
-    );
+    signInWithFacebook();
   }
 
   gmailLogin() {
-    translator.setNewLanguage(
-      context,
-      newLanguage: 'ar',
-      restart: true,
-      remember: true,
-    );
+    signInWithGoogle();
   }
 
-  twiterLogin() {}
+  twiterLogin() {
+    signInWithTwitter();
+  }
 
   @override
   Widget build(BuildContext context) {
