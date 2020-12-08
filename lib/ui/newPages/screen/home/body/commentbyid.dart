@@ -12,7 +12,7 @@ class Commentbyid extends StatefulWidget {
 }
 
 class _CommentbyidState extends State<Commentbyid> {
-  NeverScrollableScrollPhysics noscroll=new NeverScrollableScrollPhysics();
+  NeverScrollableScrollPhysics noscroll = new NeverScrollableScrollPhysics();
   AppGet appGet = Get.find();
   @override
   Widget build(BuildContext context) {
@@ -26,52 +26,52 @@ class _CommentbyidState extends State<Commentbyid> {
     //   // appGet.commentpost != null ? appGet.commentpost['data'].length : 0,
     //   itemBuilder: (BuildContext context, int index) {
     //     print(appGet.commentpost['data'][index]['content'].toString());
-       
+
     //   },
     // );
- 
-  return Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: EdgeInsets.only(left: 10.w, right: 10.w),
-              width: 300.w,
-              height: 100.h,
-              child: Row(
-                children: [
-                  Flexible(
-                    child: Text(
-                      appGet.commentpost['data'][0]['author']['name']
-                          .toString(),
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  Flexible(
-                      child: Text(
-                    appGet.commentpost['data'][0]['content'].toString(),
-                    overflow: TextOverflow.ellipsis,
-                  )),
-                ],
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: EdgeInsets.only(left: 10.w, right: 10.w),
+          width: 300.w,
+          child: Row(
+            children: [
+              Flexible(
+                child: Text(
+                  appGet.commentpost['data'][0]['author']['name'].toString(),
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
               ),
-            ),
-            //
-            GestureDetector(
-              onTap: () {
-                Get.to(Listcommentpost());
-              },
-              child: Flexible(
-                child: Container(
-                    padding: EdgeInsets.only(left: 10, right: 10),
-                    child: Text(
-                      'View more',
-                      overflow: TextOverflow.ellipsis,
-                    )),
-              ),
-            )
-          ],
-        );
- 
+              Flexible(
+                  child: Text(
+                appGet.commentpost['data'][0]['content'].toString(),
+                overflow: TextOverflow.ellipsis,
+              )),
+            ],
+          ),
+        ),
+        //
+        SizedBox(
+          height: 15,
+        ),
+        GestureDetector(
+          onTap: () {
+            Get.to(Listcommentpost());
+          },
+          child: Flexible(
+            child: Container(
+                padding: EdgeInsets.only(left: 10, right: 10),
+                child: Text(
+                  'View more',
+                  overflow: TextOverflow.ellipsis,
+                )),
+          ),
+        )
+      ],
+    );
   }
 }

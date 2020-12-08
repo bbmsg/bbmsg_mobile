@@ -38,15 +38,10 @@ class _PostlikeState extends State<Postlike> {
         designSize: Size(375, 812), allowFontScaling: false);
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
     return Container(
-      margin: EdgeInsets.only(
-          left: ScreenUtil().setWidth(18),
-          right: ScreenUtil().setWidth(18),
-          top: ScreenUtil().setHeight(20)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           new Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               new IconButton(
                 icon: new Icon(
@@ -102,10 +97,7 @@ class _PostlikeState extends State<Postlike> {
                   }
                 },
               ),
-              new SizedBox(
-                width: ScreenUtil().setWidth(12),
-              ),
-              Text(totalsint.toString()),
+              Text(totalsint == null ? '0' : totalsint.toString()),
               new SizedBox(
                 width: ScreenUtil().setWidth(12),
               ),
@@ -115,9 +107,6 @@ class _PostlikeState extends State<Postlike> {
                   color: Colors.black,
                 ),
                 onPressed: () {},
-              ),
-              new SizedBox(
-                width: ScreenUtil().setWidth(12),
               ),
               Text(
                 widget.comment,
