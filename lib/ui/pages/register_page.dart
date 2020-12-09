@@ -85,7 +85,7 @@ class RegisterPage extends StatelessWidget {
   }
 
   twiterLogin() {
-    signInWithTwitter();
+    // signInWithTwitter();
   }
 
   @override

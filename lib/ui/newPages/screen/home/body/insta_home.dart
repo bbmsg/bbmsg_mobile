@@ -150,7 +150,7 @@ class _InstaHomeState extends State<InstaHome> {
                     setState(() {
                       currentIndex = 4;
                       titles = 'Profile';
-                      hiapp = true;
+                      hiapp = false;
                     });
                   },
                 ),

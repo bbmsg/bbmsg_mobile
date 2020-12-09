@@ -24,7 +24,7 @@ class Profilescreen extends StatelessWidget {
                 children: [
                   Container(
                     alignment: Alignment.center,
-                    height: appGet.screenHeight / 3,
+                    height: (appGet.screenHeight / 3) + 30.h,
                     decoration: BoxDecoration(
                         color: Color(0xff047AF2),
                         image: DecorationImage(
@@ -47,6 +47,7 @@ class Profilescreen extends StatelessWidget {
                             children: [
                               GestureDetector(
                                 onTap: () {
+                                  print('hello');
                                   Get.to(AppSettings());
                                 },
                                 child: SvgPicture.asset(

@@ -46,11 +46,13 @@ class _SignInState extends State<SignIn> {
   saveForm() {
     if (formKey.currentState.validate()) {
       formKey.currentState.save();
-      if (ConnectivityService.connectivityStatus !=
-          ConnectivityStatus.Offline) {
-        getUserToken(
-            credintial: credintial, password: password, strategy: 'local');
-      } else {}
+      // if (ConnectivityService.connectivityStatus !=
+      //     ConnectivityStatus.Offline) {
+      credintial = 'omar@gmail.com';
+      password = 'Qwertyuiop@1';
+      getUserToken(
+          credintial: credintial, password: password, strategy: 'local');
+      // } else {}
     }
   }
 
@@ -67,7 +69,7 @@ class _SignInState extends State<SignIn> {
   }
 
   twiterLogin() {
-    signInWithTwitter();
+    // signInWithTwitter();
   }
 
   @override

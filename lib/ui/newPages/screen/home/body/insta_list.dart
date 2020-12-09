@@ -269,38 +269,41 @@ class _InstaListState extends State<InstaList> {
                                   ),
                                   new Expanded(
                                     child: Container(
+                                        height: 50.h,
                                         child: Center(
                                             child: Container(
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              width: 0,
-                                              color: Colors.grey[200])),
-                                      child: Expanded(
-                                        child: TextField(
-                                          textAlign: TextAlign.left,
-                                          controller: commentcontroller,
-                                          keyboardType: TextInputType.text,
-                                          decoration: InputDecoration(
-                                            hintText: 'Add comment..',
-                                            hintStyle: TextStyle(fontSize: 16),
-                                            border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(16),
-                                              borderSide: BorderSide(
-                                                color: Colors.white,
-                                                //   //     width: 0,
-                                                // style: BorderStyle.none,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  width: 0,
+                                                  color: Colors.grey[200])),
+                                          child: Expanded(
+                                            child: TextField(
+                                              textAlign: TextAlign.left,
+                                              controller: commentcontroller,
+                                              keyboardType: TextInputType.text,
+                                              decoration: InputDecoration(
+                                                hintText: 'Add comment..',
+                                                hintStyle:
+                                                    TextStyle(fontSize: 16),
+                                                border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(16),
+                                                  borderSide: BorderSide(
+                                                    color: Colors.white,
+                                                    //   //     width: 0,
+                                                    // style: BorderStyle.none,
+                                                  ),
+                                                ),
+                                                // filled: true,
+                                                contentPadding: EdgeInsets.only(
+                                                    top: 0, left: 10),
+                                                // fillColor: Colors.grey[200],
                                               ),
                                             ),
-                                            // filled: true,
-                                            contentPadding: EdgeInsets.only(
-                                                top: 0, left: 10),
-                                            // fillColor: Colors.grey[200],
                                           ),
-                                        ),
-                                      ),
-                                    ))),
+                                        ))),
                                   ),
+                                  SizedBox(width: 10.w)
                                 ],
                               ),
                             ),

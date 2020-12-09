@@ -67,7 +67,7 @@ class MiddlePage extends StatelessWidget {
         if (snapshot.hasError) {
           return Scaffold(
               body: Center(
-            child: Text('Error'),
+            child: Text('Error Firebase'),
           ));
         }
 

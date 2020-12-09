@@ -59,7 +59,15 @@ class _ProfileEditState extends State<ProfileEdit> {
             ),
           )
         ],
-        leading: Icon(Icons.arrow_back_ios),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: primaryColor,
+          ),
+          onPressed: () {
+            Get.back();
+          },
+        ),
         centerTitle: true,
         title: new Text(
           "Edit Profile",

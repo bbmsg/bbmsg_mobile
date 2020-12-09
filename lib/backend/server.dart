@@ -9,7 +9,6 @@ import 'package:bbmsg_mobile/utils/custom_dialoug.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:get/get.dart' as myget;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http_parser/http_parser.dart';
@@ -33,8 +32,6 @@ registerNewUser({String userName, String credintial, String password}) async {
         data: map,
         options: Options(headers: {'Content-Type': 'application/json'}));
     Map<String, dynamic> resultMap = response.data;
-    resultMap['accessToken'] =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6ImFjY2VzcyJ9.eyJpYXQiOjE2MDUyNzgyNTQsImV4cCI6MTYzNjgxNDI1NCwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo3NDI1IiwiaXNzIjoiZmVhdGhlcnMiLCJzdWIiOiIyIiwianRpIjoiNjk0MDFiOWUtMDBmZC00MDU1LTg5OTQtOWNhNTBiMWU4YTQyIn0.RroVEVR8QWrUN9gb1YC331FGvQUZQU8qW3QF1AgfZwY";
     appGet.setToken(resultMap['accessToken']);
     appGet.setUserMap(resultMap);
     appGet.pr.hide();
@@ -70,7 +67,7 @@ getUserToken(
     getFollowing(true);
     getPosts();
     getMyPosts(myId: '${resultMap['user']['id']}');
-    getMyLikes(myId: '${map['user']['id']}');
+    getMyLikes(myId: '${resultMap['user']['id']}');
     appGet.pr.hide();
 
     myget.Get.off(InstaHome(0));
@@ -98,7 +95,7 @@ Future<Map<String, dynamic>> retrieveUser(
     appGet.setToken(resultMap['accessToken']);
     appGet.setUserMap(resultMap);
     appGet.pr.hide();
-    logger.e(resultMap);
+    logger.d(resultMap);
     return resultMap;
   } on DioError catch (e) {
     logger.e(e.response.data['message']);
@@ -187,6 +184,7 @@ getFollowers(bool followers) async {
           'Authorization': 'Bearer ${appGet.token}'
         }));
     Map<String, dynamic> mmnlist1 = response.data;
+    logger.d('//////////// followers $mmnlist1');
     appGet.setFollowers(mmnlist1);
   } on DioError catch (e) {
     logger.e(e.response.data['message']);
@@ -202,6 +200,7 @@ getFollowing(bool followers) async {
           'Authorization': 'Bearer ${appGet.token}'
         }));
     Map<String, dynamic> mmnlist1 = response.data;
+    logger.d('///////// following $mmnlist1');
     appGet.setFollowing(mmnlist1);
   } on DioError catch (e) {
     logger.e(e.response.data['message']);
@@ -221,7 +220,7 @@ getMyPosts({String myId}) async {
         }));
     Map<String, dynamic> mmnlist1 = response.data;
     appGet.setMyPosts(mmnlist1);
-    logger.e('my posts are $mmnlist1');
+    logger.d('//////// my posts $mmnlist1');
     return mmnlist1;
   } on DioError catch (e) {
     logger.e(e.response);
@@ -247,7 +246,7 @@ getMyLikes({String myId}) async {
 
       likes.add(map);
     }
-    logger.e('my likes are $likes');
+    logger.d('////////// my likes $likes');
     appGet.setMyLikes(likes);
 
     return mmnlist1;
@@ -288,7 +287,7 @@ Future<Map<String, dynamic>> getPosts({String userId}) async {
         }));
     Map<String, dynamic> mmnlist1 = response.data;
     appGet.setPosts(mmnlist1);
-    logger.e(mmnlist1);
+    logger.d('posts $mmnlist1');
     return mmnlist1;
   } on DioError catch (e) {
     logger.e(e.response);
@@ -371,33 +370,33 @@ Future<UserCredential> signInWithFacebook() async {
   }
 }
 
-Future<UserCredential> signInWithTwitter() async {
-  // Create a TwitterLogin instance
-  try {
-    final TwitterLogin twitterLogin = new TwitterLogin(
-      consumerKey: 'wih4kklIITuTvGAeYdNcDg0oY',
-      consumerSecret: 'LLloRbpQRFd5vOKRIPoeJIfPvSvsgqrw958FaxZXogpLq1xq9n',
-    );
+// Future<UserCredential> signInWithTwitter() async {
+//   // Create a TwitterLogin instance
+//   try {
+//     final TwitterLogin twitterLogin = new TwitterLogin(
+//       consumerKey: 'wih4kklIITuTvGAeYdNcDg0oY',
+//       consumerSecret: 'LLloRbpQRFd5vOKRIPoeJIfPvSvsgqrw958FaxZXogpLq1xq9n',
+//     );
 
-    // Trigger the sign-in flow
-    final TwitterLoginResult loginResult = await twitterLogin.authorize();
+//     // Trigger the sign-in flow
+//     final TwitterLoginResult loginResult = await twitterLogin.authorize();
 
-    // Get the Logged In session
-    final TwitterSession twitterSession = loginResult.session;
+//     // Get the Logged In session
+//     final TwitterSession twitterSession = loginResult.session;
 
-    // Create a credential from the access token
-    final AuthCredential twitterAuthCredential = TwitterAuthProvider.credential(
-        accessToken: twitterSession.token, secret: twitterSession.secret);
+//     // Create a credential from the access token
+//     final AuthCredential twitterAuthCredential = TwitterAuthProvider.credential(
+//         accessToken: twitterSession.token, secret: twitterSession.secret);
 
-    UserCredential userCredential =
-        await FirebaseAuth.instance.signInWithCredential(twitterAuthCredential);
-    String token = await userCredential.user.getIdToken();
-    socialMediaAuth(strategy: 'twitter', token: token);
-    return userCredential;
-  } catch (e) {
-    CustomDialougs.utils.showDialoug(titleKey: 'Error', messageKey: e.message);
-  }
-}
+//     UserCredential userCredential =
+//         await FirebaseAuth.instance.signInWithCredential(twitterAuthCredential);
+//     String token = await userCredential.user.getIdToken();
+//     socialMediaAuth(strategy: 'twitter', token: token);
+//     return userCredential;
+//   } catch (e) {
+//     CustomDialougs.utils.showDialoug(titleKey: 'Error', messageKey: e.message);
+//   }
+// }
 
 User checkUser() {
   User user = FirebaseAuth.instance.currentUser;
@@ -468,7 +467,7 @@ Future<bool> createPost(String content, List<Asset> images) async {
     Map<String, dynamic> mmnlist1 = response.data;
     getMyPosts(myId: appGet.userMap['user']['id'].toString());
     appGet.pr.hide();
-    logger.e(mmnlist1);
+    logger.d(mmnlist1);
     return true;
   } on DioError catch (e) {
     appGet.pr.hide();

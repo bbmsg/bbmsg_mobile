@@ -52,7 +52,7 @@ class _AppSettingsState extends State<AppSettings> {
       appBar: CustomAppBar('Settings'),
       body: Container(
           padding: EdgeInsets.symmetric(vertical: 25.h),
-          child: Column(
+          child: ListView(
             children: [
               ListTile(
                 leading: Image.asset(
