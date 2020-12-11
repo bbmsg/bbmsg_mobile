@@ -124,9 +124,11 @@ class _CreatepostscrState extends State<Createpostscr> {
                       shape: BoxShape.circle),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(100),
-                    child: CachedNetworkImage(
-                        fit: BoxFit.cover,
-                        imageUrl: appGet.userMap['user']['profile_picture']),
+                    child: appGet.userMap['user']['profile_picture'] != null
+                        ? CachedNetworkImage(
+                            fit: BoxFit.cover,
+                            imageUrl: appGet.userMap['user']['profile_picture'])
+                        : Image.asset('assets/pngs/logo.png'),
                   ),
                 ),
                 SizedBox(

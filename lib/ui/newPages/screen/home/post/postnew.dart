@@ -35,8 +35,11 @@ class _PostnewState extends State<Postnew> {
                 shape: BoxShape.circle,
                 image: new DecorationImage(
                     fit: BoxFit.fill,
-                    image: new CachedNetworkImageProvider(
-                        appGet.userMap['user']['profile_picture'].toString())),
+                    image: appGet.userMap['user']['profile_picture'] != null
+                        ? CachedNetworkImageProvider(appGet.userMap['user']
+                                ['profile_picture']
+                            .toString())
+                        : AssetImage('assets/pngs/logo.png')),
               ),
             ),
             Container(

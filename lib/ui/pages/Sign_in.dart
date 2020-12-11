@@ -48,8 +48,7 @@ class _SignInState extends State<SignIn> {
       formKey.currentState.save();
       // if (ConnectivityService.connectivityStatus !=
       //     ConnectivityStatus.Offline) {
-      credintial = 'omar@gmail.com';
-      password = 'Qwertyuiop@1';
+
       getUserToken(
           credintial: credintial, password: password, strategy: 'local');
       // } else {}

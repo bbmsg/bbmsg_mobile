@@ -22,6 +22,7 @@ class AppGet extends GetxController {
   var otherUserMap = {}.obs;
   setOtherUserMap(String userId) async {
     Map map = await getUser(userId);
+    logger.e(map);
     this.otherUserMap.value = map;
   }
 

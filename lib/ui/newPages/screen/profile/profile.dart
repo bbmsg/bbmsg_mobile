@@ -214,7 +214,10 @@ class Profilescreen extends StatelessWidget {
                               }).length,
                               itemBuilder: (context, index) {
                                 return GestureDetector(
-                                  onTap: () {},
+                                  onTap: () {
+                                    print(appGet.myPosts['data'][index]['media']
+                                        .first['url']);
+                                  },
                                   child: CachedNetworkImage(
                                       fit: BoxFit.cover,
                                       imageUrl: appGet
@@ -236,8 +239,14 @@ class Profilescreen extends StatelessWidget {
                         }).length,
                         itemBuilder: (context, index) {
                           return CachedNetworkImage(
-                              imageUrl:
-                                  appGet.myLikes[index]['media'].first['url']);
+                              imageUrl: appGet.myLikes
+                                  .where((e) {
+                                    Logger().e('hhhhhhhh $e');
+                                    List images = e['media'];
+                                    return images.isNotEmpty;
+                                  })
+                                  .toList()[index]['media']
+                                  .first['url']);
                         },
                       ),
                     ]),

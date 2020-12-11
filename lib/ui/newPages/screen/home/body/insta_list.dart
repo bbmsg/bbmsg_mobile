@@ -103,7 +103,8 @@ class _InstaListState extends State<InstaList> {
                                       GestureDetector(
                                         onTap: () {
                                           appGet.setOtherUserMap(snapshot
-                                              .data['data'][index]['id']
+                                              .data['data'][index]['author']
+                                                  ['id']
                                               .toString());
                                           Get.to(ProfilePage(
                                             snapshot.data['data'][index]
