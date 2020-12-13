@@ -1,6 +1,7 @@
 import 'package:bbmsg_mobile/backend/server.dart';
 import 'package:bbmsg_mobile/ui/newPages/activity.dart';
 import 'package:bbmsg_mobile/ui/newPages/createpost.dart';
+import 'package:bbmsg_mobile/ui/newPages/screen/home/headappbars/head_bar.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/profile/profile.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/search/searchscr.dart';
 import 'package:bbmsg_mobile/ui/pages/profile_page.dart';
@@ -46,32 +47,8 @@ class _InstaHomeState extends State<InstaHome> {
         designSize: Size(375, 812), allowFontScaling: false);
     return new Scaffold(
         appBar: hiapp
-            ? AppBar(
-                backgroundColor: new Color(0xfff8faf8),
-                centerTitle: true,
-                elevation: 0.0,
-                leading: Icon(
-                  Icons.camera_alt_outlined,
-                  color: Colors.black,
-                ),
-                title: SizedBox(
-                  height: 35.0,
-                  child: Text(
-                    titles,
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  // Image.asset("assets/images/insta_logo.png")
-                ),
-                actions: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(right: 12.0),
-                    child: IconButton(
-                      icon: SvgPicture.asset('assets/svgs/send.svg'),
-                      onPressed: null,
-                    ),
-                  )
-                ],
-              )
+            ? Headbar(titles,1)
+           
             : null,
         body: _pages[currentIndex],
         bottomNavigationBar: new Container(

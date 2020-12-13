@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'insta_list.dart';
+import 'instalist/insta_list.dart';
 
 class InstaBody extends StatelessWidget {
   @override
