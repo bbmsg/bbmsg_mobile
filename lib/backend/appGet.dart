@@ -64,6 +64,8 @@ class AppGet extends GetxController {
   Map commentpostbyid = {};
   Map commentpostbyidlist = {};
   Map commentreplytbyid = {};
+  FocusNode commntFocusNode;
+  FocusNode commntFocusNode2;
 
   setPostMap(Map map) {
     this.myPost = map;

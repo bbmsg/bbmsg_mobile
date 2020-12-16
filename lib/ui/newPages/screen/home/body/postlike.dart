@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:string_validator/string_validator.dart';
 
 class Postlike extends StatefulWidget {
-  final int id;
+  final int likornot;
+  final int likeno;
 
-  Postlike(this.id, {Key key}) : super(key: key);
+  Postlike(this.likornot, this.likeno, {Key key}) : super(key: key);
 
   @override
   _PostlikeState createState() => _PostlikeState();
@@ -21,22 +21,23 @@ class _PostlikeState extends State<Postlike> {
   @override
   void initState() {
     super.initState();
-    print('postlike' + widget.id.toString());
-    getLikes(widget.id).then((value) {
-      if (value['total'] == 0) {
-        isPressed = false;
-      } else {
-        isPressed = true;
-      }
-      setState(() {
-        totalsint = value['total'];
-      });
-    });
+    // print('postlike' + widget.id.toString());
+    // getLikes(widget.id).then((value) {
+    //   if (value['total'] == 0) {
+    //     isPressed = false;
+    //   } else {
+    //     isPressed = true;
+    //   }
+    //   setState(() {
+    //     totalsint = value['total'];
+    //   });
+    // });
+    widget.likornot == 0 ? isPressed = false : isPressed = true;
+    totalsint = widget.likeno;
   }
 
   @override
   Widget build(BuildContext context) {
-    getLikes(widget.id);
     ScreenUtil.init(context,
         designSize: Size(375, 812), allowFontScaling: false);
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
@@ -54,14 +55,16 @@ class _PostlikeState extends State<Postlike> {
                         : Icons.favorite),
                     color: isPressed == false ? Colors.black : Colors.red,
                     onPressed: () {
+                      isPressed
+                          ? removelike(widget.likornot)
+                          : like(widget.likornot);
                       setState(() {
                         isPressed = !isPressed;
                       });
 
-                      isPressed ? like(widget.id) : removelike(widget.id);
                       isPressed
-                          ? totalsint = totalsint + 1
-                          : totalsint = totalsint - 1;
+                          ? totalsint = widget.likeno + 1
+                          : totalsint = widget.likeno - 1;
                     },
                   ),
                   Text(totalsint <= 0 ? '0' : totalsint.toString()),
@@ -83,7 +86,10 @@ class _PostlikeState extends State<Postlike> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text(
-                  "Liked by" + ' ' + (totalsint>0?(totalsint - 1):0).toString() + ' other',
+                  "Liked by" +
+                      ' ' +
+                      (totalsint > 0 ? (totalsint - 1) : 0).toString() +
+                      ' other',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),

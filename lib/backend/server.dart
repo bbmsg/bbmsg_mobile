@@ -523,7 +523,6 @@ getcomments() async {
 bool listcomment = false;
 Map<String, dynamic> getAcommentlist1;
 Future getAcomment(int id) async {
-  
   if (listcomment == false) {
     try {
       var response = await dio.get(baseUrl + '/comments?post_id=$id',
@@ -541,28 +540,29 @@ Future getAcomment(int id) async {
 }
 
 bool listcomment1 = false;
-  Map<String, dynamic> getAcomment1list;
-Future getAcomment1(int id) async {
-  print('id'+id.toString());
+Map<String, dynamic> getAcomment1list;
+List getlistcomment;
+Future getAcommentlist(int id) async {
+  print('id' + id.toString());
 
   // if (listcomment1 == false) {
-    try {
-      var response = await dio.get(baseUrl + '/comments?post_id=$id',
-          options:
-              Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
-      getAcomment1list = response.data;
-      appGet.setcommentreplytbyidlist(getAcomment1list);
-      print('comment id' + getAcomment1list.toString());
-    } on DioError catch (e) {
-      logger.e(e.response.data['message']);
-    }
-    listcomment1 = true;
+  try {
+    var response = await dio.get(baseUrl + '/comments?post_id=$id',
+        options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
+    getlistcomment = response.data['data'];
+
+    // appGet.setcommentreplytbyidlist(getAcomment1list);
+    // print('comment id' + getAcomment1list.toString());
+  } on DioError catch (e) {
+    logger.e(e.response.data['message']);
+  }
+  listcomment1 = true;
   // } else {}
-  return getAcomment1list;
+  return getlistcomment;
 }
 /////////////////////////////////////////////////////////////////////////////////////
 
-Future  createComment(int postId, String content, File img, File img2) async {
+Future createComment(int postId, String content, File img, File img2) async {
   String fileName = img == null ? null : img.path.split('/').last;
   String fileName2 = img2 == null ? null : img2.path.split('/').last;
   try {
@@ -631,9 +631,11 @@ getReplies() async {
 /////////////////////////////////////////////////////////////////////////////////////
 Map<String, dynamic> getAreplaywidlist;
 Future getAreplay(int id) async {
+  print('getrplaycomment' + id.toString());
   try {
-    var response = await dio.get(baseUrl + '/replies/$id',
+    var response = await dio.get(baseUrl + '/replies?comment_id=$id',
         options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
+    print(response.statusCode);
     if (response.statusCode == 200) {
       Map<String, dynamic> getAreplaywidlist = response.data;
       appGet.setcommentreplytbyid(getAreplaywidlist);
@@ -729,6 +731,22 @@ Future likecomment(int commentid) async {
     var response = await dio.post(baseUrl + '/likes',
         data: {
           'comment_id': commentid,
+        },
+        options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
+    Map<String, dynamic> mmnlist1 = response.data;
+
+    return mmnlist1;
+  } on DioError catch (e) {
+    logger.e(e.response.data['message']);
+  }
+}
+
+Future likereply(int replyid) async {
+  print(replyid);
+  try {
+    var response = await dio.post(baseUrl + '/likes',
+        data: {
+          'reply_id': replyid,
         },
         options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
     Map<String, dynamic> mmnlist1 = response.data;
