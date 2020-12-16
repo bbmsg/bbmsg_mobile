@@ -20,6 +20,7 @@ class AppGet extends GetxController {
   var myPosts = {}.obs;
   var myLikes = [].obs;
   var otherUserMap = {}.obs;
+  var gLikes = [].obs;
   setOtherUserMap(String userId) async {
     Map map = await getUser(userId);
     logger.e(map);
@@ -61,6 +62,10 @@ class AppGet extends GetxController {
   Map myPost = {};
   Map commentpost = {};
   Map commentpostbyid = {};
+  Map commentpostbyidlist = {};
+  Map commentreplytbyid = {};
+  FocusNode commntFocusNode;
+  FocusNode commntFocusNode2;
 
   setPostMap(Map map) {
     this.myPost = map;
@@ -72,5 +77,12 @@ class AppGet extends GetxController {
 
   setcommentpostbyid(Map map) {
     this.commentpostbyid = map;
+  }
+
+  setcommentreplytbyid(Map map) {
+    this.commentreplytbyid = map;
+  }
+  setcommentreplytbyidlist(Map map) {
+    this.commentpostbyidlist = map;
   }
 }

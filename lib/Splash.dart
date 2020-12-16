@@ -74,3 +74,8 @@ class _SplashState extends State<Splash> {
         )));
   }
 }
+
+
+
+//mop@mop.com
+//Admin@2020

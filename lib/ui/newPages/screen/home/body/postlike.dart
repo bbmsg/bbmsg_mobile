@@ -5,31 +5,35 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Postlike extends StatefulWidget {
-  final int id;
-  final String like;
-  final String comment;
-  Postlike(this.id, this.like, this.comment, {Key key}) : super(key: key);
+  final int likornot;
+  final int likeno;
+
+  Postlike(this.likornot, this.likeno, {Key key}) : super(key: key);
 
   @override
   _PostlikeState createState() => _PostlikeState();
 }
 
 class _PostlikeState extends State<Postlike> {
-  int isPressed = 0;
-  int totalsint;
-  int likeid;
+  bool isPressed = false;
+  int totalsint = 0;
+  int likeid = 0;
   @override
   void initState() {
     super.initState();
-    getLikes(widget.id).then((value) {
-      if (value['data'].length == 0) {
-        isPressed = 0;
-      } else {
-        isPressed = 1;
-        likeid = value['data'][0]['id'];
-      }
-      totalsint = value['total'];
-    });
+    // print('postlike' + widget.id.toString());
+    // getLikes(widget.id).then((value) {
+    //   if (value['total'] == 0) {
+    //     isPressed = false;
+    //   } else {
+    //     isPressed = true;
+    //   }
+    //   setState(() {
+    //     totalsint = value['total'];
+    //   });
+    // });
+    widget.likornot == 0 ? isPressed = false : isPressed = true;
+    totalsint = widget.likeno;
   }
 
   @override
@@ -41,75 +45,53 @@ class _PostlikeState extends State<Postlike> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          new Row(
-            children: <Widget>[
-              new IconButton(
-                icon: new Icon(
-                    isPressed == 0 ? FontAwesomeIcons.heart : Icons.favorite),
-                color: isPressed == 0 ? Colors.black : Colors.red,
-                onPressed: () {
-                  if (isPressed == 0) {
-                    print(isPressed);
-                    setState(() {
-                      isPressed = 1;
-                    });
-                    totalsint = totalsint + 1;
-                    like(widget.id).then((value) {
-                      getLikes(widget.id).then((ee) {
-                        print('long' + widget.id.toString());
-                        if (ee['data'].length == 0) {
-                          isPressed = 0;
-                        } else {
-                          isPressed = 1;
-                          likeid = ee['data'][0]['id'];
-                        }
-                        totalsint = ee['total'];
-                        print('totadd' + totalsint.toString());
+          Column(
+            children: [
+              new Row(
+                children: <Widget>[
+                  new IconButton(
+                    icon: new Icon(isPressed == false
+                        ? FontAwesomeIcons.heart
+                        : Icons.favorite),
+                    color: isPressed == false ? Colors.black : Colors.red,
+                    onPressed: () {
+                      isPressed
+                          ? removelike(widget.likornot)
+                          : like(widget.likornot);
+                      setState(() {
+                        isPressed = !isPressed;
                       });
-                    });
-                    setState(() {
-                      // totalsint;
-                    });
-                  } else {
-                    print(isPressed);
-                    setState(() {
-                      isPressed = 0;
-                    });
 
-                    totalsint = totalsint - 1;
-                    removelike(likeid).then((value) {
-                      getLikes(widget.id).then((ee) {
-                        print('long' + widget.id.toString());
-                        if (ee['data'].length == 0) {
-                          isPressed = 0;
-                        } else {
-                          isPressed = 1;
-                          likeid = ee['data'][0]['id'];
-                        }
-                        totalsint = ee['total'];
-                        print('totmin' + totalsint.toString());
-                      });
-                    });
-
-                    setState(() {
-                      // totalsint;
-                    });
-                  }
-                },
+                      isPressed
+                          ? totalsint = widget.likeno + 1
+                          : totalsint = widget.likeno - 1;
+                    },
+                  ),
+                  Text(totalsint <= 0 ? '0' : totalsint.toString()),
+                  new SizedBox(
+                    width: ScreenUtil().setWidth(12),
+                  ),
+                  IconButton(
+                    icon: SvgPicture.asset(
+                      'assets/svgs/icomsg.svg',
+                      color: Colors.black,
+                    ),
+                    onPressed: () {},
+                  ),
+                  Text(
+                    '',
+                  ),
+                ],
               ),
-              Text(totalsint == null ? '0' : totalsint.toString()),
-              new SizedBox(
-                width: ScreenUtil().setWidth(12),
-              ),
-              IconButton(
-                icon: SvgPicture.asset(
-                  'assets/svgs/icomsg.svg',
-                  color: Colors.black,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Text(
+                  "Liked by" +
+                      ' ' +
+                      (totalsint > 0 ? (totalsint - 1) : 0).toString() +
+                      ' other',
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                onPressed: () {},
-              ),
-              Text(
-                widget.comment,
               ),
             ],
           ),
