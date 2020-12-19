@@ -36,7 +36,8 @@ class _InstaListState extends State<InstaList> {
         padding: EdgeInsets.only(right: 25.w, left: 25.w),
         child: Text(
           txt,
-          textAlign: isAlpha(txt) ? TextAlign.left : TextAlign.right,
+          textAlign:
+              isAlpha(txt.split(' ')[0]) ? TextAlign.left : TextAlign.right,
         ),
       );
     } else {
