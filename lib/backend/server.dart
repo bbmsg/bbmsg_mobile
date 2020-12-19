@@ -67,6 +67,7 @@ getUserToken(
     getFollowers(true);
     getFollowing(true);
     getPosts();
+    getUsers();
     getMyPosts(myId: '${resultMap['user']['id']}');
     getMyLikes(myId: '${resultMap['user']['id']}');
     appGet.pr.hide();
@@ -285,7 +286,9 @@ Future<Map<String, dynamic>> getPosts({String userId}) async {
           'Authorization': 'Bearer ${appGet.token}'
         }));
     Map<String, dynamic> mmnlist1 = response.data;
-    appGet.setPosts(mmnlist1);
+
+    appGet.setPosts(mmnlist1['data']);
+    logger.e(appGet.posts.length.toString());
     return mmnlist1;
   } on DioError catch (e) {
     logger.e(e.response);

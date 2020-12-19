@@ -44,6 +44,7 @@ class TestApi extends StatelessWidget {
     // TODO: implement build
     return Scaffold(body: Center(
       child: RaisedButton(onPressed: () async {
+        getPosts();
         // String token = SPHelper.spHelper.getToken();
         print(appGet.userMap);
         // UserCredential userCredential = await signInWithTwitter();

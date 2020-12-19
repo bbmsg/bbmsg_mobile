@@ -66,8 +66,12 @@ class _InstaHomeState extends State<InstaHome> {
               children: <Widget>[
                 new IconButton(
                   icon: currentIndex == 0
-                      ? SvgPicture.asset('assets/svgs/FilledHome.svg')
-                      : SvgPicture.asset('assets/svgs/Home.svg'),
+                      ? SvgPicture.asset(
+                          'assets/svgs/FilledHome.svg',
+                          color: Colors.black,
+                        )
+                      : SvgPicture.asset('assets/svgs/Home.svg',
+                          color: Colors.black),
                   // Icon(
                   //   // Icons.home,
                   // ),
@@ -81,8 +85,10 @@ class _InstaHomeState extends State<InstaHome> {
                 ),
                 new IconButton(
                   icon: currentIndex == 1
-                      ? SvgPicture.asset('assets/svgs/SearchFilled.svg')
-                      : SvgPicture.asset('assets/svgs/Group 4384.svg'),
+                      ? SvgPicture.asset('assets/svgs/SearchFilled.svg',
+                          color: Colors.black)
+                      : SvgPicture.asset('assets/svgs/Group 4384.svg',
+                          color: Colors.black),
                   // Icon(
                   //   Icons.search,
                   // ),
@@ -95,7 +101,8 @@ class _InstaHomeState extends State<InstaHome> {
                   },
                 ),
                 new IconButton(
-                    icon: SvgPicture.asset('assets/svgs/Iconly-Light-Plus.svg'),
+                    icon: SvgPicture.asset('assets/svgs/Iconly-Light-Plus.svg',
+                        color: Colors.black),
                     // Icon(
                     //   Icons.add_box,
                     // ),
@@ -107,7 +114,8 @@ class _InstaHomeState extends State<InstaHome> {
                       });
                     }),
                 new IconButton(
-                  icon: SvgPicture.asset('assets/svgs/Group 4385.svg'),
+                  icon: SvgPicture.asset('assets/svgs/Group 4385.svg',
+                      color: Colors.black),
 
                   // Icon(
                   //   Icons.favorite,
@@ -121,8 +129,8 @@ class _InstaHomeState extends State<InstaHome> {
                   },
                 ),
                 new IconButton(
-                  icon:
-                      SvgPicture.asset('assets/svgs/Iconly-Light-Profile.svg'),
+                  icon: SvgPicture.asset('assets/svgs/Iconly-Light-Profile.svg',
+                      color: Colors.black),
 
                   // Icon(
                   //   Icons.account_box,

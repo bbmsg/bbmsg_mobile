@@ -120,21 +120,20 @@ class _InstaListState extends State<InstaList> {
                                             GestureDetector(
                                               onTap: () {
                                                 appGet.setOtherUserMap(appGet
-                                                    .posts['data'][index]
-                                                        ['author']['id']
+                                                    .posts[index]['author']
+                                                        ['id']
                                                     .toString());
 
                                                 Get.to(ProfilePage(
-                                                  appGet.posts['data'][index]
-                                                          ['author']['name']
+                                                  appGet.posts[index]['author']
+                                                          ['name']
                                                       .toString(),
                                                 ));
                                               },
                                               child: Row(
                                                 children: [
                                                   ///////////////
-                                                  appGet.posts['data'][index]
-                                                                  ['author'][
+                                                  appGet.posts[index]['author'][
                                                               'profile_picture'] !=
                                                           null
                                                       ? Container(
@@ -154,8 +153,6 @@ class _InstaListState extends State<InstaList> {
                                                                         CachedNetworkImageProvider(
                                                                       appGet
                                                                           .posts[
-                                                                              'data']
-                                                                              [
                                                                               index]
                                                                               [
                                                                               'author']
@@ -179,8 +176,7 @@ class _InstaListState extends State<InstaList> {
                                                                 BoxShape.circle,
                                                           ),
                                                           child: Text(
-                                                            appGet.posts['data']
-                                                                    [index]
+                                                            appGet.posts[index]
                                                                     ['author']
                                                                     ['name']
                                                                 .toString()[0]
@@ -202,8 +198,7 @@ class _InstaListState extends State<InstaList> {
                                                         width: ScreenUtil()
                                                             .setWidth(150),
                                                         child: new Text(
-                                                          appGet.posts['data']
-                                                                  [index]
+                                                          appGet.posts[index]
                                                                   ['author']
                                                                   ['name']
                                                               .toString(),
@@ -219,9 +214,9 @@ class _InstaListState extends State<InstaList> {
                                                         child: new Text(
                                                           // "10 min",
                                                           readTimestamp(DateTime
-                                                              .parse(appGet.posts[
-                                                                          'data']
-                                                                      [index][
+                                                              .parse(appGet
+                                                                          .posts[
+                                                                      index][
                                                                   'created_at'])),
                                                           style: TextStyle(
                                                               color: Colors
@@ -264,14 +259,13 @@ class _InstaListState extends State<InstaList> {
                                   //   ),
                                   // ),
                                   postimg(
-                                      appGet.posts['data'][index]['content']
-                                          .toString(),
-                                      appGet.posts['data'][index]['media']),
+                                      appGet.posts[index]['content'].toString(),
+                                      appGet.posts[index]['media']),
                                   Container(
                                     child: Postlike(
-                                      appGet.posts['data'][index]['id'],
-                                      appGet.posts['data'][index]['my_like'],
-                                      appGet.posts['data'][index]['likes'],
+                                      appGet.posts[index]['id'],
+                                      appGet.posts[index]['my_like'],
+                                      appGet.posts[index]['likes'],
                                     ),
                                   ),
                                   // Padding(
@@ -290,8 +284,8 @@ class _InstaListState extends State<InstaList> {
                                   Divider(),
                                   GestureDetector(
                                     onTap: () {
-                                      Get.to(Listcommentpost(
-                                          appGet.posts['data'][index]));
+                                      Get.to(
+                                          Listcommentpost(appGet.posts[index]));
                                     },
                                     child: Padding(
                                       padding: const EdgeInsets.fromLTRB(
@@ -330,7 +324,7 @@ class _InstaListState extends State<InstaList> {
                                                     shape: BoxShape.circle,
                                                   ),
                                                   child: Text(
-                                                    appGet.posts['data'][index]
+                                                    appGet.posts[index]
                                                             ['author']['name']
                                                         .toString()[0]
                                                         .toUpperCase(),
@@ -343,8 +337,8 @@ class _InstaListState extends State<InstaList> {
                                           new SizedBox(
                                             width: 10.0,
                                           ),
-                                          Addcomments(appGet.posts['data']
-                                              [index]['id']),
+                                          Addcomments(
+                                              appGet.posts[index]['id']),
                                           SizedBox(width: 10.w)
                                         ],
                                       ),
@@ -355,8 +349,7 @@ class _InstaListState extends State<InstaList> {
                                         horizontal: 16.0),
                                     child: Text(
                                         readTimestamp(DateTime.parse(appGet
-                                                .posts['data'][index]
-                                                    ['created_at']
+                                                .posts[index]['created_at']
                                                 .toString())) +
                                             ' Ago',
                                         style: TextStyle(color: Colors.grey)),

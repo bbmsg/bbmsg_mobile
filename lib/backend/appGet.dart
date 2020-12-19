@@ -13,7 +13,7 @@ class AppGet extends GetxController {
   var userMap = Map().obs;
   var followers = {}.obs;
   var following = {}.obs;
-  var posts = {}.obs;
+  var posts = [].obs;
   Map testMap = {};
   var appBarTitleStyle = TextStyle().obs;
   bool isFingerprint;
@@ -49,8 +49,8 @@ class AppGet extends GetxController {
     this.following.value = map;
   }
 
-  setPosts(Map map) {
-    this.posts.value = map;
+  setPosts(List list) {
+    this.posts.value = list;
   }
 
   setUserMap(Map map) {

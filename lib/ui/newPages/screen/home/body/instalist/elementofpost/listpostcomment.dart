@@ -3,9 +3,7 @@ import 'dart:ui';
 import 'package:bbmsg_mobile/backend/appGet.dart';
 import 'package:bbmsg_mobile/backend/server.dart';
 import 'package:bbmsg_mobile/ui/newPages/element/timstampclass.dart';
-import 'package:bbmsg_mobile/ui/newPages/screen/home/body/instalist/elementofpost/addcommentreply.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/home/body/instalist/elementofpost/likeornotcomment.dart';
-import 'package:bbmsg_mobile/ui/newPages/screen/home/body/instalist/elementofpost/showhidreply.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/home/body/postlike.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/home/headappbars/head_bar.dart';
 import 'package:bbmsg_mobile/ui/pages/profile_page.dart';
@@ -14,7 +12,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:readmore/readmore.dart';
 import 'package:string_validator/string_validator.dart';
 
 class Listcommentpost extends StatefulWidget {
@@ -302,9 +299,8 @@ class _ListcommentpostState extends State<Listcommentpost> {
                                                       shape: BoxShape.circle,
                                                     ),
                                                     child: Text(
-                                                      appGet.posts['data']
-                                                              [index]['author']
-                                                              ['name']
+                                                      appGet.posts[index]
+                                                              ['author']['name']
                                                           .toString()[0]
                                                           .toUpperCase(),
                                                       style: TextStyle(
@@ -322,7 +318,7 @@ class _ListcommentpostState extends State<Listcommentpost> {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    appGet.posts['data'][index]
+                                                    appGet.posts[index]
                                                             ['author']['name']
                                                         .toString(),
                                                     style: TextStyle(
