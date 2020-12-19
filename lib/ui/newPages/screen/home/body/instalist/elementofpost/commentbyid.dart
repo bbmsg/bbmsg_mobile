@@ -8,7 +8,8 @@ import 'package:get/get.dart';
 class Commentbyid extends StatefulWidget {
   final int commentidindex;
   final int numofcomment;
-  Commentbyid(this.commentidindex,this.numofcomment, {Key key}) : super(key: key);
+  Commentbyid(this.commentidindex, this.numofcomment, {Key key})
+      : super(key: key);
 
   @override
   _CommentbyidState createState() => _CommentbyidState();
@@ -65,8 +66,8 @@ class _CommentbyidState extends State<Commentbyid> {
                     height: 15,
                   ),
                   Visibility(
-                    visible: widget.numofcomment==0?false:true ,
-                                      child: GestureDetector(
+                    visible: widget.numofcomment == 0 ? false : true,
+                    child: GestureDetector(
                       onTap: () {
                         Get.to(Listcommentpost(widget.commentidindex));
                       },

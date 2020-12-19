@@ -1,8 +1,10 @@
 import 'package:bbmsg_mobile/backend/server.dart';
+import 'package:bbmsg_mobile/services/shared_prefrences_helper.dart';
 import 'package:bbmsg_mobile/ui/widgets/follow_user_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:string_validator/string_validator.dart';
 
 class TestApi extends StatelessWidget {
   List<User> users = [
@@ -42,7 +44,8 @@ class TestApi extends StatelessWidget {
     // TODO: implement build
     return Scaffold(body: Center(
       child: RaisedButton(onPressed: () async {
-        getMyLikes(myId: appGet.userMap['user']['id'].toString());
+        // String token = SPHelper.spHelper.getToken();
+        print(appGet.userMap);
         // UserCredential userCredential = await signInWithTwitter();
         // String token = await userCredential.user.getIdToken();
 

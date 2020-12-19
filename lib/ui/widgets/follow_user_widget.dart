@@ -1,3 +1,4 @@
+import 'package:bbmsg_mobile/backend/server.dart';
 import 'package:bbmsg_mobile/values/app_colors.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -76,7 +77,7 @@ class _FollowUserWidgetState extends State<FollowUserWidget> {
                         borderRadius: BorderRadius.circular(20)),
                     onPressed: () {
                       widget.isFollow = !widget.isFollow;
-                      widget.fun(widget.id);
+                      widget.fun(widget.id, widget.isFollow);
                       setState(() {});
                     })
           ],
@@ -113,21 +114,37 @@ class _FollowingWidgetState extends State<FollowingWidget> {
         alignment: Alignment.center,
         child: Row(
           children: [
-            Container(
-              width: 70.w,
-              height: 70.h,
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.white, width: 5.w),
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                      image: CachedNetworkImageProvider(widget.imageUrl),
-                      fit: BoxFit.cover)),
-            ),
+            widget.imageUrl != null
+                ? Container(
+                    width: 70.w,
+                    height: 70.h,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.white, width: 5.w),
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                            image: CachedNetworkImageProvider(widget.imageUrl),
+                            fit: BoxFit.cover)),
+                  )
+                : Container(
+                    alignment: Alignment.center,
+                    width: 70.w,
+                    height: 70.h,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.white, width: 5.w),
+                      shape: BoxShape.circle,
+                      color: primaryColor,
+                    ),
+                    child: Text(
+                      widget.userName[0].toUpperCase(),
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
             SizedBox(
               width: 10.w,
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(widget.userName,
                     style: TextStyle(color: Colors.black, fontSize: 15)),
@@ -146,7 +163,7 @@ class _FollowingWidgetState extends State<FollowingWidget> {
                     borderRadius: BorderRadius.circular(20)),
                 onPressed: () {
                   widget.isFollow = !widget.isFollow;
-                  widget.fun(widget.id);
+                  widget.fun(widget.id.toString(), true);
                   setState(() {});
                 })
           ],

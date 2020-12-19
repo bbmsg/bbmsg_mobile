@@ -5,10 +5,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Postlike extends StatefulWidget {
+  final int postid;
   final int likornot;
   final int likeno;
 
-  Postlike(this.likornot, this.likeno, {Key key}) : super(key: key);
+  Postlike(this.postid, this.likornot, this.likeno, {Key key})
+      : super(key: key);
 
   @override
   _PostlikeState createState() => _PostlikeState();
@@ -21,17 +23,7 @@ class _PostlikeState extends State<Postlike> {
   @override
   void initState() {
     super.initState();
-    // print('postlike' + widget.id.toString());
-    // getLikes(widget.id).then((value) {
-    //   if (value['total'] == 0) {
-    //     isPressed = false;
-    //   } else {
-    //     isPressed = true;
-    //   }
-    //   setState(() {
-    //     totalsint = value['total'];
-    //   });
-    // });
+
     widget.likornot == 0 ? isPressed = false : isPressed = true;
     totalsint = widget.likeno;
   }
@@ -57,14 +49,14 @@ class _PostlikeState extends State<Postlike> {
                     onPressed: () {
                       isPressed
                           ? removelike(widget.likornot)
-                          : like(widget.likornot);
+                          : like(widget.postid);
                       setState(() {
                         isPressed = !isPressed;
                       });
 
                       isPressed
-                          ? totalsint = widget.likeno + 1
-                          : totalsint = widget.likeno - 1;
+                          ? totalsint = totalsint + 1
+                          : totalsint = totalsint - 1;
                     },
                   ),
                   Text(totalsint <= 0 ? '0' : totalsint.toString()),
@@ -83,16 +75,16 @@ class _PostlikeState extends State<Postlike> {
                   ),
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text(
-                  "Liked by" +
-                      ' ' +
-                      (totalsint > 0 ? (totalsint - 1) : 0).toString() +
-                      ' other',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              //   child: Text(
+              //     "Liked by" +
+              //         ' ' +
+              //         (totalsint > 0 ? (totalsint - 1) : 0).toString() +
+              //         ' other',
+              //     style: TextStyle(fontWeight: FontWeight.bold),
+              //   ),
+              // ),
             ],
           ),
           new IconButton(

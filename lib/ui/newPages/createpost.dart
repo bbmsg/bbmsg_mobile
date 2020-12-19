@@ -1,6 +1,7 @@
 import 'package:bbmsg_mobile/backend/appGet.dart';
 import 'package:bbmsg_mobile/backend/server.dart';
 import 'package:bbmsg_mobile/services/getimage.dart';
+import 'package:bbmsg_mobile/values/app_colors.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -112,25 +113,37 @@ class _CreatepostscrState extends State<Createpostscr> {
                     : ScreenUtil().setWidth(18)),
             child: Row(
               children: [
-                Container(
-                  width: isPortrait
-                      ? ScreenUtil().setWidth(60)
-                      : ScreenUtil().setWidth(40),
-                  height: isPortrait
-                      ? ScreenUtil().setHeight(60)
-                      : ScreenUtil().setHeight(150),
-                  decoration: BoxDecoration(
-                      // color: Colors.amber,
-                      shape: BoxShape.circle),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(100),
-                    child: appGet.userMap['user']['profile_picture'] != null
-                        ? CachedNetworkImage(
-                            fit: BoxFit.cover,
-                            imageUrl: appGet.userMap['user']['profile_picture'])
-                        : Image.asset('assets/pngs/logo.png'),
-                  ),
-                ),
+                appGet.userMap['user']['profile_picture'] != null
+                    ? Container(
+                        width: ScreenUtil().setWidth(60),
+                        height: ScreenUtil().setHeight(60),
+                        decoration: BoxDecoration(
+                            // color: Colors.amber,
+                            shape: BoxShape.circle),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child: CachedNetworkImage(
+                              fit: BoxFit.cover,
+                              imageUrl: appGet.userMap['user']
+                                  ['profile_picture']),
+                        ),
+                      )
+                    : Container(
+                        alignment: Alignment.center,
+                        height: ScreenUtil().setWidth(60),
+                        width: ScreenUtil().setWidth(60),
+                        decoration: new BoxDecoration(
+                          color: primaryColor,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Text(
+                          appGet.userMap['user']['name']
+                              .toString()[0]
+                              .toUpperCase(),
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                      ),
                 SizedBox(
                   width: isPortrait
                       ? ScreenUtil().setWidth(8)

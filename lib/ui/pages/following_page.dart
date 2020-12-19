@@ -8,9 +8,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FollowingPage extends StatelessWidget {
   AppGet appGet = Get.find();
-  followUserFun(String id) {
-    unFollowUser(id);
-    getFollowing(true);
+  followFun(String followId, bool isFollowed, [String userId]) {
+    followUser(followId, isFollowed, userId);
   }
 
   @override
@@ -26,7 +25,14 @@ class FollowingPage extends StatelessWidget {
       ),
       body: Container(
         padding: EdgeInsets.only(top: 10.h),
-        child: Obx(() {
+        child:
+            // Center(
+            //   child: RaisedButton(onPressed: () {
+            //     print(appGet.following);
+            //   }),
+            // )
+
+            Obx(() {
           return appGet.following['data'] != null
               ? ListView.builder(
                   itemCount: appGet.following['total'],
@@ -39,7 +45,7 @@ class FollowingPage extends StatelessWidget {
                       userName: appGet.following['data'][index]['user']['name'],
                       isFollow: appGet.following['data'][index]['user']
                           ['isFollowingMe'],
-                      fun: followUserFun,
+                      fun: followFun,
                       id: appGet.following['data'][index]['id'].toString(),
                     );
                   },

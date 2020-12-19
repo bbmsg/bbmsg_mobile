@@ -15,7 +15,7 @@ String readTimestamp(DateTime timestamp) {
         // diff.inHours > 0 && diff.inDays == 0
         ) {
       // time = format.format(timestamp);
-       time = diff.inSeconds.toString() + 'm';
+       time = diff.inSeconds.toString() + 's';
     }
     
     else if(   diff.inMinutes > 0 && diff.inHours == 0){
@@ -25,17 +25,17 @@ String readTimestamp(DateTime timestamp) {
   time = diff.inHours.toString() + 'h';
     }
      else if (diff.inDays > 0 && diff.inDays < 7) {
-      if (diff.inDays == 1) {
+      // if (diff.inDays == 1) {
+      //   time = diff.inDays.toString() + 'd';
+      // } else {
         time = diff.inDays.toString() + 'd';
-      } else {
-        time = diff.inDays.toString() + 'd';
-      }
-    } else {
-      if (diff.inDays == 7) {
+      // }
+    } else 
+      if (diff.inDays >= 7) {
         time = (diff.inDays / 7).floor().toString() + 'w';
-      } else {
-        time = (diff.inDays / 7).floor().toString() + 'w';
-      }
+      // } else {
+      //   time = (diff.inDays / 7).floor().toString() + 'w';
+      // }
     }
     if (diff.inDays > 30) {
       time = (diff.inDays / 30).floor().toString() + ' Month';

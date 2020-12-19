@@ -22,6 +22,19 @@ class _ListrplaycommentState extends State<Listrplaycomment> {
   double hicontai = 50;
   bool stopisfav = false;
   bool testico = true;
+
+  @override
+  void initState() {
+    super.initState();
+    appGet.commntFocusNode2 = FocusNode();
+  }
+
+  void dispose() {
+    appGet.commntFocusNode2.dispose();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     // getAcomment(widget.postid);
@@ -36,14 +49,14 @@ class _ListrplaycommentState extends State<Listrplaycomment> {
                 // print(snapshot.data['data'].length.toString());
                 switch (snapshot.connectionState) {
                   case ConnectionState.waiting:
-                    return  Center(
-                            child: SizedBox(
-                            width: 20.w,
-                            height: 22.h,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 1,
-                            ),
-                          ));
+                    return Center(
+                        child: SizedBox(
+                      width: 20.w,
+                      height: 22.h,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 1,
+                      ),
+                    ));
                   default:
                     if (snapshot.hasError)
                       return Text('Error: ${snapshot.error}');
@@ -56,17 +69,17 @@ class _ListrplaycommentState extends State<Listrplaycomment> {
                           // print('list lenngth'+snapshot.data.length.toString());
 
                           return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               SizedBox(
-                                width: 330.w,
+                                width: 300.w,
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Container(
-                                      padding:
-                                          EdgeInsets.only(left: 10, right: 10),
+                                      padding: EdgeInsets.only(
+                                          left: 100.w, right: 10),
                                       width: 300.w,
                                       height: hicontai.h,
                                       child: Row(
@@ -96,35 +109,20 @@ class _ListrplaycommentState extends State<Listrplaycomment> {
                                                           'assets/pngs/logo.png')),
                                             ),
                                           ),
-                                          Container(
-                                            height: ScreenUtil().setWidth(40),
-                                            width: ScreenUtil().setWidth(40),
-                                            decoration: new BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              image: new DecorationImage(
-                                                  fit: BoxFit.fill,
-                                                  image: new NetworkImage(
-                                                    snapshot.data['data'][index]
-                                                            ['author']
-                                                            ['profile_picture']
-                                                        .toString(),
-                                                  )),
-                                            ),
-                                          ),
-                                          Flexible(
-                                            child: Text(
-                                              snapshot.data['data'][index]
-                                                      ['author']['name']
-                                                  .toString(),
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                            ),
+                                          Text(
+                                            snapshot.data['data'][index]
+                                                    ['author']['name']
+                                                .toString(),
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
                                           ),
                                           Container(
                                             width: 100.w,
                                             padding: EdgeInsets.only(
-                                                top: 5.h, right: 10.w, left: 5.w),
+                                                top: 5.h,
+                                                right: 10.w,
+                                                left: 5.w),
                                             child: SizedBox(
                                               width: 150.w,
                                               child: Text(
@@ -140,7 +138,7 @@ class _ListrplaycommentState extends State<Listrplaycomment> {
                                       ),
                                     ),
                                     Padding(
-                                      padding: EdgeInsets.only(left: 90.w),
+                                      padding: EdgeInsets.only(left: 120.w),
                                       child: Row(
                                         children: [
                                           Text(readTimestamp(DateTime.parse(
@@ -150,18 +148,19 @@ class _ListrplaycommentState extends State<Listrplaycomment> {
                                             width: 20.w,
                                           ),
                                           Visibility(
-                                            visible: snapshot.data['data'][index]
-                                                        ['likes'] ==
+                                            visible: snapshot.data['data']
+                                                        [index]['likes'] ==
                                                     0
                                                 ? false
                                                 : true,
                                             child: InkWell(
                                                 onTap: () {},
-                                                child: Text(snapshot.data['data']
+                                                child: Text(snapshot
+                                                                .data['data']
                                                             [index]['likes'] >
                                                         1
-                                                    ? snapshot.data['data'][index]
-                                                                ['likes']
+                                                    ? snapshot.data['data']
+                                                                [index]['likes']
                                                             .toString() +
                                                         ' likes'
                                                     : (snapshot.data['data']
@@ -170,8 +169,8 @@ class _ListrplaycommentState extends State<Listrplaycomment> {
                                                         ' like'))),
                                           ),
                                           Visibility(
-                                            visible: snapshot.data['data'][index]
-                                                        ['likes'] ==
+                                            visible: snapshot.data['data']
+                                                        [index]['likes'] ==
                                                     0
                                                 ? false
                                                 : true,
@@ -184,6 +183,8 @@ class _ListrplaycommentState extends State<Listrplaycomment> {
                                                 //     newTaskModalBottomSheet(context);
                                                 appGet.commntFocusNode2
                                                     .requestFocus();
+                                                appGet.commentorreply = 2;
+                                                print('replytypr'+appGet.commentorreply.toString());
                                               },
                                               child: Text('Reply'))
                                         ],
@@ -192,11 +193,15 @@ class _ListrplaycommentState extends State<Listrplaycomment> {
                                   ],
                                 ),
                               ),
-                              Likornotcomment(
-                                  snapshot.data['data'][index]['id'].toString(),
-                                  snapshot.data['data'][index]['my_like']
-                                      .toString(),
-                                  2)
+                              SizedBox(
+                                width: 70.w,
+                                child: Likornotcomment(
+                                    snapshot.data['data'][index]['id']
+                                        .toString(),
+                                    snapshot.data['data'][index]['my_like']
+                                        .toString(),
+                                    2),
+                              )
                             ],
                           );
                         },

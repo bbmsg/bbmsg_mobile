@@ -18,6 +18,7 @@ import 'package:string_validator/string_validator.dart';
 
 String baseUrl = 'http://ec2-3-23-216-129.us-east-2.compute.amazonaws.com:7425';
 var dio = Dio();
+var diostream = Dio();
 AppGet appGet = myget.Get.put(AppGet());
 // DioCacheManager profileCach = DioCacheManager(CacheConfig());
 Logger logger = Logger();
@@ -95,7 +96,6 @@ Future<Map<String, dynamic>> retrieveUser(
     appGet.setToken(resultMap['accessToken']);
     appGet.setUserMap(resultMap);
     appGet.pr.hide();
-    logger.d(resultMap);
     return resultMap;
   } on DioError catch (e) {
     logger.e(e.response.data['message']);
@@ -139,6 +139,7 @@ getUsers({String limit = '10', String skip = '0'}) async {
           'Authorization': 'Bearer ${appGet.token}'
         }));
     Map<String, dynamic> mmnlist1 = response.data;
+    appGet.setUsersMap(mmnlist1);
   } on DioError catch (e) {
     logger.e(e.response.data['message']);
   }
@@ -153,6 +154,7 @@ Future<Map> getUser(String userId) async {
           'Authorization': 'Bearer ${appGet.token}'
         }));
     Map<String, dynamic> mmnlist1 = response.data;
+    appGet.otherUserMap.value = mmnlist1;
     return mmnlist1;
   } on DioError catch (e) {
     logger.e(e.response.data['message']);
@@ -184,7 +186,6 @@ getFollowers(bool followers) async {
           'Authorization': 'Bearer ${appGet.token}'
         }));
     Map<String, dynamic> mmnlist1 = response.data;
-    logger.d('//////////// followers $mmnlist1');
     appGet.setFollowers(mmnlist1);
   } on DioError catch (e) {
     logger.e(e.response.data['message']);
@@ -200,7 +201,6 @@ getFollowing(bool followers) async {
           'Authorization': 'Bearer ${appGet.token}'
         }));
     Map<String, dynamic> mmnlist1 = response.data;
-    logger.d('///////// following $mmnlist1');
     appGet.setFollowing(mmnlist1);
   } on DioError catch (e) {
     logger.e(e.response.data['message']);
@@ -220,7 +220,6 @@ getMyPosts({String myId}) async {
         }));
     Map<String, dynamic> mmnlist1 = response.data;
     appGet.setMyPosts(mmnlist1);
-    logger.d('//////// my posts $mmnlist1');
     return mmnlist1;
   } on DioError catch (e) {
     logger.e(e.response);
@@ -239,14 +238,15 @@ getMyLikes({String myId}) async {
         }));
     Map<String, dynamic> mmnlist1 = response.data;
     List data = mmnlist1['data'];
-
+    data = data.where((element) => element['post_id'] != null).toList();
     List likes = [];
+
     for (var x in data) {
       Map map = await getPost(postId: x['post_id'].toString());
 
       likes.add(map);
     }
-    logger.d('////////// my likes $likes');
+
     appGet.setMyLikes(likes);
 
     return mmnlist1;
@@ -258,7 +258,6 @@ getMyLikes({String myId}) async {
 /////////////////////////////////////////////////////////////////////////////////////
 Future<Map> getPost({String postId}) async {
   String url = baseUrl + '/posts/$postId';
-
   try {
     var response = await dio.get(url,
         options: Options(headers: {
@@ -269,7 +268,7 @@ Future<Map> getPost({String postId}) async {
 
     return mmnlist1;
   } on DioError catch (e) {
-    logger.e('my likes are ${e.response}');
+    logger.e('my posts are ${e.response}');
     return null;
   }
 }
@@ -287,7 +286,6 @@ Future<Map<String, dynamic>> getPosts({String userId}) async {
         }));
     Map<String, dynamic> mmnlist1 = response.data;
     appGet.setPosts(mmnlist1);
-    logger.d('posts $mmnlist1');
     return mmnlist1;
   } on DioError catch (e) {
     logger.e(e.response);
@@ -295,34 +293,53 @@ Future<Map<String, dynamic>> getPosts({String userId}) async {
 }
 
 /////////////////////////////////////////////////////////////////////////////////////
-followUser(String userId) async {
+followUser(String followId, bool isFollow, [String userId]) async {
   try {
-    var response = await dio.post(baseUrl + '/follows',
-        data: {'followee_id': userId},
-        options: Options(headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${appGet.token}'
-        }));
-    Map<String, dynamic> mmnlist1 = response.data;
-    getFollowers(true);
+    if (isFollow) {
+      var response = await dio.delete(baseUrl + '/follows/$followId',
+          options: Options(headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ${appGet.token}'
+          }));
+      Map<String, dynamic> mmnlist1 = response.data;
+
+      logger.e('unfollow is done $mmnlist1');
+    } else {
+      var response = await dio.post(baseUrl + '/follows',
+          data: {'followee_id': followId},
+          options: Options(headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ${appGet.token}'
+          }));
+      Map<String, dynamic> mmnlist1 = response.data;
+      logger.e('follow is done $mmnlist1');
+    }
+    if (userId != null) {
+      getUser(userId);
+    }
+
+    getFollowing(true);
   } on DioError catch (e) {
-    logger.e(e.response.data['message']);
+    logger.e('error in unfollow ${e.response.data['message']}');
   }
 }
 
-/////////////////////////////////////////////////////////////////////////////////////
-unFollowUser(String userId) async {
-  try {
-    var response = await dio.delete(baseUrl + '/follows/$userId',
-        options: Options(headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${appGet.token}'
-        }));
-    Map<String, dynamic> mmnlist1 = response.data;
-  } on DioError catch (e) {
-    logger.e(e.response.data['message']);
-  }
-}
+// /////////////////////////////////////////////////////////////////////////////////////
+// unFollowUser(String userId) async {
+//   logger.e(baseUrl + '/follows/$userId');
+//   logger.e(appGet.token);
+//   try {
+//     var response = await dio.delete(baseUrl + '/follows/$userId',
+//         options: Options(headers: {
+//           'Content-Type': 'application/json',
+//           'Authorization': 'Bearer ${appGet.token}'
+//         }));
+//     Map<String, dynamic> mmnlist1 = response.data;
+//     getFollowing(true);
+//   } on DioError catch (e) {
+//     logger.e(e.response.data['message']);
+//   }
+// }
 
 /////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -637,7 +654,7 @@ Future getAreplay(int id) async {
         options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
     print(response.statusCode);
     if (response.statusCode == 200) {
-      Map<String, dynamic> getAreplaywidlist = response.data;
+      getAreplaywidlist = response.data;
       appGet.setcommentreplytbyid(getAreplaywidlist);
       print('futurereply' + getAreplaywidlist.toString());
     }
@@ -650,7 +667,8 @@ Future getAreplay(int id) async {
 /////////////////////////////////////////////////////////////////////////////////////
 
 createreplay(int commentId, String content, int tags, File img) async {
-  String fileName = img.path.split('/').last;
+  print('coomint id to' + commentId.toString());
+  // String fileName = img.path.split('/').last;
   try {
     var response = await dio.post(baseUrl + '/replies',
         data: {
@@ -660,6 +678,7 @@ createreplay(int commentId, String content, int tags, File img) async {
           'content': content
         },
         options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
+
     Map<String, dynamic> mmnlist1 = response.data;
   } on DioError catch (e) {
     logger.e(e.response.data['message']);

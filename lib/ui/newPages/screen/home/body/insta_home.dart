@@ -33,24 +33,28 @@ class _InstaHomeState extends State<InstaHome> {
 
   int currentIndex = 0;
   bool hiapp = true;
-  var _pages = [
-    InstaBody(),
-    Searchscr(),
-    Createpostscr(),
-    Activityscr(),
-    Profilescreen()
-  ];
+  createPost() {
+    setState(() {
+      currentIndex = 2;
+      titles = 'Create post';
+      hiapp = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context,
         designSize: Size(375, 812), allowFontScaling: false);
     return new Scaffold(
-        appBar: hiapp
-            ? Headbar(titles,1)
-           
-            : null,
-        body: _pages[currentIndex],
+        backgroundColor: Colors.grey[200],
+        appBar: hiapp ? Headbar(titles, 1) : null,
+        body: [
+          InstaBody(createPost),
+          Searchscr(),
+          Createpostscr(),
+          Activityscr(),
+          Profilescreen()
+        ][currentIndex],
         bottomNavigationBar: new Container(
           color: Colors.white,
           height: 50.0,

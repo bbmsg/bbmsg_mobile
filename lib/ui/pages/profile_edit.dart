@@ -119,7 +119,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                             ? appGet.userMap['user']['profile_picture'] != null
                                 ? CachedNetworkImageProvider(
                                     appGet.userMap['user']['profile_picture'])
-                                : AssetImage('assets/pngs/logo.png')
+                                : AssetImage('assets/pngs/back2.jpg')
                             : FileImage(file))),
               ),
             ),

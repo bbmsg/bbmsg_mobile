@@ -25,7 +25,7 @@ class _SplashState extends State<Splash> {
   AppGet appGet = Get.put(AppGet());
   getAllVariables() async {
     token = SPHelper.spHelper.getToken();
-    SPHelper.spHelper.getFingerprintSetingd();
+
     appGet.setToken(token);
 
     if (token != null) {
@@ -42,6 +42,7 @@ class _SplashState extends State<Splash> {
         getPosts();
         getMyPosts(myId: '${map['user']['id']}');
         getMyLikes(myId: '${map['user']['id']}');
+        getUsers();
       }
     }
   }
@@ -74,8 +75,6 @@ class _SplashState extends State<Splash> {
         )));
   }
 }
-
-
 
 //mop@mop.com
 //Admin@2020

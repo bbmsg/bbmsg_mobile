@@ -17,10 +17,10 @@ class _AddcommentsState extends State<Addcomments> {
   AppGet appGet = Get.find();
 
   TextEditingController commentcontroller = new TextEditingController();
-@override
+  @override
   void initState() {
     super.initState();
-  //  appGet.commntFocusNode    = FocusNode();
+    //  appGet.commntFocusNode    = FocusNode();
   }
   // void dispose() {
   //   // Clean up the focus node when the Form is disposed.
@@ -32,40 +32,43 @@ class _AddcommentsState extends State<Addcomments> {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-          height: 50.h,
-          child: Center(
-              child: Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                border: Border.all(width: 2, color: Colors.blue)),
-            child: Row(
-              children: [
-                Flexible(
-                  child: TextField(
-                    // focusNode: appGet.commntFocusNode,
-                    textInputAction: TextInputAction.done,
-                    textAlign: TextAlign.left,
-                    onSubmitted: (value) {
-                      print('add comment');
-                      createComment(
-                          widget.postid, commentcontroller.text, null, null);
-                      commentcontroller.text = '';
-                    },
-                    controller: commentcontroller,
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                      fillColor: Colors.white, 
-                      // filled: true,
-                      border: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      hintText: 'Add comment..',
-                      hintStyle: TextStyle(fontSize: 16),
-                      contentPadding: EdgeInsets.only(top: 0, left: 10),
-                    ),
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+          padding: EdgeInsets.symmetric(horizontal: 10.w),
+          height: 40.h,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30),
+              border: Border.all(width: 2, color: Color(0xffB8B7B7))),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Flexible(
+                child: Text('Add comment..'),
+                // child: TextField(
+                //   // focusNode: appGet.commntFocusNode,
+                //   textInputAction: TextInputAction.done,
+                //   textAlign: TextAlign.left,
+                //   onSubmitted: (value) {
+                //     print('add comment');
+                //     createComment(
+                //         widget.postid, commentcontroller.text, null, null);
+                //     commentcontroller.text = '';
+                //   },
+                //   controller: commentcontroller,
+                //   keyboardType: TextInputType.text,
+                //   decoration: InputDecoration(
+                //     fillColor: Colors.white,
+                //     // filled: true,
+                //     border: InputBorder.none,
+                //     focusedBorder: InputBorder.none,
+                //     hintText: 'Add comment..',
+                //     hintStyle: TextStyle(fontSize: 16),
+                //     contentPadding: EdgeInsets.only(top: 0, left: 10),
+                //   ),
+                // ),
+              ),
+              Container(
+                width: 90.w,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SizedBox(
                       width: 25.w,
@@ -76,32 +79,17 @@ class _AddcommentsState extends State<Addcomments> {
                           ),
                           onPressed: null),
                     ),
-                    Container(
-                      width: 27.w,
-                      child: Stack(
-                        children: [
-                          Positioned(
-                              top: 14.h,
-                              left: 7.w,
-                              child: Container(
-                                width: 20.w,
-                                height: 20.h,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.black),
-                              )),
-                          Positioned(
-                              child: IconButton(
-                                  icon: Icon(
-                                    FontAwesomeIcons.solidSmile,
-                                    color: Colors.yellow[600],
-                                  ),
-                                  onPressed: null))
-                        ],
-                      ),
+                    SizedBox(
+                      width: 25.w,
+                      child: IconButton(
+                          icon: Icon(
+                            FontAwesomeIcons.solidSmile,
+                            color: Colors.yellow[600],
+                          ),
+                          onPressed: null),
                     ),
                     SizedBox(
-                      width: 30.w,
+                      width: 25.w,
                       child: IconButton(
                           icon: Icon(
                             FontAwesomeIcons.plusSquare,
@@ -111,9 +99,9 @@ class _AddcommentsState extends State<Addcomments> {
                     ),
                   ],
                 ),
-              ],
-            ),
-          ))),
+              ),
+            ],
+          )),
     );
   }
 }

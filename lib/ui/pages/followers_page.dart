@@ -8,8 +8,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FollowersPage extends StatelessWidget {
   AppGet appGet = Get.find();
-  followUserFun(String id) {
-    followUser(id);
+  followFun(String userId, String followId, bool isFollowed) {
+    followUser(followId, isFollowed, userId);
   }
 
   @override
@@ -36,7 +36,7 @@ class FollowersPage extends StatelessWidget {
                 userName: appGet.followers['data'][index]['user']['name'],
                 isFollow: appGet.followers['data'][index]['user']
                     ['isFollowedByMe'],
-                fun: followUserFun,
+                fun: followFun,
                 id: appGet.followers['data'][index]['user']['id'].toString(),
               );
             },

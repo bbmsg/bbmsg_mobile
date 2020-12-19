@@ -5,9 +5,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class Likornotcomment extends StatefulWidget {
   final String commentid;
   final String likeornotno;
-  final int commnorreply;
-///commnorreply= 1 then comment// commnorreply=2 the reply
-  Likornotcomment(this.commentid, this.likeornotno,this.commnorreply, {Key key})
+  final int commnt_or_reply;
+
+  ///commnorreply= 1 then comment// commnorreply=2 the reply
+  Likornotcomment(this.commentid, this.likeornotno, this.commnt_or_reply,
+      {Key key})
       : super(key: key);
 
   @override
@@ -25,41 +27,40 @@ class _LikornotcommentState extends State<Likornotcomment> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: IconButton(
-          icon: Icon(
+        child: GestureDetector(
+      onTap: () {
+        switch (widget.commnt_or_reply) {
+          case 1:
             likeornot
-                // testico
-                ? Icons.favorite
-                : FontAwesomeIcons.heart,
-            color: likeornot
-                // testico
-                ? Colors.red
-                : Colors.black,
-            size: 14,
-          ),
-          onPressed: () {
-            switch (widget.commnorreply) {
-              case 1:
-                 likeornot
                 ? removelike(int.parse(widget.likeornotno))
                 : likecomment(int.parse(widget.commentid));
-                break;
-                case 2:
-                  likeornot
+            break;
+          case 2:
+            likeornot
                 ? removelike(int.parse(widget.likeornotno))
                 : likereply(int.parse(widget.commentid));
-                break;
-              default:
-            }
-           
-                
-            setState(() {
-              likeornot = !likeornot;
-            });
-            setState(() {
-              print(likeornot.toString() + widget.likeornotno.toString());
-            });
-          }),
-    );
+            break;
+          default:
+        }
+
+        setState(() {
+          likeornot = !likeornot;
+        });
+        setState(() {
+          print(likeornot.toString() + widget.likeornotno.toString());
+        });
+      },
+      child: Icon(
+        likeornot
+            // testico
+            ? Icons.favorite
+            : FontAwesomeIcons.heart,
+        color: likeornot
+            // testico
+            ? Colors.red
+            : Colors.black,
+        size: 20,
+      ),
+    ));
   }
 }
