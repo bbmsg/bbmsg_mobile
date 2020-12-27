@@ -47,7 +47,7 @@ class _HeadbarState extends State<Headbar> {
                 child: IconButton(
                   icon: SvgPicture.asset('assets/svgs/send.svg'),
                   onPressed: () {
-                    getPosts();
+                    getActivity();
                     // String token = SPHelper.spHelper.getToken();
 
                     // UserCredential userCredential = await signInWithTwitter();

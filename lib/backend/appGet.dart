@@ -64,7 +64,7 @@ class AppGet extends GetxController {
   }
 
   var pr = ProgressDialogUtils.createProgressDialog(Get.context);
-
+  var mapActivity = {}.obs;
   Map myPost = {};
   Map commentpost = {};
   Map commentpostbyid = {};

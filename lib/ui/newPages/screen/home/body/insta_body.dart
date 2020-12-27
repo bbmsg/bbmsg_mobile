@@ -142,21 +142,25 @@ class HeaderMock extends StatelessWidget {
                                   )),
                                 )
                               : Container(
-                                  alignment: Alignment.center,
-                                  height: ScreenUtil().setWidth(40),
-                                  width: ScreenUtil().setWidth(40),
-                                  decoration: new BoxDecoration(
-                                    color: primaryColor,
-                                    shape: BoxShape.circle,
+                                  margin: EdgeInsets.symmetric(horizontal: 4.w),
+                                  height: 70.h,
+                                  width: 70.w,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Color(0xff047AF2),
+                                    image: DecorationImage(
+                                        colorFilter: ColorFilter.mode(
+                                            Colors.black.withOpacity(0.4),
+                                            BlendMode.dstATop),
+                                        image:
+                                            AssetImage('assets/pngs/back2.jpg'),
+                                        fit: BoxFit.cover),
                                   ),
-                                  child: Text(
-                                    appGet.userMap['user']['name']
-                                        .toString()[0]
-                                        .toUpperCase(),
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold),
-                                  ),
+                                  child: Center(
+                                      child: Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                  )),
                                 )
                           : appGet.usersMap['data'][index - 1]
                                       ['profile_picture'] !=

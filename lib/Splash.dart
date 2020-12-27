@@ -25,6 +25,7 @@ class _SplashState extends State<Splash> {
   AppGet appGet = Get.put(AppGet());
   getAllVariables() async {
     token = SPHelper.spHelper.getToken();
+    logger.e(token);
 
     appGet.setToken(token);
 
@@ -43,6 +44,7 @@ class _SplashState extends State<Splash> {
         getMyPosts(myId: '${map['user']['id']}');
         getMyLikes(myId: '${map['user']['id']}');
         getUsers();
+        getActivity();
       }
     }
   }
@@ -62,6 +64,7 @@ class _SplashState extends State<Splash> {
         // logger.e(appGet.userMap['user']['profile_picture']);
         // Get.to(TestApi());
         token == null ? Get.off(MainPage()) : Get.off(InstaHome(0));
+        // token == null ? Get.off(MainPage()) : Get.off(TestApi());
       } else {
         CustomDialougs.utils
             .showDialoug(messageKey: 'network_error', titleKey: 'alert');

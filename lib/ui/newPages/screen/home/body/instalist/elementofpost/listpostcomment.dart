@@ -158,6 +158,7 @@ class _ListcommentpostState extends State<Listcommentpost> {
     }
   }
 
+  TextEditingController commentcontroller = new TextEditingController();
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context,
@@ -366,7 +367,44 @@ class _ListcommentpostState extends State<Listcommentpost> {
                               )
                             : Center(child: CircularProgressIndicator());
                   }),
-            )
+            ),
+            Container(
+                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+                height: 95.h,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all(width: 2, color: Color(0xffB8B7B7))),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      // child: Text('Add comment..'),
+                      child: TextField(
+                        // focusNode: appGet.commntFocusNode,
+                        textInputAction: TextInputAction.done,
+                        textAlign: TextAlign.left,
+                        onSubmitted: (value) {
+                          print('add comment');
+                          createComment(widget.post['id'],
+                              commentcontroller.text, null, null);
+                          commentcontroller.text = '';
+                        },
+                        controller: commentcontroller,
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          fillColor: Colors.white,
+                          // filled: true,
+                          border: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          hintText: 'Add comment..',
+                          hintStyle: TextStyle(fontSize: 16),
+                          contentPadding: EdgeInsets.only(top: 0, left: 10),
+                        ),
+                      ),
+                    ),
+                  ],
+                ))
           ],
         )
 

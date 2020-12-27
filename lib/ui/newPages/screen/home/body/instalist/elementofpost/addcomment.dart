@@ -65,41 +65,6 @@ class _AddcommentsState extends State<Addcomments> {
                 //   ),
                 // ),
               ),
-              Container(
-                width: 90.w,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      width: 25.w,
-                      child: IconButton(
-                          icon: Icon(
-                            Icons.favorite,
-                            color: Colors.red,
-                          ),
-                          onPressed: null),
-                    ),
-                    SizedBox(
-                      width: 25.w,
-                      child: IconButton(
-                          icon: Icon(
-                            FontAwesomeIcons.solidSmile,
-                            color: Colors.yellow[600],
-                          ),
-                          onPressed: null),
-                    ),
-                    SizedBox(
-                      width: 25.w,
-                      child: IconButton(
-                          icon: Icon(
-                            FontAwesomeIcons.plusSquare,
-                            size: 20,
-                          ),
-                          onPressed: null),
-                    ),
-                  ],
-                ),
-              ),
             ],
           )),
     );
