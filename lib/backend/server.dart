@@ -12,6 +12,7 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart' as myget;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:string_validator/string_validator.dart';
@@ -278,7 +279,7 @@ Future<Map> getPost({String postId}) async {
 Future<Map<String, dynamic>> getPosts({String userId, int skip = 0}) async {
   String prefix = userId != null
       ? '/posts?user_id=$userId&\$limit=100'
-      : '/posts?\$limit=10&\$skip=$skip';
+      : '/posts?\$limit=100&\$skip=$skip';
   String url = baseUrl + prefix;
 
   try {
@@ -290,6 +291,7 @@ Future<Map<String, dynamic>> getPosts({String userId, int skip = 0}) async {
     Map<String, dynamic> mmnlist1 = response.data;
 
     appGet.setPosts(mmnlist1['data']);
+    print(mmnlist1);
     return mmnlist1;
   } on DioError catch (e) {
     logger.e(e.response);
@@ -794,54 +796,126 @@ Future removelike(int id) async {
 /////////////////////////////////////////////////////////////////////////////////////
 
 Future getActivity({String limit = '10', String skip = '0'}) async {
-  logger.e(appGet.token);
-  Map map = {
-    "day": "25/12/2020",
-    "posts": [
-      {
-        "id": 20,
-        "user_id": 13,
-        "content": "اللهم انا نسألك الجنة وما قرب لها من قول او عمل",
-        "media": [
-          {
-            "originalname": "_uhdocean33.jpeg",
-            "filename": "1608934442604__uhdocean33.jpeg",
-            "type": "image/jpeg",
-            "size": 3105357,
-            "url":
-                "https://bbmsg-dev.s3.amazonaws.com/1608934442604__uhdocean33.jpeg"
-          }
-        ],
-        "tags": [],
-        "public": true,
-        "created_at": "2020-12-25T22:14:47.974Z",
-        "updated_at": "2020-12-25T22:14:47.974Z"
-      }
-    ],
-    "comments": [
-      {
-        "id": 7,
-        "post_id": 1,
-        "user_id": 13,
-        "content": "nice",
-        "media": null,
-        "tags": [],
-        "created_at": "2020-12-25T23:43:29.734Z",
-        "updated_at": "2020-12-25T23:43:29.734Z"
-      }
-    ],
-    "replies": [],
-    "followers": [],
-    "following": []
-  };
-  appGet.mapActivity.value = map;
-  // try {
-  //   var response = await dio.get(baseUrl + '/activity?\$limit=$limit',
-  //       options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
-  //   List mmnlist1 = response.data;
-  //   logger.e(mmnlist1);
-  //   return mmnlist1;
-  // } on DioError catch (e) {
-  //   logger.e(e.response.data['message']);
-  // }
+  try {
+    var response = await dio.get(
+        baseUrl + '/activities?\$limit=$limit&\$skip=$skip',
+        options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
+    Map mmnlist1 = response.data;
+    appGet.mapActivity.value = mmnlist1;
+    return mmnlist1;
+  } on DioError catch (e) {
+    logger.e(e.response.data['message']);
+  }
+}
+
+Future creatstory(File images, String content, bool public) async {
+  appGet.pr.show();
+  print('image');
+  String fileName;
+  FormData frmdat;
+  if (images != null) {
+    fileName = images.path.split('/').last;
+    frmdat = FormData.fromMap({
+      'content': content.toString(),
+      'public': public,
+      'media': await MultipartFile.fromFile(
+        images.path,
+        filename: fileName,
+      )
+    });
+  } else {
+    frmdat =
+        FormData.fromMap({'content': content, 'public': public, 'media': null});
+  }
+  print('image' + fileName.toString());
+
+  try {
+    // appGet.pr.hide();
+    var response = await dio.post(baseUrl + '/stories',
+        data: frmdat,
+        options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
+    Map<String, dynamic> mmnlist1 = response.data;
+
+    appGet.pr.hide();
+    logger.d(mmnlist1);
+    return true;
+  } on DioError catch (e) {
+    appGet.pr.hide();
+    logger.e(e.response.data['message']);
+    return false;
+  }
+}
+
+Future creatstoryvideo(PickedFile images, String content, bool public) async {
+  print('video');
+
+  try {
+    var response = await dio.post(
+      baseUrl + '/stories',
+      options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}),
+      data: FormData.fromMap({
+        'content': content,
+        'public': public,
+        'media': await MultipartFile.fromFile(
+          images.path,
+          filename: 'story.mp4',
+        )
+      }),
+    );
+    Map<String, dynamic> mmnlist1 = response.data;
+
+    return mmnlist1;
+  } on DioError catch (e) {
+    logger.e(e.response.data['message']);
+  }
+}
+
+Future<Map<String, dynamic>> getstory(String limit) async {
+  String prefix = '/stories?\$limit=$limit';
+  String url = baseUrl + prefix;
+  print('appGet.token' + appGet.token);
+  try {
+    var response = await dio.get(url,
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${appGet.token}'
+        }));
+    Map<String, dynamic> mmnlist1 = response.data;
+    print(mmnlist1.toString());
+    appGet.setStory(mmnlist1);
+    logger.e(appGet.story.length.toString());
+    return mmnlist1;
+  } on DioError catch (e) {
+    logger.e(e.response);
+  }
+}
+
+Future<bool> createPostwithvedio(String content, PickedFile images) async {
+  appGet.pr.show();
+
+  // var multiParts = await MultipartFile.fromFile(
+  //   images.path,
+  //   filename: 'pp.mp4',
+  // );
+
+  try {
+    var response = await dio.post(baseUrl + '/posts',
+        data: FormData.fromMap({
+          'content': content,
+          'media[]': await MultipartFile.fromFile(
+            images.path,
+            filename: 'pp.mp4',
+          )
+        }),
+        options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
+    Map<String, dynamic> mmnlist1 = response.data;
+    getMyPosts(myId: appGet.userMap['user']['id'].toString());
+    appGet.pr.hide();
+    logger.d(mmnlist1);
+    return true;
+  } on DioError catch (e) {
+    appGet.pr.hide();
+    logger.e(e.response.data['message']);
+    return false;
+  }
 }

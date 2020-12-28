@@ -4,7 +4,7 @@ import 'package:bbmsg_mobile/utils/ProgressDialogUtils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
-
+import 'dart:io';
 class AppGet extends GetxController {
   double screenWidth;
   double screenHeight;
@@ -14,6 +14,8 @@ class AppGet extends GetxController {
   var followers = {}.obs;
   var following = {}.obs;
   var posts = [].obs;
+  var story = Map().obs;
+
   Map testMap = {};
   var appBarTitleStyle = TextStyle().obs;
   bool isFingerprint;
@@ -22,6 +24,7 @@ class AppGet extends GetxController {
   var otherUserMap = {}.obs;
   var gLikes = [].obs;
   var usersMap = {}.obs;
+  File postvideo;
 
   setUsersMap(Map map) {
     this.usersMap.value = map;
@@ -32,7 +35,9 @@ class AppGet extends GetxController {
     this.otherUserMap.value = map;
     logger.e(otherUserMap);
   }
-
+setStory(Map map) {
+    this.story.value = map;
+  }
   setMyLikes(List map) {
     this.myLikes.value = map;
   }

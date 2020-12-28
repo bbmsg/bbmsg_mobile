@@ -1,4 +1,5 @@
 import 'package:bbmsg_mobile/backend/appGet.dart';
+import 'package:bbmsg_mobile/ui/newPages/screen/home/body/instalist/elementofpost/videoCard.dart';
 import 'package:bbmsg_mobile/ui/pages/app_settings.dart';
 import 'package:bbmsg_mobile/ui/pages/followers_page.dart';
 import 'package:bbmsg_mobile/ui/pages/following_page.dart';
@@ -244,11 +245,17 @@ class Profilescreen extends StatelessWidget {
                                   print(appGet.myPosts['data'][index]['media']
                                       .first['url']);
                                 },
-                                child: CachedNetworkImage(
-                                    fit: BoxFit.cover,
-                                    imageUrl: appGet
-                                        .myPosts['data'][index]['media']
-                                        .first['url']),
+                                child:
+//
+// appGet.myPosts['data'][index]['media'].first['url'].toString().substring(appGet.myPosts['data'][index]['media'].length - 3 )==
+//                               'mp4'? VideoCard( appGet.myPosts['data'][index]['media']
+//                                       .first['url']).toString():
+
+                                    CachedNetworkImage(
+                                        fit: BoxFit.cover,
+                                        imageUrl: appGet
+                                            .myPosts['data'][index]['media']
+                                            .first['url']),
                               );
                             },
                           )

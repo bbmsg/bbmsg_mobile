@@ -267,7 +267,7 @@ class _ListcommentpostState extends State<Listcommentpost> {
                                             horizontal: 20.w, vertical: 5.h),
                                         child: Row(
                                           children: [
-                                            appGet.userMap['user']
+                                            snapshot.data[index]['author']
                                                         ['profile_picture'] !=
                                                     null
                                                 ? Container(
@@ -282,8 +282,8 @@ class _ListcommentpostState extends State<Listcommentpost> {
                                                           new DecorationImage(
                                                         fit: BoxFit.fill,
                                                         image: CachedNetworkImageProvider(
-                                                            appGet.userMap[
-                                                                    'user'][
+                                                            snapshot.data[index]
+                                                                    ['author'][
                                                                 'profile_picture']),
                                                       ),
                                                     ),
@@ -300,7 +300,7 @@ class _ListcommentpostState extends State<Listcommentpost> {
                                                       shape: BoxShape.circle,
                                                     ),
                                                     child: Text(
-                                                      appGet.posts[index]
+                                                      snapshot.data[index]
                                                               ['author']['name']
                                                           .toString()[0]
                                                           .toUpperCase(),
@@ -319,7 +319,7 @@ class _ListcommentpostState extends State<Listcommentpost> {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    appGet.posts[index]
+                                                    snapshot.data[index]
                                                             ['author']['name']
                                                         .toString(),
                                                     style: TextStyle(

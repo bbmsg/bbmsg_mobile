@@ -1,6 +1,7 @@
 import 'package:bbmsg_mobile/backend/server.dart';
 import 'package:bbmsg_mobile/ui/newPages/activity.dart';
 import 'package:bbmsg_mobile/ui/newPages/createpost.dart';
+import 'package:bbmsg_mobile/ui/newPages/screen/activity/activity.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/home/headappbars/head_bar.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/profile/profile.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/search/searchscr.dart';
@@ -25,6 +26,7 @@ class _InstaHomeState extends State<InstaHome> {
     super.initState();
     titles = 'post';
     getcomments();
+
     currentIndex = widget.scrindex;
     if (widget.scrindex == 2) {
       hiapp = false;
@@ -52,7 +54,7 @@ class _InstaHomeState extends State<InstaHome> {
           InstaBody(createPost),
           Searchscr(),
           Createpostscr(),
-          Activityscr(),
+          ActivityPage(),
           Profilescreen()
         ][currentIndex],
         bottomNavigationBar: new Container(

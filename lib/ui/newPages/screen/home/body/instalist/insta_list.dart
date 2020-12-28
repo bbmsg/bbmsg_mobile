@@ -325,8 +325,8 @@ class _InstaListState extends State<InstaList> {
                                                     shape: BoxShape.circle,
                                                   ),
                                                   child: Text(
-                                                    appGet.posts[index]
-                                                            ['author']['name']
+                                                    appGet.userMap['user']
+                                                            ['name']
                                                         .toString()[0]
                                                         .toUpperCase(),
                                                     style: TextStyle(

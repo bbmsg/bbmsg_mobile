@@ -41,6 +41,7 @@ class _SplashState extends State<Splash> {
         getFollowers(true);
         getFollowing(true);
         getPosts();
+        getstory('30');
         getMyPosts(myId: '${map['user']['id']}');
         getMyLikes(myId: '${map['user']['id']}');
         getUsers();
