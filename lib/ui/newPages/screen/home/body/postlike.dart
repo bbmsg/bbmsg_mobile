@@ -42,9 +42,9 @@ class _PostlikeState extends State<Postlike> {
               new Row(
                 children: <Widget>[
                   new IconButton(
-                    icon: new Icon(isPressed == false
-                        ? FontAwesomeIcons.heart
-                        : Icons.favorite),
+                    icon: isPressed == false
+                        ? SvgPicture.asset('assets/svgs/heart.svg')
+                        : SvgPicture.asset('assets/svgs/Shape.svg'),
                     color: isPressed == false ? Colors.black : Colors.red,
                     onPressed: () {
                       isPressed

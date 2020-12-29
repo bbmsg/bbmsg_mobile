@@ -24,8 +24,8 @@ class _HeadbarState extends State<Headbar> {
       centerTitle: true,
       elevation: 0.0,
       leading: IconButton(
-        icon: Icon(
-          widget.ico != 1 ? Icons.arrow_back_ios : Icons.camera_alt_outlined,
+        icon: SvgPicture.asset(
+          'assets/svgs/camera.svg',
           color: Colors.black,
         ),
         onPressed: () {
