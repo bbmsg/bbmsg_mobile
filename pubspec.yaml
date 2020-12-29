@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -27,7 +27,7 @@ dependencies:
   flutter_svg: ^0.19.1
   smooth_page_indicator: ^0.2.0
   localize_and_translate: ^3.0.2
-  connectivity: 
+  connectivity:
   auto_size_text: ^2.1.0
   dio: ^3.0.10
   dio_http_cache: ^0.2.11
@@ -55,12 +55,9 @@ dependencies:
   story_view: ^0.12.6
   video_player: ^1.0.1
   flutter_speed_dial: ^1.2.5
+  image_editor_pro: ^1.0.6
   intl: ^0.16.1
   google_fonts: ^1.1.1
-
-
- 
-
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -78,10 +75,10 @@ flutter:
   fonts:
     - family: header_font
       fonts:
-        - asset:  assets/fonts/Montserrat.ttf  
+        - asset: assets/fonts/Montserrat.ttf
     - family: second_header
       fonts:
-        - asset:  assets/fonts/SFProText.ttf  
+        - asset: assets/fonts/SFProText.ttf
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -93,9 +90,6 @@ flutter:
     - assets/pngs/
     - assets/langs/
     - assets/ico/
- 
-
-  
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

@@ -586,6 +586,7 @@ Future getAcommentlist(int id) async {
 /////////////////////////////////////////////////////////////////////////////////////
 
 Future createComment(int postId, String content, File img, File img2) async {
+  print(appGet.token);
   String fileName = img == null ? null : img.path.split('/').last;
   String fileName2 = img2 == null ? null : img2.path.split('/').last;
   try {

@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'dart:io';
+
 class AppGet extends GetxController {
   double screenWidth;
   double screenHeight;
@@ -15,7 +16,7 @@ class AppGet extends GetxController {
   var following = {}.obs;
   var posts = [].obs;
   var story = Map().obs;
-
+  var completcycle=false.obs;
   Map testMap = {};
   var appBarTitleStyle = TextStyle().obs;
   bool isFingerprint;
@@ -35,9 +36,11 @@ class AppGet extends GetxController {
     this.otherUserMap.value = map;
     logger.e(otherUserMap);
   }
-setStory(Map map) {
+
+  setStory(Map map) {
     this.story.value = map;
   }
+
   setMyLikes(List map) {
     this.myLikes.value = map;
   }

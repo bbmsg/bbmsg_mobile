@@ -2,7 +2,6 @@ import 'package:bbmsg_mobile/backend/server.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 
 class Headbar extends StatefulWidget with PreferredSizeWidget {
   @override
@@ -48,15 +47,7 @@ class _HeadbarState extends State<Headbar> {
                 child: IconButton(
                   icon: SvgPicture.asset('assets/svgs/send.svg'),
                   onPressed: () {
-                    DateTime data = DateTime.parse('2020-12-28T13:31:44.453Z');
-                    logger.e(DateFormat.yMd().format(data));
-                    logger.e(DateFormat.yMMMEd().format(data));
-                    logger.e(DateFormat.yMMMM().format(data));
-                    logger.e(DateFormat.yMMMMEEEEd().format(data));
-                    logger.e(DateFormat.yMMMMd().format(data));
-                    logger.e(DateFormat.yMMMd().format(data));
-                    logger.e(DateFormat.Md().format(data));
-
+                    getActivity();
                     // String token = SPHelper.spHelper.getToken();
 
                     // UserCredential userCredential = await signInWithTwitter();

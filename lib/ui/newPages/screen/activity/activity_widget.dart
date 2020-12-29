@@ -1,5 +1,4 @@
 import 'package:bbmsg_mobile/backend/server.dart';
-import 'package:bbmsg_mobile/utils/data_formatter.dart';
 import 'package:bbmsg_mobile/values/app_colors.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';

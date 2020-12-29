@@ -127,6 +127,7 @@ class _InstaHomeState extends State<InstaHome> {
                       currentIndex = 3;
                       titles = 'Activity';
                       hiapp = true;
+                      getActivity();
                     });
                   },
                 ),

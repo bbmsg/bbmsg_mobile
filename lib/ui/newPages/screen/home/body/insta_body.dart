@@ -1,4 +1,5 @@
 import 'package:bbmsg_mobile/backend/appGet.dart';
+import 'package:bbmsg_mobile/ui/newPages/screen/home/story/newstory.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/home/story/opennewstory.dart';
 import 'package:bbmsg_mobile/values/app_colors.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'instalist/insta_list.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/home/story/elementstroy/photostoryshow.dart';
+import 'package:bbmsg_mobile/ui/newPages/screen/home/story/elementstroy/pageviewstory.dart';
 
 class InstaBody extends StatelessWidget {
   Function fun;
@@ -111,7 +113,7 @@ class HeaderMock extends StatelessWidget {
               ],
             ),
           ),
-          appGet.story['data'] != null
+          appGet.story['data'].length > 0
               ? Container(
                   height: 100.h,
                   child: ListView.builder(
@@ -119,13 +121,11 @@ class HeaderMock extends StatelessWidget {
                     itemCount: appGet.story['data'].length,
                     itemBuilder: (context, index) {
                       return index == 0
-                          ? appGet.story['data'][index]['author']
-                                      ['profile_picture'] !=
-                                  null
+                          ? appGet.userMap['profile_picture'] != null
                               ? InkWell(
                                   onTap: () {
                                     print('object');
-                                    Get.to(Opennewstory());
+                                    Get.to(Newstory());
                                   },
                                   child: Container(
                                     margin:
@@ -140,9 +140,8 @@ class HeaderMock extends StatelessWidget {
                                               Colors.black.withOpacity(0.4),
                                               BlendMode.dstATop),
                                           image: CachedNetworkImageProvider(
-                                              appGet.story['data'][index]
-                                                      ['author']
-                                                  ['profile_picture']),
+                                              appGet
+                                                  .userMap['profile_picture']),
                                           fit: BoxFit.cover),
                                     ),
                                     child: Center(
@@ -155,7 +154,8 @@ class HeaderMock extends StatelessWidget {
                               : InkWell(
                                   onTap: () {
                                     print('object');
-                                    Get.to(Opennewstory());
+                                    // Get.to(Opennewstory());
+                                    Get.to(Newstory());
                                   },
                                   child: Container(
                                     margin:
@@ -178,42 +178,17 @@ class HeaderMock extends StatelessWidget {
                                       Icons.add,
                                       color: Colors.white,
                                     )),
-                                  )
-                                  //  Container(
-                                  //   alignment: Alignment.center,
-                                  //   height: ScreenUtil().setWidth(40),
-                                  //   width: ScreenUtil().setWidth(40),
-                                  //   decoration: new BoxDecoration(
-                                  //     color: primaryColor,
-                                  //     shape: BoxShape.circle,
-                                  //   ),
-                                  //   child: Text(
-                                  //     appGet.userMap['user']['name']
-                                  //             .toString()[0]
-                                  //             .toUpperCase() +
-                                  //         ' +',
-                                  //     style: TextStyle(
-                                  //         color: Colors.white,
-                                  //         fontWeight: FontWeight.bold),
-                                  //   ),
-                                  // ),
-                                  )
-                          : appGet.story['data'][index - 1]['media'] != null
+                                  ))
+                          : appGet.story['data'][index]['total'] != 0
                               ? InkWell(
                                   onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (_) => PhotoStoryshow(
-                                                  'tt',
-                                                  appGet.story['data']
-                                                          [index - 1]['media']
-                                                          ['url']
-                                                      .toString(),
-                                                  appGet.story['data']
-                                                          [index - 1]['content']
-                                                      .toString(),
-                                                )));
+                                    Get.to(
+                                        Pageviewstory(appGet.story['data'], 1));
+
+                                    // Get.to(PhotoStoryshow(
+                                    //     'tt',
+                                    //     appGet.story['data'][index]
+                                    //         ['stories']));
                                   },
                                   child: Container(
                                     margin:
@@ -224,31 +199,36 @@ class HeaderMock extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(10),
                                       color: Color(0xff047AF2),
                                       image: DecorationImage(
-                                          image: CachedNetworkImageProvider(
-                                              appGet.story['data'][index - 1]
-                                                      ['media']['url']
-                                                  .toString()),
+                                          image: appGet.story['data'][index]
+                                                      ['stories'][0]['media'] ==
+                                                  null
+                                              ? AssetImage(
+                                                  'assets/pngs/story.jpg')
+                                              : CachedNetworkImageProvider(
+                                                  appGet.story['data'][index]
+                                                          ['stories'][0]
+                                                          ['media']['url']
+                                                      .toString()),
                                           fit: BoxFit.cover),
                                     ),
                                     child: Center(
-                                      child: Text(appGet.story['data']
-                                              [index - 1]['content']
-                                          .toString()),
+                                      child: Text(
+                                        appGet.story['data'][index]['stories']
+                                                [0]['content']
+                                            .toString(),
+                                        textAlign: TextAlign.center,
+                                      ),
                                     ),
                                   ),
                                 )
                               : InkWell(
                                   onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (_) => PhotoStoryshow(
-                                                  'tt',
-                                                  null,
-                                                  appGet.story['data']
-                                                          [index - 1]['content']
-                                                      .toString(),
-                                                )));
+                                    Get.to(
+                                        Pageviewstory(appGet.story['data'], 1));
+                                    // Get.to(PhotoStoryshow(
+                                    //     'tt',
+                                    //     appGet.story['data'][index]
+                                    //         ['stories']));
                                   },
                                   child: Container(
                                     alignment: Alignment.center,
@@ -261,7 +241,7 @@ class HeaderMock extends StatelessWidget {
                                       color: primaryColor,
                                     ),
                                     child: Text(
-                                      appGet.story['data'][index - 1]['author']
+                                      appGet.story['data'][index]['author']
                                               ['name']
                                           .toString()
                                           .split(' ')[0]

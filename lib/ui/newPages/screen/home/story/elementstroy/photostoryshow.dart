@@ -5,11 +5,10 @@ import 'package:story_view/story_view.dart';
 
 class PhotoStoryshow extends StatefulWidget {
   final String uui;
-  final String photo;
-  final String content;
 
-  PhotoStoryshow(this.uui, this.photo, this.content, {Key key})
-      : super(key: key);
+  final List storylist;
+
+  PhotoStoryshow(this.uui, this.storylist, {Key key}) : super(key: key);
 
   @override
   _PhotoStoryshowState createState() => _PhotoStoryshowState();
@@ -39,40 +38,38 @@ class _PhotoStoryshowState extends State<PhotoStoryshow> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Story'),
-      ),
+      // appBar: AppBar(
+      //   title: Text('Story'),
+      // ),
       body: Stack(
         children: [
           Hero(
             tag: widget.uui,
             child: StoryView(
               storyItems: [
-                for (var i = 0; i < appGet.story['data'].length; i++)
-                  (appGet.story['data'][i]['media'] != null
-                      ? (appGet.story['data'][i]['media']['url']
+                for (var i = 0; i < widget.storylist.length; i++)
+                  (widget.storylist[i]['media'] != null
+                      ? (widget.storylist[i]['media']['url']
                                   .toString()
-                                  .substring(appGet.story['data'][i]['media']
-                                              ['url']
+                                  .substring(widget.storylist[i]['media']['url']
                                           .toString()
                                           .length -
                                       3) ==
                               'mp4'
                           ? StoryItem.pageVideo(
-                              appGet.story['data'][i]['media']['url']
-                                  .toString(),
+                              widget.storylist[i]['media']['url'].toString(),
                               controller: storyController,
                               duration: Duration(seconds: 10),
                               caption:
-                                  appGet.story['data'][i]['content'].toString())
+                                  widget.storylist[i]['content'].toString())
                           : StoryItem.pageImage(
-                              url: appGet.story['data'][i]['media']['url']
+                              url: widget.storylist[i]['media']['url']
                                   .toString(),
                               controller: storyController,
                               caption:
-                                  appGet.story['data'][i]['content'].toString()))
+                                  widget.storylist[i]['content'].toString()))
                       : StoryItem.text(
-                          title: appGet.story['data'][i]['content'].toString(),
+                          title: widget.storylist[i]['content'].toString(),
                           backgroundColor: Colors.orange,
                           roundedTop: true,
                         )),
@@ -80,9 +77,12 @@ class _PhotoStoryshowState extends State<PhotoStoryshow> {
               repeat: false,
               onStoryShow: (s) {
                 print("Showing a story");
+                appGet.completcycle = false.obs;
+
               },
               onComplete: () {
                 print("Completed a cycle");
+                appGet.completcycle = true.obs;
               },
               progressPosition: ProgressPosition.top,
               controller: storyController,
