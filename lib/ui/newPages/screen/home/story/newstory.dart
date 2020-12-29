@@ -198,13 +198,13 @@ class _NewstoryState extends State<Newstory> {
               labelStyle: TextStyle(fontSize: 18.0),
               onTap: () {
                 if (imagorvideo == 1) {
-                  creatstory(_image, contentcontroller.text, true)
+                  creatstory(_image, contentcontroller.text+'.', true)
                       .then((value) {
                     getstory('30');
                   });
                 } else {
                   //save video
-                  creatstoryvideo(savvideo, contentcontroller.text, true)
+                  creatstoryvideo(savvideo, contentcontroller.text+'.', true)
                       .then((value) {
                     getstory('30');
                   });

@@ -16,6 +16,7 @@ import 'package:string_validator/string_validator.dart';
 
 class Listcommentpost extends StatefulWidget {
   final dynamic post;
+  
 
   Listcommentpost(this.post, {Key key}) : super(key: key);
 
@@ -332,12 +333,19 @@ class _ListcommentpostState extends State<Listcommentpost> {
                                                           MainAxisAlignment
                                                               .spaceBetween,
                                                       children: [
-                                                        Text(
-                                                          snapshot.data[index]
-                                                                  ['content']
-                                                              .toString(),
-                                                          style: TextStyle(
-                                                            fontSize: 14,
+                                                        SizedBox(
+                                                          width: 300,
+                                                          child: Text(
+                                                            snapshot.data[index]
+                                                                    ['content']
+                                                                .toString(),
+                                                            maxLines: 6,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            style: TextStyle(
+                                                              fontSize: 14,
+                                                            ),
                                                           ),
                                                         ),
                                                         Container(

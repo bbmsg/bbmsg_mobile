@@ -31,7 +31,7 @@ class _PostDetailscrState extends State<PostDetailscr> {
   @override
   void initState() {
     ids = widget.id;
-    getPosts(userId: ids);
+  //  getPosts(userId: ids);
     super.initState();
   }
 

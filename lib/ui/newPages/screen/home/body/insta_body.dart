@@ -32,6 +32,7 @@ class HeaderMock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return Obx(() {
       return Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -113,149 +114,151 @@ class HeaderMock extends StatelessWidget {
               ],
             ),
           ),
-          appGet.story['data'].length > 0
-              ? Container(
-                  height: 100.h,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: appGet.story['data'].length,
-                    itemBuilder: (context, index) {
-                      return index == 0
-                          ? appGet.userMap['profile_picture'] != null
-                              ? InkWell(
-                                  onTap: () {
-                                    print('object');
-                                    Get.to(Newstory());
-                                  },
-                                  child: Container(
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 4.w),
-                                    height: 70.h,
-                                    width: 70.w,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: Color(0xff047AF2),
-                                      image: DecorationImage(
-                                          colorFilter: ColorFilter.mode(
-                                              Colors.black.withOpacity(0.4),
-                                              BlendMode.dstATop),
-                                          image: CachedNetworkImageProvider(
-                                              appGet
-                                                  .userMap['profile_picture']),
-                                          fit: BoxFit.cover),
-                                    ),
-                                    child: Center(
-                                        child: Icon(
-                                      Icons.add,
-                                      color: Colors.white,
-                                    )),
-                                  ),
-                                )
-                              : InkWell(
-                                  onTap: () {
-                                    print('object');
-                                    // Get.to(Opennewstory());
-                                    Get.to(Newstory());
-                                  },
-                                  child: Container(
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 4.w),
-                                    height: 70.h,
-                                    width: 70.w,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: Color(0xff047AF2),
-                                      image: DecorationImage(
-                                          colorFilter: ColorFilter.mode(
-                                              Colors.black.withOpacity(0.4),
-                                              BlendMode.dstATop),
-                                          image: AssetImage(
-                                              'assets/pngs/back2.jpg'),
-                                          fit: BoxFit.cover),
-                                    ),
-                                    child: Center(
-                                        child: Icon(
-                                      Icons.add,
-                                      color: Colors.white,
-                                    )),
-                                  ))
-                          : appGet.story['data'][index]['total'] != 0
-                              ? InkWell(
-                                  onTap: () {
-                                    Get.to(
-                                        Pageviewstory(appGet.story['data'], 1));
+         appGet.story['data'].length > 0
+              ? Row(
+                children: [
+                 
+                                appGet.userMap['profile_picture'] != null
+                                    ? InkWell(
+                                        onTap: () {
+                                          print('object');
+                                          Get.to(Newstory());
+                                        },
+                                        child: Container(
+                                          margin:
+                                              EdgeInsets.symmetric(horizontal: 4.w),
+                                          height: 100.h,
+                                          width: 70.w,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(10),
+                                            color: Color(0xff047AF2),
+                                            image: DecorationImage(
+                                                colorFilter: ColorFilter.mode(
+                                                    Colors.black.withOpacity(0.4),
+                                                    BlendMode.dstATop),
+                                                image: CachedNetworkImageProvider(
+                                                    appGet
+                                                        .userMap['profile_picture']),
+                                                fit: BoxFit.cover),
+                                          ),
+                                          child: Center(
+                                              child: Icon(
+                                            Icons.add,
+                                            color: Colors.white,
+                                          )),
+                                        ),
+                                      )
+                                    : InkWell(
+                                        onTap: () {
+                                          print('object');
+                                          // Get.to(Opennewstory());
+                                          Get.to(Newstory());
+                                        },
+                                        child: Container(
+                                          margin:
+                                              EdgeInsets.symmetric(horizontal: 4.w),
+                                          height: 100.h,
+                                          width: 70.w,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(10),
+                                            color: Color(0xff047AF2),
+                                            image: DecorationImage(
+                                                colorFilter: ColorFilter.mode(
+                                                    Colors.black.withOpacity(0.4),
+                                                    BlendMode.dstATop),
+                                                image: AssetImage(
+                                                    'assets/pngs/back2.jpg'),
+                                                fit: BoxFit.cover),
+                                          ),
+                                          child: Center(
+                                              child: Icon(
+                                            Icons.add,
+                                            color: Colors.white,
+                                          )),
+                                        )),
+                  Expanded(
+                                      child: Container(
+                        height: 100.h,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: appGet.story['data'].length,
+                          itemBuilder: (context, index) {
+                            
+                            return 
+                                appGet.story['data'][index]['total'] != 0
+                                    ? InkWell(
+                                        onTap: () {
+                                          Get.to(
+                                              Pageviewstory(appGet.story['data'], 1));
 
-                                    // Get.to(PhotoStoryshow(
-                                    //     'tt',
-                                    //     appGet.story['data'][index]
-                                    //         ['stories']));
-                                  },
-                                  child: Container(
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 4.w),
-                                    height: 70.h,
-                                    width: 70.w,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: Color(0xff047AF2),
-                                      image: DecorationImage(
-                                          image: appGet.story['data'][index]
-                                                      ['stories'][0]['media'] ==
-                                                  null
-                                              ? AssetImage(
-                                                  'assets/pngs/story.jpg')
-                                              : CachedNetworkImageProvider(
-                                                  appGet.story['data'][index]
-                                                          ['stories'][0]
-                                                          ['media']['url']
-                                                      .toString()),
-                                          fit: BoxFit.cover),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        appGet.story['data'][index]['stories']
-                                                [0]['content']
-                                            .toString(),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              : InkWell(
-                                  onTap: () {
-                                    Get.to(
-                                        Pageviewstory(appGet.story['data'], 1));
-                                    // Get.to(PhotoStoryshow(
-                                    //     'tt',
-                                    //     appGet.story['data'][index]
-                                    //         ['stories']));
-                                  },
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 4.w),
-                                    height: 70.h,
-                                    width: 70.w,
-                                    decoration: new BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: primaryColor,
-                                    ),
-                                    child: Text(
-                                      appGet.story['data'][index]['author']
-                                              ['name']
-                                          .toString()
-                                          .split(' ')[0]
-                                          .toUpperCase(),
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                );
-                    },
+                                          
+                                        },
+                                        child: Container(
+                                          margin:
+                                              EdgeInsets.symmetric(horizontal: 4.w),
+                                          height: 70.h,
+                                          width: 70.w,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(10),
+                                            color: Color(0xff047AF2),
+                                            image: DecorationImage(
+                                                image: appGet.story['data'][index]
+                                                            ['stories'][0]['media'] ==
+                                                        null
+                                                    ? AssetImage(
+                                                        'assets/pngs/story.jpg')
+                                                    : CachedNetworkImageProvider(
+                                                        appGet.story['data'][index]
+                                                                ['stories'][0]
+                                                                ['media']['url']
+                                                            .toString()),
+                                                fit: BoxFit.cover),
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              appGet.story['data'][index]['stories']
+                                                      [0]['content']
+                                                  .toString(),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : InkWell(
+                                        onTap: () {
+                                          Get.to(
+                                              Pageviewstory(appGet.story['data'], 1));
+                                        
+                                        },
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          margin:
+                                              EdgeInsets.symmetric(horizontal: 4.w),
+                                          height: 70.h,
+                                          width: 70.w,
+                                          decoration: new BoxDecoration(
+                                            borderRadius: BorderRadius.circular(10),
+                                            color: primaryColor,
+                                          ),
+                                          child: Text(
+                                            appGet.story['data'][index]['author']
+                                                    ['name']
+                                                .toString()
+                                                .split(' ')[0]
+                                                .toUpperCase(),
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      );
+                          },
+                        ),
+                      ),
                   ),
-                )
-              : Container()
+                ],
+              )
+              : Container(),
         ],
       );
     });

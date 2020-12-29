@@ -33,6 +33,7 @@ class _PostlikeState extends State<Postlike> {
     ScreenUtil.init(context,
         designSize: Size(375, 812), allowFontScaling: false);
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+    setState(() {});
     return Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -52,6 +53,7 @@ class _PostlikeState extends State<Postlike> {
                           : like(widget.postid);
                       setState(() {
                         isPressed = !isPressed;
+                        getPosts();
                       });
 
                       isPressed

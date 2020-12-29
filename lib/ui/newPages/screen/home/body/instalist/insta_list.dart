@@ -1,6 +1,7 @@
 import 'package:bbmsg_mobile/backend/appGet.dart';
 import 'package:bbmsg_mobile/backend/server.dart';
 import 'package:bbmsg_mobile/ui/newPages/element/timstampclass.dart';
+import 'package:bbmsg_mobile/ui/newPages/postdetails.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/home/body/insta_body.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/home/body/instalist/elementofpost/commentbyid.dart';
 
@@ -27,48 +28,83 @@ class InstaList extends StatefulWidget {
 class _InstaListState extends State<InstaList> {
   int griditm = 1;
   String isarabic;
-
-  postimg(String txt, List img) {
+  int liklocal=0;
+  postimg(String txt, List img, int ind) {
     // print('media' + img[1]['url'].toString());
 
     if (img.isEmpty) {
-      return Padding(
-        padding: EdgeInsets.only(right: 25.w, left: 25.w),
-        child: Text(
-          txt,
-          textAlign:
-              isAlpha(txt.split(' ')[0]) ? TextAlign.left : TextAlign.right,
+      return InkWell(
+        onTap: () {
+          //  Get.to(PostDetailscr(
+          //                               appGet.posts[ind]['id'].toString(),
+          //                               appGet.posts[ind]['author']
+          //                                       ['profile_picture']
+          //                                   .toString(),
+          //                               appGet.posts[ind]['author']['name']
+          //                                   .toString(),
+          //                                appGet.posts[ind]['media'][0]['url'].toString(),
+          //                               appGet.posts[ind]['likes'].toString(),
+          //                               appGet.posts[ind]['comments']
+          //                                   .toString(),
+          //                               appGet.posts[ind]['content'].toString(),
+          //                             ));
+        },
+        child: Padding(
+          padding: EdgeInsets.only(right: 25.w, left: 25.w),
+          child: Text(
+            txt,
+            textAlign:
+                isAlpha(txt.split(' ')[0]) ? TextAlign.left : TextAlign.right,
+          ),
         ),
       );
     } else {
       print('photo');
 
       img.length > 1 ? griditm = 2 : griditm = 1;
-      return Container(
-          width: 200.w,
-          child: Column(
-            crossAxisAlignment: isAlpha(txt.split(' ')[0])
-                ? CrossAxisAlignment.start
-                : CrossAxisAlignment.end,
-            children: [
-              Container(
-                padding: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 10.h),
-                child: Text(
-                  txt,
-                  textAlign: isAlpha(txt) ? TextAlign.left : TextAlign.right,
-                  style: TextStyle(fontSize: 16),
+      return InkWell(
+        onTap: () {
+          //  Get.to(PostDetailscr(
+          //                             appGet.posts[ind]['id'].toString(),
+          //                             appGet.posts[ind]['author']
+          //                                     ['profile_picture']
+          //                                 .toString(),
+          //                             appGet.posts[ind]['author']['name']
+          //                                 .toString(),
+          //                             appGet.posts[ind]['media'][0]['url'].toString(),
+          //                             appGet.posts[ind]['likes'].toString(),
+          //                             appGet.posts[ind]['comments']
+          //                                 .toString(),
+          //                             appGet.posts[ind]['content'].toString(),
+          //                           ));
+        },
+        child: Container(
+            width: 200.w,
+            child: Column(
+              crossAxisAlignment: isAlpha(txt.split(' ')[0])
+                  ? CrossAxisAlignment.start
+                  : CrossAxisAlignment.end,
+              children: [
+                Container(
+                  padding:
+                      EdgeInsets.only(left: 10.w, right: 10.w, bottom: 10.h),
+                  child: Text(
+                    txt,
+                    textAlign: isAlpha(txt) ? TextAlign.left : TextAlign.right,
+                    style: TextStyle(fontSize: 16),
+                  ),
                 ),
-              ),
-              Container(
-                height: 250.h,
-                width: double.infinity,
-                child: CachedNetworkImage(
-                  fit: BoxFit.cover,
-                  imageUrl: img[0]['url'].toString(),
+                Container(
+                  height: 250.h,
+                  width: double.infinity,
+                  child: CachedNetworkImage(
+                    fit: BoxFit.cover,
+                    imageUrl: img[0]['url'].toString(),
+                  ),
                 ),
-              ),
-            ],
-          ));
+              ],
+            )),
+      );
     }
   }
 
@@ -79,6 +115,7 @@ class _InstaListState extends State<InstaList> {
     Size size = MediaQuery.of(context).size;
     ScreenUtil.init(context,
         designSize: Size(375, 812), allowFontScaling: false);
+      
     setState(() {});
     return Obx(() {
       return appGet.posts.isNullOrBlank
@@ -241,27 +278,28 @@ class _InstaListState extends State<InstaList> {
                                   // GestureDetector(
                                   //   onTap: () {
                                   //     Get.to(PostDetailscr(
-                                  //       appGet.posts['data'][index]['id'].toString(),
-                                  //       appGet.posts['data'][index]['author']
+                                  //       appGet.posts[index]['id'].toString(),
+                                  //       appGet.posts[index]['author']
                                   //               ['profile_picture']
                                   //           .toString(),
-                                  //       appGet.posts['data'][index]['author']['name']
+                                  //       appGet.posts[index]['author']['name']
                                   //           .toString(),
-                                  //       appGet.posts['data'][index]['media'].toString(),
-                                  //       appGet.posts['data'][index]['likes'].toString(),
-                                  //       appGet.posts['data'][index]['comments']
+                                  //       appGet.posts[index]['media'].toString(),
+                                  //       appGet.posts[index]['likes'].toString(),
+                                  //       appGet.posts[index]['comments']
                                   //           .toString(),
-                                  //       appGet.posts['data'][index]['content'].toString(),
+                                  //       appGet.posts[index]['content'].toString(),
                                   //     ));
                                   //   },
                                   //   child: new Image.network(
-                                  //     appGet.posts['data'][index]['media'][0]['url'].toString(),
+                                  //     appGet.posts[index]['media'][0]['url'].toString(),
                                   //     fit: BoxFit.cover,
                                   //   ),
                                   // ),
                                   postimg(
                                       appGet.posts[index]['content'].toString(),
-                                      appGet.posts[index]['media']),
+                                      appGet.posts[index]['media'],
+                                      index),
                                   Container(
                                     child: Postlike(
                                       appGet.posts[index]['id'],
@@ -272,21 +310,22 @@ class _InstaListState extends State<InstaList> {
                                   // Padding(
                                   //   padding: const EdgeInsets.all(8.0),
                                   //   child: Container(
-                                  //       child: appGet.posts['data'][index]['id'] > 0
+                                  //       child: appGet.posts[index]['id'] > 0
                                   //           ? Commentbyid(
-                                  //               appGet.posts['data'][index]['id'],
-                                  //               appGet.posts['data'][index]['comments'],
+                                  //               appGet.posts[index]['id'],
+                                  //               appGet.posts[index]['comments'],
                                   //             )
                                   //           : Commentbyid(
                                   //               0,
-                                  //               appGet.posts['data'][index]['comments'],
+                                  //               appGet.posts[index]['comments'],
                                   //             )),
                                   // ),
                                   Divider(),
                                   GestureDetector(
                                     onTap: () {
-                                      Get.to(
-                                          Listcommentpost(appGet.posts[index]));
+                                      Get.to(Listcommentpost(
+                                        appGet.posts[index],
+                                      ));
                                     },
                                     child: Padding(
                                       padding: const EdgeInsets.fromLTRB(
