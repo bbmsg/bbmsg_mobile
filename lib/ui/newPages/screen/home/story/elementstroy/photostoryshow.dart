@@ -1,4 +1,5 @@
 import 'package:bbmsg_mobile/backend/appGet.dart';
+import 'package:bbmsg_mobile/backend/server.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:story_view/story_view.dart';
@@ -78,11 +79,14 @@ class _PhotoStoryshowState extends State<PhotoStoryshow> {
               onStoryShow: (s) {
                 print("Showing a story");
                 appGet.completcycle = false.obs;
-
               },
               onComplete: () {
-                print("Completed a cycle");
+                logger.e("Completed a cycle");
                 appGet.completcycle = true.obs;
+                appGet.currentPage++;
+                appGet.pagcontroller.animateToPage(appGet.currentPage,
+                    duration: Duration(milliseconds: 350),
+                    curve: Curves.easeIn);
               },
               progressPosition: ProgressPosition.top,
               controller: storyController,

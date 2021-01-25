@@ -8,425 +8,393 @@ import 'package:bbmsg_mobile/ui/newPages/screen/home/body/postlike.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/home/headappbars/head_bar.dart';
 import 'package:bbmsg_mobile/ui/pages/profile_page.dart';
 import 'package:bbmsg_mobile/values/app_colors.dart';
+import 'package:bbmsg_mobile/values/styles.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:string_validator/string_validator.dart';
 
-class Listcommentpost extends StatefulWidget {
-  final dynamic post;
-  
-
-  Listcommentpost(this.post, {Key key}) : super(key: key);
-
-  @override
-  _ListcommentpostState createState() => _ListcommentpostState();
-}
-
-class _ListcommentpostState extends State<Listcommentpost> {
-  // void newTaskModalBottomSheet(context) {
-  //   showModalBottomSheet(
-  //       context: context,
-  //       builder: (BuildContext bc) {
-  //         return Container(
-  //           padding: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 5.h),
-  //           height: 40.h,
-  //           width: 350.w,
-  //           decoration: BoxDecoration(
-  //               color: Colors.white,
-  //               border: Border.all(width: 2, color: Colors.blue),
-  //               borderRadius: BorderRadius.circular(20)),
-  //           child: Scaffold(
-  //             backgroundColor: Colors.white,
-  //             body: Row(
-  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //               children: [
-  //                 Flexible(
-  //                   child: Container(
-  //                     padding: EdgeInsets.only(left: 10.w),
-  //                     width: 300.w,
-  //                     child: TextField(
-  //                       controller: replaycontroller,
-  //                       focusNode: appGet.commntFocusNode2,
-  //                       decoration: InputDecoration(
-  //                           border: InputBorder.none,
-  //                           focusedBorder: InputBorder.none,
-  //                           fillColor: Colors.white,
-  //                           hintText: 'Add reply'),
-  //                     ),
-  //                   ),
-  //                 ),
-  //                 Flexible(
-  //                     child: Container(
-  //                   child: SizedBox(
-  //                     width: 60.w,
-  //                     child: InkWell(
-  //                       onTap: () {
-  //                         if (replaycontroller.text == '') {
-  //                         } else if (commentpostid == null) {
-  //                         } else {
-  //                           createreplay(
-  //                               commentpostid, replaycontroller.text, 1, null);
-  //                         }
-  //                       },
-  //                       child: Text(
-  //                         'Post',
-  //                         style: TextStyle(color: Colors.blue, fontSize: 16),
-  //                       ),
-  //                     ),
-  //                   ),
-  //                 ))
-  //               ],
-  //             ),
-  //           ),
-  //         );
-  //       });
-  // }
-
-  FocusNode myFocusNode;
-  @override
-  void initState() {
-    super.initState();
-
-    appGet.commntFocusNode2 = FocusNode();
-    appGet.commentorreply = 1;
-  }
-
-  List<bool> isfav = new List<bool>();
-  int commentpostid;
-  @override
-  void dispose() {
-    // Clean up the focus node when the Form is disposed.
-
-    appGet.commntFocusNode2.dispose();
-
-    super.dispose();
-  }
+class PostDetailsa extends StatelessWidget {
+  int index;
+  PostDetailsa(this.index);
 
   TextEditingController replaycontroller = new TextEditingController();
   AppGet appGet = Get.find();
 
-  int commentidpublic = 0;
-  double hicontai = 50;
-  bool stopisfav = false;
-  bool testico = true;
-  bool showmor = false;
-  String textstr =
-      'gdfgdf dsafasf dfs f dsfsdf dasfsd gfdfg dfg fgdfg sdfsdf sdf dsf sdf sd sdf sdf sdf sdfsd ';
-
-  postimg(String txt, List img) {
-    // print('media' + img[1]['url'].toString());
-
-    if (img.isEmpty) {
-      return Padding(
-        padding: EdgeInsets.only(right: 25.w, left: 25.w),
-        child: Text(
-          txt,
-          textAlign:
-              isAlpha(txt.split(' ')[0]) ? TextAlign.left : TextAlign.right,
-        ),
-      );
-    } else {
-      print('photo');
-
-      return Container(
-          width: double.infinity,
-          child: Column(
-            crossAxisAlignment: isAlpha(txt.split(' ')[0])
-                ? CrossAxisAlignment.start
-                : CrossAxisAlignment.end,
-            children: [
-              Container(
-                padding: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 10.h),
-                child: Text(
-                  txt,
-                  textAlign: isAlpha(txt) ? TextAlign.left : TextAlign.right,
-                  style: TextStyle(fontSize: 16),
-                ),
-              ),
-              Container(
-                color: Colors.red,
-                height: 250.h,
-                width: double.infinity,
-                child: CachedNetworkImage(
-                  fit: BoxFit.cover,
-                  imageUrl: img[0]['url'].toString(),
-                ),
-              ),
-            ],
-          ));
-    }
-  }
-
   TextEditingController commentcontroller = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context,
-        designSize: Size(375, 812), allowFontScaling: false);
-    return Scaffold(
-        appBar: Headbar('Post Details', 3),
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16.0, 16.0, 8.0, 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      GestureDetector(
-                        onTap: () {
-                          appGet.setOtherUserMap(
-                              widget.post['author']['id'].toString());
-                          Get.to(ProfilePage(
-                            widget.post['author']['name'].toString(),
-                          ));
-                        },
-                        child: Row(
-                          children: [
-                            Container(
-                              height: ScreenUtil().setWidth(40),
-                              width: ScreenUtil().setWidth(40),
-                              decoration: new BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: new DecorationImage(
-                                    fit: BoxFit.fill,
-                                    image: widget.post['author']
-                                                ['profile_picture'] !=
-                                            null
-                                        ? CachedNetworkImageProvider(
-                                            widget.post['author']
-                                                    ['profile_picture']
-                                                .toString(),
-                                          )
-                                        : AssetImage('assets/pngs/logo.png')),
-                              ),
-                            ),
-                            new SizedBox(
-                              width: 10.0,
-                            ),
-                            Column(
-                              children: [
-                                SizedBox(
-                                  width: ScreenUtil().setWidth(150),
-                                  child: new Text(
-                                    widget.post['author']['name'].toString(),
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: ScreenUtil().setWidth(150),
-                                  child: new Text(
-                                    // "10 min",
-                                    readTimestamp(DateTime.parse(
-                                        widget.post['created_at'])),
-                                    style: TextStyle(color: Colors.grey[500]),
-                                  ),
-                                ),
-                              ],
-                            )
-                          ],
+    // TODO: implement build
+    return WillPopScope(
+      onWillPop: () {
+        appGet.postsComments.value = [];
+        return Future.value(true);
+      },
+      child: Scaffold(
+        appBar: Headbar('Post Details', 3, createPost),
+        body: Obx(() {
+          return Container(
+            child: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        PostHeader(index),
+                        Container(
+                          padding: EdgeInsets.only(
+                              left: 10.w, right: 10.w, bottom: 10.h),
+                          child: Text(
+                            appGet.posts[index]['content'],
+                            textAlign: isAlpha(appGet.posts[index]['content'])
+                                ? TextAlign.left
+                                : TextAlign.right,
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                        PostImages(
+                          images: appGet.posts[index]['media'],
+                        ),
+                        PostLikeAndCommentWidget(index),
+                        appGet.postsComments.isNotEmpty
+                            ? CommentsList(appGet.postsComments)
+                            : Container(
+                                height: 200.h,
+                                alignment: Alignment.center,
+                                child: Text(
+                                    'No comments! Write the first comment')),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  margin:
+                      EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: replaycontroller,
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide.none)),
                         ),
                       ),
+                      IconButton(
+                          icon: Icon(Icons.send),
+                          onPressed: () {
+                            createComment(appGet.posts[index]['id'],
+                                replaycontroller.text);
+                            replaycontroller.clear();
+                            FocusScope.of(context).unfocus();
+                          })
                     ],
                   ),
-                  new IconButton(
-                    icon: Icon(Icons.more_vert),
-                    onPressed: () {},
-                  )
-                ],
-              ),
+                )
+              ],
             ),
-            postimg(widget.post['content'].toString(), widget.post['media']),
-            Container(
-              child: Postlike(
-                widget.post['id'],
-                widget.post['my_like'],
-                widget.post['likes'],
-              ),
+          );
+        }),
+      ),
+    );
+  }
+}
+
+class CommentsList extends StatelessWidget {
+  List comments;
+  CommentsList(this.comments);
+  Widget generateComments() {
+    List<Widget> usersComments = comments.map((e) {
+      return Container(
+        margin: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
+        child: Row(
+          children: [
+            e['author']['profile_picture'] != null
+                ? Container(
+                    height: ScreenUtil().setWidth(30),
+                    width: ScreenUtil().setWidth(30),
+                    decoration: new BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: new DecorationImage(
+                          fit: BoxFit.fill,
+                          image: CachedNetworkImageProvider(
+                            e['author']['profile_picture'].toString(),
+                          )),
+                    ),
+                  )
+                : Container(
+                    alignment: Alignment.center,
+                    height: ScreenUtil().setWidth(30),
+                    width: ScreenUtil().setWidth(30),
+                    decoration: new BoxDecoration(
+                      color: primaryColor,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Text(
+                      e['author']['name'].toString()[0].toUpperCase(),
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+            SizedBox(
+              width: 10.w,
             ),
             Expanded(
-              child: FutureBuilder(
-                  future: getAcommentlist(widget.post['id']),
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    return snapshot.hasError
-                        ? Container()
-                        : snapshot.hasData
-                            ? ListView.builder(
-                                itemCount: snapshot.data.length,
-                                // .compareTo(0),
-                                itemBuilder: (BuildContext context, int index) {
-                                  // print('list lenngth'+snapshot.data.length.toString());
-
-                                  return Column(
-                                    children: [
-                                      Divider(),
-                                      Container(
-                                        margin: EdgeInsets.symmetric(
-                                            horizontal: 20.w, vertical: 5.h),
-                                        child: Row(
-                                          children: [
-                                            snapshot.data[index]['author']
-                                                        ['profile_picture'] !=
-                                                    null
-                                                ? Container(
-                                                    height: ScreenUtil()
-                                                        .setWidth(30),
-                                                    width: ScreenUtil()
-                                                        .setWidth(30),
-                                                    decoration:
-                                                        new BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      image:
-                                                          new DecorationImage(
-                                                        fit: BoxFit.fill,
-                                                        image: CachedNetworkImageProvider(
-                                                            snapshot.data[index]
-                                                                    ['author'][
-                                                                'profile_picture']),
-                                                      ),
-                                                    ),
-                                                  )
-                                                : Container(
-                                                    alignment: Alignment.center,
-                                                    height: ScreenUtil()
-                                                        .setWidth(30),
-                                                    width: ScreenUtil()
-                                                        .setWidth(30),
-                                                    decoration:
-                                                        new BoxDecoration(
-                                                      color: primaryColor,
-                                                      shape: BoxShape.circle,
-                                                    ),
-                                                    child: Text(
-                                                      snapshot.data[index]
-                                                              ['author']['name']
-                                                          .toString()[0]
-                                                          .toUpperCase(),
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                  ),
-                                            SizedBox(
-                                              width: 5.w,
-                                            ),
-                                            Expanded(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    snapshot.data[index]
-                                                            ['author']['name']
-                                                        .toString(),
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                  Container(
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        SizedBox(
-                                                          width: 300,
-                                                          child: Text(
-                                                            snapshot.data[index]
-                                                                    ['content']
-                                                                .toString(),
-                                                            maxLines: 6,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                            style: TextStyle(
-                                                              fontSize: 14,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        Container(
-                                                          child: Likornotcomment(
-                                                              snapshot
-                                                                  .data[index]
-                                                                      ['id']
-                                                                  .toString(),
-                                                              snapshot
-                                                                  .data[index][
-                                                                      'my_like']
-                                                                  .toString(),
-                                                              1),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              )
-                            : Center(child: CircularProgressIndicator());
-                  }),
+              child: Text(
+                e['content'],
+                // style: Styles.titleTextStyle
+                //     .copyWith(fontWeight: FontWeight.w400),
+              ),
             ),
-            Container(
-                padding: EdgeInsets.symmetric(horizontal: 10.w),
-                margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-                height: 95.h,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    border: Border.all(width: 2, color: Color(0xffB8B7B7))),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(
-                      // child: Text('Add comment..'),
-                      child: TextField(
-                        // focusNode: appGet.commntFocusNode,
-                        textInputAction: TextInputAction.done,
-                        textAlign: TextAlign.left,
-                        onSubmitted: (value) {
-                          print('add comment');
-                          createComment(widget.post['id'],
-                              commentcontroller.text, null, null);
-                          commentcontroller.text = '';
-                        },
-                        controller: commentcontroller,
-                        keyboardType: TextInputType.text,
-                        decoration: InputDecoration(
-                          fillColor: Colors.white,
-                          // filled: true,
-                          border: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          hintText: 'Add comment..',
-                          hintStyle: TextStyle(fontSize: 16),
-                          contentPadding: EdgeInsets.only(top: 0, left: 10),
-                        ),
-                      ),
-                    ),
-                  ],
-                ))
-          ],
-        )
+            // GestureDetector(onTap: (){
 
-        // Stack(children: [
-        //   new ,
-        //   Align(
-        //       alignment: Alignment.bottomCenter,
-        //       child: Padding(
-        //         padding: const EdgeInsets.all(8.0),
-        //         child: Container(
-        //             // color: Colors.red,
-        //             child: Addcommentsreply(widget.postid, 1)),
-        //       )),
-        // ]),
-        );
+            // },
+            //               child: SvgPicture.asset(e['my_like'] == 0
+            //       ? 'assets/svgs/heart.svg'
+            //       : 'assets/svgs/Shape.svg'),
+            // )
+          ],
+        ),
+      );
+    }).toList();
+    return Container(
+        margin: EdgeInsets.symmetric(
+          vertical: 5.h,
+        ),
+        child: Column(
+          children: usersComments,
+        ));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Container(child: generateComments());
+  }
+}
+
+class PostHeader extends StatelessWidget {
+  int index;
+  PostHeader(this.index);
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16.0, 16.0, 8.0, 16.0),
+      child: GestureDetector(
+        onTap: () {
+          appGet
+              .setOtherUserMap(appGet.posts[index]['author']['id'].toString());
+
+          Get.to(ProfilePage(
+            appGet.posts[index]['author']['name'].toString(),
+          ));
+        },
+        child: Row(
+          children: [
+            ///////////////
+            appGet.posts[index]['author']['profile_picture'] != null
+                ? Container(
+                    height: ScreenUtil().setWidth(40),
+                    width: ScreenUtil().setWidth(40),
+                    decoration: new BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: new DecorationImage(
+                          fit: BoxFit.fill,
+                          image: CachedNetworkImageProvider(
+                            appGet.posts[index]['author']['profile_picture']
+                                .toString(),
+                          )),
+                    ),
+                  )
+                : Container(
+                    alignment: Alignment.center,
+                    height: ScreenUtil().setWidth(40),
+                    width: ScreenUtil().setWidth(40),
+                    decoration: new BoxDecoration(
+                      color: primaryColor,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Text(
+                      appGet.posts[index]['author']['name']
+                          .toString()[0]
+                          .toUpperCase(),
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+            new SizedBox(
+              width: 10.0,
+            ),
+            Column(
+              children: [
+                SizedBox(
+                  width: ScreenUtil().setWidth(150),
+                  child: new Text(
+                    appGet.posts[index]['author']['name'].toString(),
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                SizedBox(
+                  width: ScreenUtil().setWidth(150),
+                  child: new Text(
+                    // "10 min",
+                    readTimestamp(
+                        DateTime.parse(appGet.posts[index]['created_at'])),
+                    style: TextStyle(color: Colors.grey[500]),
+                  ),
+                ),
+              ],
+            ),
+            Spacer(),
+            appGet.posts[index]['author']['id'] == appGet.userMap['user']['id']
+                ? GestureDetector(
+                    onTapDown: (TapDownDetails details) async {
+                      double left = details.globalPosition.dx;
+                      double top = details.globalPosition.dy;
+                      var x = await showMenu(
+                        context: context,
+                        position: RelativeRect.fromLTRB(left, top, 0, 0),
+                        items: [
+                          PopupMenuItem<String>(
+                              child: const Text('Delete post'),
+                              value: 'delete'),
+                        ],
+                        elevation: 8.0,
+                      );
+                      if (x == 'delete') {
+                        deletepost(appGet.posts[index]['id'], index);
+                        Get.back();
+                      }
+                    },
+                    child: Icon(Icons.more_vert))
+                : GestureDetector(
+                    onTapDown: (TapDownDetails details) async {
+                      double left = details.globalPosition.dx;
+                      double top = details.globalPosition.dy;
+                      var x = await showMenu(
+                        context: context,
+                        position: RelativeRect.fromLTRB(left, top, 0, 0),
+                        items: [
+                          PopupMenuItem<String>(
+                              child: const Text('Block'), value: 'block'),
+                          PopupMenuItem<String>(
+                              child: const Text('Report post'),
+                              value: 'report'),
+                        ],
+                        elevation: 8.0,
+                      );
+                      if (x == 'block') {
+                        blockUser(appGet.posts[index]['author']['id']);
+                        Get.back();
+                      } else if (x == 'report') {
+                        reportPost(appGet.posts[index]['id'], index);
+                        Get.back();
+                      }
+                    },
+                    child: Icon(Icons.more_vert)),
+            // IconButton(
+            //     icon: Icon(Icons.more_vert),
+            //     onPressed: () {
+
+            //     })
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class PostImages extends StatefulWidget {
+  List images;
+
+  PostImages({this.images});
+
+  @override
+  _PostWidgetState createState() => _PostWidgetState();
+}
+
+class _PostWidgetState extends State<PostImages> {
+  int indexPage = 0;
+
+  List<Widget> buildSlider() {
+    final List<Widget> imageSliders = widget.images
+        .map((item) => Container(
+              child: Container(
+                margin: EdgeInsets.all(5.0),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                  child: CachedNetworkImage(
+                    imageUrl: item['url'],
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    errorWidget: (context, url, error) {
+                      return Container(
+                        color: Colors.grey[300],
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/pngs/error.png',
+                              height: 25,
+                              color: Colors.black54,
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text('error_media'),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ))
+        .toList();
+
+    return imageSliders;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // List<String> tags =   widget.postMap['tags'];
+    // TODO: implement build
+    return Container(
+      child: Column(
+        children: [
+          Container(
+              child: CarouselSlider(
+                  items: buildSlider(),
+                  options: CarouselOptions(
+                    height: 300.h,
+                    viewportFraction: 1,
+                    initialPage: 0,
+                    reverse: false,
+                    enlargeCenterPage: true,
+                    scrollDirection: Axis.horizontal,
+                    onPageChanged: (index, reason) {
+                      this.indexPage = index;
+                      setState(() {});
+                    },
+                  ))),
+          Container(
+              child: AnimatedSmoothIndicator(
+            activeIndex: indexPage,
+            count: widget.images.length,
+            effect: WormEffect(dotHeight: 10.h, dotWidth: 10.w),
+          )),
+        ],
+      ),
+    );
   }
 }

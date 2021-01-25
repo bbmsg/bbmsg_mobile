@@ -36,6 +36,11 @@ registerNewUser({String userName, String credintial, String password}) async {
     Map<String, dynamic> resultMap = response.data;
     appGet.setToken(resultMap['accessToken']);
     appGet.setUserMap(resultMap);
+    logger.e(resultMap);
+
+    getPosts();
+    getUsers();
+
     appGet.pr.hide();
 
     myget.Get.off(InstaHome(0));
@@ -71,6 +76,7 @@ getUserToken(
     getUsers();
     getMyPosts(myId: '${resultMap['user']['id']}');
     getMyLikes(myId: '${resultMap['user']['id']}');
+    getstory('10');
     appGet.pr.hide();
 
     myget.Get.off(InstaHome(0));
@@ -275,11 +281,129 @@ Future<Map> getPost({String postId}) async {
   }
 }
 
+/////////////////////////////////////////////////////////////////////////////////////
+blockUser(int userId) async {
+  String url = baseUrl + '/blocks';
+  logger.e(url);
+  try {
+    Map map = {"blocked_id": userId};
+
+    var response = await dio.post(url,
+        data: map,
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${appGet.token}'
+        }));
+    Map<String, dynamic> resultMap = response.data;
+    logger.e(resultMap);
+    getPosts();
+    getAllBlocks();
+    appGet.pr.hide();
+  } on DioError catch (e) {
+    appGet.pr.hide();
+    logger.e(e);
+    // CustomDialougs.utils
+    //     .showDialoug(titleKey: 'Error', messageKey: e.response.data['message']);
+  }
+}
+
+unBlockUser(int userId) async {
+  String url = baseUrl + '/blocks/$userId';
+  logger.e(url);
+  try {
+    var response = await dio.delete(url,
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${appGet.token}'
+        }));
+    Map<String, dynamic> resultMap = response.data;
+    logger.e(resultMap);
+    getPosts();
+    getAllBlocks();
+    appGet.pr.hide();
+  } on DioError catch (e) {
+    appGet.pr.hide();
+    logger.e(e);
+    // CustomDialougs.utils
+    //     .showDialoug(titleKey: 'Error', messageKey: e.response.data['message']);
+  }
+}
+
+getAllBlocks() async {
+  String url = baseUrl + '/blocks';
+  logger.e(url);
+  try {
+    var response = await dio.get(url,
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${appGet.token}'
+        }));
+    Map<String, dynamic> resultMap = response.data;
+    logger.e(resultMap);
+    appGet.blockMap.value = resultMap;
+    appGet.pr.hide();
+  } on DioError catch (e) {
+    appGet.pr.hide();
+    logger.e(e);
+    // CustomDialougs.utils
+    //     .showDialoug(titleKey: 'Error', messageKey: e.response.data['message']);
+  }
+}
+
+reportPost(int postId, int index) async {
+  String url = baseUrl + '/reports';
+  Map map = {'reported_post_id': postId};
+  try {
+    var response = await dio.post(url,
+        data: map,
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${appGet.token}'
+        }));
+    Map<String, dynamic> resultMap = response.data;
+    CustomDialougs.utils
+        .showDialoug(titleKey: 'success', messageKey: resultMap['message']);
+    appGet.posts.removeAt(index);
+
+    appGet.pr.hide();
+  } on DioError catch (e) {
+    appGet.pr.hide();
+    logger.e(e);
+    // CustomDialougs.utils
+    //     .showDialoug(titleKey: 'Error', messageKey: e.response.data['message']);
+  }
+}
+
+reportUser(String userId) async {
+  String url = baseUrl + '/reports';
+  Map map = {'reported_user_id': userId};
+  try {
+    var response = await dio.post(url,
+        data: map,
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${appGet.token}'
+        }));
+    Map<String, dynamic> resultMap = response.data;
+    logger.e(resultMap);
+
+    appGet.pr.hide();
+  } on DioError catch (e) {
+    appGet.pr.hide();
+    logger.e(e);
+    // CustomDialougs.utils
+    //     .showDialoug(titleKey: 'Error', messageKey: e.response.data['message']);
+  }
+}
+// getAllBlocks() {}
+
 //////////////////////////////////////////////////////////////////////////////////////
-Future<Map<String, dynamic>> getPosts({String userId, int skip = 0}) async {
+Future<Map<String, dynamic>> getPosts(
+    {String userId, int skip = 0, int limit = 11}) async {
   String prefix = userId != null
-      ? '/posts?user_id=$userId&\$limit=100'
-      : '/posts?\$limit=100&\$skip=$skip';
+      ? '/posts?user_id=$userId&\$limit=$limit&\$sort[created_at]=-1'
+      : '/posts?\$limit=$limit&\$skip=$skip&\$sort[created_at]=-1';
+
   String url = baseUrl + prefix;
 
   try {
@@ -289,9 +413,10 @@ Future<Map<String, dynamic>> getPosts({String userId, int skip = 0}) async {
           'Authorization': 'Bearer ${appGet.token}'
         }));
     Map<String, dynamic> mmnlist1 = response.data;
+    appGet.postsCount = mmnlist1['total'];
 
     appGet.setPosts(mmnlist1['data']);
-    print(mmnlist1);
+    logger.e(appGet.posts);
     return mmnlist1;
   } on DioError catch (e) {
     logger.e(e.response);
@@ -489,6 +614,7 @@ Future<bool> createPost(String content, List<Asset> images) async {
         options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
     Map<String, dynamic> mmnlist1 = response.data;
     getMyPosts(myId: appGet.userMap['user']['id'].toString());
+    getPosts();
     appGet.pr.hide();
     logger.d(mmnlist1);
     return true;
@@ -519,11 +645,13 @@ editPost(int id, String content, File img, int tags) async {
 
 /////////////////////////////////////////////////////////////////////////////////////
 
-deletepost(int id) async {
+deletepost(int id, int index) async {
   try {
     var response = await dio.delete(baseUrl + '/posts/$id',
         options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
     Map<String, dynamic> mmnlist1 = response.data;
+    logger.e(mmnlist1);
+    appGet.posts.removeAt(index);
   } on DioError catch (e) {
     logger.e(e.response.data['message']);
   }
@@ -565,49 +693,37 @@ Future getAcomment(int id) async {
 bool listcomment1 = false;
 Map<String, dynamic> getAcomment1list;
 List getlistcomment;
-Future getAcommentlist(int id) async {
-  print('id' + id.toString());
-
-  // if (listcomment1 == false) {
+getAcommentlist(int id) async {
   try {
     var response = await dio.get(baseUrl + '/comments?post_id=$id',
         options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
     getlistcomment = response.data['data'];
-
-    // appGet.setcommentreplytbyidlist(getAcomment1list);
-    // print('comment id' + getAcomment1list.toString());
+    appGet.postsComments.value = getlistcomment;
   } on DioError catch (e) {
     logger.e(e.response.data['message']);
   }
   listcomment1 = true;
-  // } else {}
-  return getlistcomment;
 }
 /////////////////////////////////////////////////////////////////////////////////////
 
-Future createComment(int postId, String content, File img, File img2) async {
+Future createComment(int postId, String content) async {
   print(appGet.token);
-  String fileName = img == null ? null : img.path.split('/').last;
-  String fileName2 = img2 == null ? null : img2.path.split('/').last;
+  // String fileName = img == null ? null : img.path.split('/').last;
+  // String fileName2 = img2 == null ? null : img2.path.split('/').last;
   try {
     var response = await dio.post(baseUrl + '/comments',
         data: {
           'post_id': postId,
           'content': content,
 
-          'media': img == null
-              ? null
-              : await MultipartFile.fromFile(img.path, filename: fileName),
-
-          'media': img2 == null
-              ? null
-              : await MultipartFile.fromFile(img2.path, filename: fileName2),
+          'media': null,
 
           // 'tags': tags
         },
         options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
     Map<String, dynamic> mmnlist1 = response.data;
-    print('comment code' + response.statusCode.toString());
+    logger.e(mmnlist1);
+    getAcommentlist(postId);
   } on DioError catch (e) {
     logger.e(e.response.data['message']);
   }
@@ -735,7 +851,7 @@ Future getLikes(int id) async {
 
 /////////////////////////////////////////////////////////////////////////////////////
 
-Future like(int postId) async {
+Future like(int postId, [int index]) async {
   print(postId);
   try {
     var response = await dio.post(baseUrl + '/likes',
@@ -744,13 +860,30 @@ Future like(int postId) async {
         },
         options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
     Map<String, dynamic> mmnlist1 = response.data;
+    appGet.likePost(index, mmnlist1['id']);
+
+    logger.e(appGet.posts[index]);
 
     return mmnlist1;
   } on DioError catch (e) {
     logger.e(e.response.data['message']);
   }
 }
+/////////////////////////////////////////////////////////////////////////////////////
 
+Future removelike(int id, [int index]) async {
+  try {
+    var response = await dio.delete(baseUrl + '/likes/$id',
+        options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
+    Map<String, dynamic> mmnlist1 = response.data;
+    appGet.desLikePost(index);
+    logger.e(appGet.posts[index]);
+  } on DioError catch (e) {
+    logger.e(e.response.data['message']);
+  }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////
 Future likecomment(int commentid) async {
   print(commentid);
   try {
@@ -778,17 +911,6 @@ Future likereply(int replyid) async {
     Map<String, dynamic> mmnlist1 = response.data;
 
     return mmnlist1;
-  } on DioError catch (e) {
-    logger.e(e.response.data['message']);
-  }
-}
-/////////////////////////////////////////////////////////////////////////////////////
-
-Future removelike(int id) async {
-  try {
-    var response = await dio.delete(baseUrl + '/likes/$id',
-        options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
-    Map<String, dynamic> mmnlist1 = response.data;
   } on DioError catch (e) {
     logger.e(e.response.data['message']);
   }

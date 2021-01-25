@@ -30,7 +30,8 @@ class FollowersPage extends StatelessWidget {
             itemCount: appGet.followers['total'],
             itemBuilder: (context, index) {
               return FollowUserWidget(
-                address: appGet.followers['data'][index]['user']['address'],
+                address: appGet.followers['data'][index]['user']['address'] ??
+                    'No address defined',
                 imageUrl: appGet.followers['data'][index]['user']
                     ['profile_picture'],
                 userName: appGet.followers['data'][index]['user']['name'],

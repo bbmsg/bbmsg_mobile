@@ -53,8 +53,8 @@ class _AddcommentsreplyState extends State<Addcommentsreply> {
                         appGet.commentorreply.toString());
                     if (appGet.commentorreply == 1) {
                       print('add comment');
-                      createComment(
-                          widget.postid, commentcontroller.text, null, null);
+                      // createComment(
+                      //     widget.postid, commentcontroller.text, null, null);
                       commentcontroller.text = '';
                     } else {
                       print('add replay');

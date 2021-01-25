@@ -38,8 +38,7 @@ class _ListrplaycommentState extends State<Listrplaycomment> {
   @override
   Widget build(BuildContext context) {
     // getAcomment(widget.postid);
-    ScreenUtil.init(context,
-        designSize: Size(375, 812), allowFontScaling: false);
+
     return Container(
       child: Stack(children: [
         Container(
@@ -184,7 +183,9 @@ class _ListrplaycommentState extends State<Listrplaycomment> {
                                                 appGet.commntFocusNode2
                                                     .requestFocus();
                                                 appGet.commentorreply = 2;
-                                                print('replytypr'+appGet.commentorreply.toString());
+                                                print('replytypr' +
+                                                    appGet.commentorreply
+                                                        .toString());
                                               },
                                               child: Text('Reply'))
                                         ],

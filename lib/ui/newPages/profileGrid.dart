@@ -12,8 +12,6 @@ class ImageGrids extends StatefulWidget {
 class _ImageGridsState extends State<ImageGrids> {
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context,
-        designSize: Size(375, 812), allowFontScaling: false);
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
     return Container(
       margin: EdgeInsets.only(
@@ -23,8 +21,7 @@ class _ImageGridsState extends State<ImageGrids> {
       child: FutureBuilder(
         future: getPosts(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          return 
-           GridView.builder(
+          return GridView.builder(
               itemCount: 9,
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,

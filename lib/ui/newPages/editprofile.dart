@@ -15,8 +15,6 @@ class _EditprofilescrState extends State<Editprofilescr> {
   bool checkBoxValue2 = false;
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context,
-        designSize: Size(375, 812), allowFontScaling: false);
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
     return Scaffold(
       appBar: AppBar(

@@ -12,8 +12,6 @@ class Trendeslist extends StatefulWidget {
 class _TrendeslistState extends State<Trendeslist> {
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context,
-        designSize: Size(375, 812), allowFontScaling: false);
     return Container(
       height: ScreenUtil().setHeight(21),
       child: ListView(

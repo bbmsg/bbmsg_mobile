@@ -24,16 +24,26 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>bbmsg use music to give the user the ability to listen music in our app</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>bbmsg use calender to give the user the ability to upload his notes from calender to app</string>
 	<key>NSCameraUsageDescription</key>
 	<string>mashatel use user camera to pick images that user can share them</string>
+	<key>NSContactsUsageDescription</key>
+	<string>bbmsg is a social media app, so we use user contacts to help him to find his friends in our app</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>mashatel requires user’s location for better user experience.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>mashatel requires user’s location for better user experience.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>mashatel requires user’s location for better user experience.</string>
+	<key>NSMotionUsageDescription</key>
+	<string>bbmsg use motion to give the user the suitable content based on his situation</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>mashatel use user gallery to pick  images for the users to share</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>bbmsg use speech recognization to convert voice to words</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

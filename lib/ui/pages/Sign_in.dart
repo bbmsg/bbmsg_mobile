@@ -1,11 +1,13 @@
 import 'package:bbmsg_mobile/backend/server.dart';
 import 'package:bbmsg_mobile/services/connectvity_service.dart';
+import 'package:bbmsg_mobile/ui/pages/register_page.dart';
 import 'package:bbmsg_mobile/ui/widgets/TextField.dart';
 import 'package:bbmsg_mobile/ui/widgets/primary_button.dart';
 import 'package:bbmsg_mobile/ui/widgets/social_media_login.dart';
 import 'package:bbmsg_mobile/values/app_colors.dart';
 import 'package:bbmsg_mobile/values/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -149,20 +151,20 @@ class _SignInState extends State<SignIn> {
                             textKey: 'Login',
                           ),
                         ),
-                        SizedBox(
-                          height: 30.h,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            forgetPassword();
-                          },
-                          child: Text(
-                            translator.translate('Forget Password'),
-                            style: TextStyle(
-                                color: Color(0xFF717171), fontSize: 17),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
+                        // SizedBox(
+                        //   height: 30.h,
+                        // ),
+                        // GestureDetector(
+                        //   onTap: () {
+                        //     forgetPassword();
+                        //   },
+                        //   child: Text(
+                        //     translator.translate('Forget Password'),
+                        //     style: TextStyle(
+                        //         color: Color(0xFF717171), fontSize: 17),
+                        //     textAlign: TextAlign.center,
+                        //   ),
+                        // ),
                         SizedBox(
                           height: 40.h,
                         ),
@@ -175,20 +177,20 @@ class _SignInState extends State<SignIn> {
                             Expanded(child: Divider()),
                           ],
                         ),
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                        SocialMediaLogin(
-                          facebookLoginFun: this.facebookLogin,
-                          gmailLoginFun: this.gmailLogin,
-                          twitterLoginFun: this.twiterLogin,
-                        ),
+                        // SizedBox(
+                        //   height: 20.h,
+                        // ),
+                        // SocialMediaLogin(
+                        //   facebookLoginFun: this.facebookLogin,
+                        //   gmailLoginFun: this.gmailLogin,
+                        //   twitterLoginFun: this.twiterLogin,
+                        // ),
                         SizedBox(
                           height: 40.h,
                         ),
                         GestureDetector(
                           onTap: () {
-                            forgetPassword();
+                            Get.to(RegisterPage());
                           },
                           child: Text(
                             translator

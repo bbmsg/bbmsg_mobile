@@ -1,4 +1,6 @@
 import 'package:bbmsg_mobile/backend/appGet.dart';
+import 'package:bbmsg_mobile/backend/server.dart';
+import 'package:bbmsg_mobile/ui/newPages/screen/home/story/custom_image_editor.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/home/story/newstory.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/home/story/opennewstory.dart';
 import 'package:bbmsg_mobile/values/app_colors.dart';
@@ -6,6 +8,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:image_editor_pro/image_editor_pro.dart';
 import 'instalist/insta_list.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/home/story/elementstroy/photostoryshow.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/home/story/elementstroy/pageviewstory.dart';
@@ -16,12 +19,7 @@ class InstaBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return new ListView(
-      children: <Widget>[
-        // Container(height: 200.h, color: Colors.white, child: HeaderMock()),
-        Container(child: InstaList(fun)),
-      ],
-    );
+    return Container(child: InstaList(fun));
   }
 }
 
@@ -32,7 +30,6 @@ class HeaderMock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return Obx(() {
       return Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -114,110 +111,124 @@ class HeaderMock extends StatelessWidget {
               ],
             ),
           ),
-         appGet.story['data'].length > 0
-              ? Row(
-                children: [
-                 
-                                appGet.userMap['profile_picture'] != null
+          appGet.story.isEmpty
+              ? Container()
+              : appGet.story['data'].length > 0
+                  ? Row(
+                      children: [
+                        appGet.userMap['profile_picture'] != null
+                            ? InkWell(
+                                onTap: () {
+                                  print('object');
+                                  Get.to(CustomImageEditorPro(
+                                    appBarColor: Colors.blue,
+                                    bottomBarColor: Colors.blue,
+                                  ));
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.symmetric(horizontal: 4.w),
+                                  height: 100.h,
+                                  width: 70.w,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Color(0xff047AF2),
+                                    image: DecorationImage(
+                                        colorFilter: ColorFilter.mode(
+                                            Colors.black.withOpacity(0.4),
+                                            BlendMode.dstATop),
+                                        image: CachedNetworkImageProvider(
+                                            appGet.userMap['profile_picture']),
+                                        fit: BoxFit.cover),
+                                  ),
+                                  child: Center(
+                                      child: Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                  )),
+                                ),
+                              )
+                            : InkWell(
+                                onTap: () {
+                                  print('object');
+                                  // Get.to(Opennewstory());
+                                  Get.to(CustomImageEditorPro(
+                                    appBarColor: Colors.blue,
+                                    bottomBarColor: Colors.blue,
+                                  ));
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.symmetric(horizontal: 4.w),
+                                  height: 100.h,
+                                  width: 70.w,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Color(0xff047AF2),
+                                    image: DecorationImage(
+                                        colorFilter: ColorFilter.mode(
+                                            Colors.black.withOpacity(0.4),
+                                            BlendMode.dstATop),
+                                        image:
+                                            AssetImage('assets/pngs/back2.jpg'),
+                                        fit: BoxFit.cover),
+                                  ),
+                                  child: Center(
+                                      child: Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                  )),
+                                )),
+                        Expanded(
+                          child: Container(
+                            height: 100.h,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: appGet.story['data'].length,
+                              itemBuilder: (context, index) {
+                                return appGet.story['data'][index]['total'] != 0
                                     ? InkWell(
                                         onTap: () {
-                                          print('object');
-                                          Get.to(Newstory());
+                                          Get.to(Pageviewstory(
+                                              appGet.story['data'], index));
                                         },
                                         child: Container(
-                                          margin:
-                                              EdgeInsets.symmetric(horizontal: 4.w),
-                                          height: 100.h,
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: 4.w),
                                           width: 70.w,
                                           decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(10),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.grey
+                                                    .withOpacity(0.1),
+                                                spreadRadius: 0.2,
+                                                blurRadius: 5,
+                                                offset: Offset(0,
+                                                    3), // changes position of shadow
+                                              ),
+                                            ],
+                                            borderRadius:
+                                                BorderRadius.circular(10),
                                             color: Color(0xff047AF2),
                                             image: DecorationImage(
-                                                colorFilter: ColorFilter.mode(
-                                                    Colors.black.withOpacity(0.4),
-                                                    BlendMode.dstATop),
-                                                image: CachedNetworkImageProvider(
-                                                    appGet
-                                                        .userMap['profile_picture']),
-                                                fit: BoxFit.cover),
-                                          ),
-                                          child: Center(
-                                              child: Icon(
-                                            Icons.add,
-                                            color: Colors.white,
-                                          )),
-                                        ),
-                                      )
-                                    : InkWell(
-                                        onTap: () {
-                                          print('object');
-                                          // Get.to(Opennewstory());
-                                          Get.to(Newstory());
-                                        },
-                                        child: Container(
-                                          margin:
-                                              EdgeInsets.symmetric(horizontal: 4.w),
-                                          height: 100.h,
-                                          width: 70.w,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(10),
-                                            color: Color(0xff047AF2),
-                                            image: DecorationImage(
-                                                colorFilter: ColorFilter.mode(
-                                                    Colors.black.withOpacity(0.4),
-                                                    BlendMode.dstATop),
-                                                image: AssetImage(
-                                                    'assets/pngs/back2.jpg'),
-                                                fit: BoxFit.cover),
-                                          ),
-                                          child: Center(
-                                              child: Icon(
-                                            Icons.add,
-                                            color: Colors.white,
-                                          )),
-                                        )),
-                  Expanded(
-                                      child: Container(
-                        height: 100.h,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: appGet.story['data'].length,
-                          itemBuilder: (context, index) {
-                            
-                            return 
-                                appGet.story['data'][index]['total'] != 0
-                                    ? InkWell(
-                                        onTap: () {
-                                          Get.to(
-                                              Pageviewstory(appGet.story['data'], 1));
-
-                                          
-                                        },
-                                        child: Container(
-                                          margin:
-                                              EdgeInsets.symmetric(horizontal: 4.w),
-                                          height: 70.h,
-                                          width: 70.w,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(10),
-                                            color: Color(0xff047AF2),
-                                            image: DecorationImage(
-                                                image: appGet.story['data'][index]
-                                                            ['stories'][0]['media'] ==
+                                                image: appGet.story['data']
+                                                                    [index]
+                                                                ['stories'][0]
+                                                            ['media'] ==
                                                         null
                                                     ? AssetImage(
                                                         'assets/pngs/story.jpg')
                                                     : CachedNetworkImageProvider(
-                                                        appGet.story['data'][index]
+                                                        appGet.story['data']
+                                                                [index]
                                                                 ['stories'][0]
                                                                 ['media']['url']
-                                                            .toString()),
+                                                            .toString(),
+                                                      ),
                                                 fit: BoxFit.cover),
                                           ),
                                           child: Center(
                                             child: Text(
-                                              appGet.story['data'][index]['stories']
-                                                      [0]['content']
+                                              appGet.story['data'][index]
+                                                      ['stories'][0]['content']
                                                   .toString(),
                                               textAlign: TextAlign.center,
                                             ),
@@ -226,23 +237,23 @@ class HeaderMock extends StatelessWidget {
                                       )
                                     : InkWell(
                                         onTap: () {
-                                          Get.to(
-                                              Pageviewstory(appGet.story['data'], 1));
-                                        
+                                          Get.to(Pageviewstory(
+                                              appGet.story['data'], 1));
                                         },
                                         child: Container(
                                           alignment: Alignment.center,
-                                          margin:
-                                              EdgeInsets.symmetric(horizontal: 4.w),
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: 4.w),
                                           height: 70.h,
                                           width: 70.w,
                                           decoration: new BoxDecoration(
-                                            borderRadius: BorderRadius.circular(10),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
                                             color: primaryColor,
                                           ),
                                           child: Text(
-                                            appGet.story['data'][index]['author']
-                                                    ['name']
+                                            appGet.story['data'][index]
+                                                    ['author']['name']
                                                 .toString()
                                                 .split(' ')[0]
                                                 .toUpperCase(),
@@ -252,13 +263,75 @@ class HeaderMock extends StatelessWidget {
                                           ),
                                         ),
                                       );
-                          },
+                              },
+                            ),
+                          ),
                         ),
-                      ),
-                  ),
-                ],
-              )
-              : Container(),
+                      ],
+                    )
+                  : Container(
+                      alignment: Alignment.centerLeft,
+                      child: appGet.userMap['profile_picture'] != null
+                          ? InkWell(
+                              onTap: () {
+                                print('object');
+                                Get.to(CustomImageEditorPro(
+                                  appBarColor: Colors.blue,
+                                  bottomBarColor: Colors.blue,
+                                ));
+                              },
+                              child: Container(
+                                margin: EdgeInsets.symmetric(horizontal: 4.w),
+                                height: 100.h,
+                                width: 70.w,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Color(0xff047AF2),
+                                  image: DecorationImage(
+                                      colorFilter: ColorFilter.mode(
+                                          Colors.black.withOpacity(0.4),
+                                          BlendMode.dstATop),
+                                      image: CachedNetworkImageProvider(
+                                          appGet.userMap['profile_picture']),
+                                      fit: BoxFit.cover),
+                                ),
+                                child: Center(
+                                    child: Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                )),
+                              ),
+                            )
+                          : InkWell(
+                              onTap: () {
+                                print('object');
+                                Get.to(CustomImageEditorPro(
+                                  appBarColor: Colors.blue,
+                                  bottomBarColor: Colors.blue,
+                                ));
+                              },
+                              child: Container(
+                                margin: EdgeInsets.symmetric(horizontal: 4.w),
+                                height: 100.h,
+                                width: 70.w,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Color(0xff047AF2),
+                                  image: DecorationImage(
+                                      colorFilter: ColorFilter.mode(
+                                          Colors.black.withOpacity(0.4),
+                                          BlendMode.dstATop),
+                                      image:
+                                          AssetImage('assets/pngs/back2.jpg'),
+                                      fit: BoxFit.cover),
+                                ),
+                                child: Center(
+                                    child: Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                )),
+                              )),
+                    ),
         ],
       );
     });

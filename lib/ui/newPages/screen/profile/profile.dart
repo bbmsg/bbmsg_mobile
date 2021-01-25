@@ -1,4 +1,5 @@
 import 'package:bbmsg_mobile/backend/appGet.dart';
+import 'package:bbmsg_mobile/backend/server.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/home/body/instalist/elementofpost/videoCard.dart';
 import 'package:bbmsg_mobile/ui/pages/app_settings.dart';
 import 'package:bbmsg_mobile/ui/pages/followers_page.dart';
@@ -150,7 +151,7 @@ class Profilescreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          '${appGet.myPosts['total']}',
+                          '${appGet.myPosts['total'] ?? 0}',
                           style: TextStyle(color: primaryColor, fontSize: 20),
                         ),
                         Text(
@@ -162,14 +163,14 @@ class Profilescreen extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () {
-                        print(appGet.userMap);
-                        // Get.to(FollowersPage());
+                        logger.e(appGet.followers);
+                        Get.to(FollowersPage());
                       },
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            '${appGet.followers['total']}',
+                            '${appGet.followers['total'] ?? 0}',
                             style: TextStyle(color: primaryColor, fontSize: 20),
                           ),
                           Text(
@@ -188,7 +189,7 @@ class Profilescreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            '${appGet.following['total']}',
+                            '${appGet.following['total'] ?? 0}',
                             style: TextStyle(color: primaryColor, fontSize: 20),
                           ),
                           Text(

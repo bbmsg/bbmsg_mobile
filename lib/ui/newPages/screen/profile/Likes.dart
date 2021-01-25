@@ -11,8 +11,6 @@ class Likes extends StatefulWidget {
 class _LikesState extends State<Likes> {
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context,
-        designSize: Size(375, 812), allowFontScaling: false);
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
     return Container(
       margin: EdgeInsets.only(

@@ -275,7 +275,7 @@ class _OpennewstoryState extends State<Opennewstory> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Headbar('Story', 1),
+      appBar: Headbar('Story', 1, createPost),
       floatingActionButton: SpeedDial(
         // both default to 16
         marginRight: 18,

@@ -1,14 +1,18 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bbmsg_mobile/backend/server.dart';
 import 'package:bbmsg_mobile/services/connectvity_service.dart';
+import 'package:bbmsg_mobile/ui/pages/Sign_in.dart';
 import 'package:bbmsg_mobile/ui/widgets/TextField.dart';
 import 'package:bbmsg_mobile/ui/widgets/primary_button.dart';
 import 'package:bbmsg_mobile/ui/widgets/social_media_login.dart';
+import 'package:bbmsg_mobile/utils/custom_dialoug.dart';
 import 'package:bbmsg_mobile/values/app_colors.dart';
 import 'package:bbmsg_mobile/values/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RegisterPage extends StatelessWidget {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -63,12 +67,18 @@ class RegisterPage extends StatelessWidget {
 
   saveForm() {
     if (formKey.currentState.validate()) {
-      formKey.currentState.save();
-      if (ConnectivityService.connectivityStatus !=
-          ConnectivityStatus.Offline) {
-        registerNewUser(
-            credintial: email, password: password, userName: userName);
-      } else {}
+      if (appGet.acceptConditions.value) {
+        formKey.currentState.save();
+        if (ConnectivityService.connectivityStatus !=
+            ConnectivityStatus.Offline) {
+          registerNewUser(
+              credintial: email, password: password, userName: userName);
+        } else {}
+      } else {
+        CustomDialougs.utils.showDialoug(
+            titleKey: 'alert',
+            messageKey: 'You have to accept our conditions first');
+      }
     }
   }
 
@@ -174,22 +184,37 @@ class RegisterPage extends StatelessWidget {
                           ),
                         ),
                         SizedBox(
-                          height: 20.h,
+                          height: 10.h,
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            forgetPassword();
-                          },
-                          child: AutoSizeText(
-                            translator.translate(
-                                'By clicking on sign up you agree on Terms & Conditions '),
-                            style: TextStyle(color: primaryColor, fontSize: 17),
-                            textAlign: TextAlign.center,
-                            maxLines: 1,
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                logger.e('hi');
+                                launch(
+                                    'http://ec2-3-23-216-129.us-east-2.compute.amazonaws.com:7425/bbmsg-terms-and-conditions.html');
+                              },
+                              child: AutoSizeText(
+                                translator
+                                    .translate('Accept Terms & Conditions '),
+                                style: TextStyle(
+                                    color: primaryColor, fontSize: 15),
+                                textAlign: TextAlign.center,
+                                maxLines: 1,
+                              ),
+                            ),
+                            Obx(() {
+                              return Checkbox(
+                                  value: appGet.acceptConditions.value,
+                                  onChanged: (v) {
+                                    appGet.acceptConditions.value = v;
+                                  });
+                            })
+                          ],
                         ),
                         SizedBox(
-                          height: 30.h,
+                          height: 35.h,
                         ),
                         Container(
                           width: double.infinity,
@@ -215,17 +240,17 @@ class RegisterPage extends StatelessWidget {
                         SizedBox(
                           height: 20.h,
                         ),
-                        SocialMediaLogin(
-                          facebookLoginFun: this.facebookLogin,
-                          gmailLoginFun: this.gmailLogin,
-                          twitterLoginFun: this.twiterLogin,
-                        ),
+                        // SocialMediaLogin(
+                        //   facebookLoginFun: this.facebookLogin,
+                        //   gmailLoginFun: this.gmailLogin,
+                        //   twitterLoginFun: this.twiterLogin,
+                        // ),
                         SizedBox(
                           height: 20.h,
                         ),
                         GestureDetector(
                           onTap: () {
-                            forgetPassword();
+                            Get.to(SignIn());
                           },
                           child: Text(
                             translator

@@ -114,7 +114,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                     image: DecorationImage(
                         colorFilter: new ColorFilter.mode(
                             Colors.black.withOpacity(0.4), BlendMode.dstATop),
-                        fit: BoxFit.contain,
+                        fit: BoxFit.cover,
                         image: isNewImage == false
                             ? appGet.userMap['user']['profile_picture'] != null
                                 ? CachedNetworkImageProvider(

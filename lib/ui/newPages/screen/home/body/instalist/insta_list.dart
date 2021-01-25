@@ -1,5 +1,7 @@
 import 'package:bbmsg_mobile/backend/appGet.dart';
+import 'package:bbmsg_mobile/backend/items_fetcher.dart';
 import 'package:bbmsg_mobile/backend/server.dart';
+import 'package:bbmsg_mobile/utils/custom_dialoug.dart';
 import 'package:bbmsg_mobile/ui/newPages/element/timstampclass.dart';
 import 'package:bbmsg_mobile/ui/newPages/postdetails.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/home/body/insta_body.dart';
@@ -26,101 +28,112 @@ class InstaList extends StatefulWidget {
 }
 
 class _InstaListState extends State<InstaList> {
-  int griditm = 1;
-  String isarabic;
-  int liklocal=0;
-  postimg(String txt, List img, int ind) {
-    // print('media' + img[1]['url'].toString());
+  AppGet appGet = Get.find();
+  final _biggerFont = const TextStyle(fontSize: 18.0);
+  ItemFetcher _itemFetcher;
 
-    if (img.isEmpty) {
-      return InkWell(
-        onTap: () {
-          //  Get.to(PostDetailscr(
-          //                               appGet.posts[ind]['id'].toString(),
-          //                               appGet.posts[ind]['author']
-          //                                       ['profile_picture']
-          //                                   .toString(),
-          //                               appGet.posts[ind]['author']['name']
-          //                                   .toString(),
-          //                                appGet.posts[ind]['media'][0]['url'].toString(),
-          //                               appGet.posts[ind]['likes'].toString(),
-          //                               appGet.posts[ind]['comments']
-          //                                   .toString(),
-          //                               appGet.posts[ind]['content'].toString(),
-          //                             ));
-        },
-        child: Padding(
-          padding: EdgeInsets.only(right: 25.w, left: 25.w),
-          child: Text(
-            txt,
-            textAlign:
-                isAlpha(txt.split(' ')[0]) ? TextAlign.left : TextAlign.right,
-          ),
-        ),
-      );
-    } else {
-      print('photo');
+  bool _isLoading = true;
+  bool _hasMore = true;
 
-      img.length > 1 ? griditm = 2 : griditm = 1;
-      return InkWell(
-        onTap: () {
-          //  Get.to(PostDetailscr(
-          //                             appGet.posts[ind]['id'].toString(),
-          //                             appGet.posts[ind]['author']
-          //                                     ['profile_picture']
-          //                                 .toString(),
-          //                             appGet.posts[ind]['author']['name']
-          //                                 .toString(),
-          //                             appGet.posts[ind]['media'][0]['url'].toString(),
-          //                             appGet.posts[ind]['likes'].toString(),
-          //                             appGet.posts[ind]['comments']
-          //                                 .toString(),
-          //                             appGet.posts[ind]['content'].toString(),
-          //                           ));
-        },
-        child: Container(
-            width: 200.w,
-            child: Column(
-              crossAxisAlignment: isAlpha(txt.split(' ')[0])
-                  ? CrossAxisAlignment.start
-                  : CrossAxisAlignment.end,
-              children: [
-                Container(
-                  padding:
-                      EdgeInsets.only(left: 10.w, right: 10.w, bottom: 10.h),
-                  child: Text(
-                    txt,
-                    textAlign: isAlpha(txt) ? TextAlign.left : TextAlign.right,
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ),
-                Container(
-                  height: 250.h,
-                  width: double.infinity,
-                  child: CachedNetworkImage(
-                    fit: BoxFit.cover,
-                    imageUrl: img[0]['url'].toString(),
-                  ),
-                ),
-              ],
-            )),
-      );
-    }
+  @override
+  void initState() {
+    super.initState();
+    _itemFetcher = ItemFetcher(
+      count: appGet.postsCount,
+      itemsPerPage: 10,
+    );
+    _isLoading = true;
+    _hasMore = true;
+    _loadMore();
   }
 
-  AppGet appGet = Get.find();
+  void _loadMore() {
+    _isLoading = true;
+    _itemFetcher.fetch().then((List fetchedList) {
+      if (fetchedList.isEmpty) {
+        setState(() {
+          _isLoading = false;
+          _hasMore = false;
+        });
+      } else {
+        setState(() {
+          _isLoading = false;
+          appGet.posts.addAll(fetchedList);
+        });
+      }
+    });
+  }
+
+  int griditm = 1;
+  String isarabic;
+  int liklocal = 0;
+  Widget postimg(String txt, List img, int index) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        appGet.posts[index]['media'].isNotEmpty
+            ? Column(
+                crossAxisAlignment: isAlpha(appGet.posts[index]['content'])
+                    ? CrossAxisAlignment.end
+                    : CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding:
+                        EdgeInsets.only(left: 10.w, right: 10.w, bottom: 10.h),
+                    child: Text(
+                      appGet.posts[index]['content'],
+                      textAlign: isAlpha(appGet.posts[index]['content'])
+                          ? TextAlign.left
+                          : TextAlign.right,
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      getAcommentlist(appGet.posts[index]['id']);
+                      Get.to(PostDetailsa(index));
+                    },
+                    child: PostImages(
+                      images: appGet.posts[index]['media'],
+                    ),
+                  ),
+                ],
+              )
+            : Container(
+                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                color: primaryColor,
+                height: 300.h,
+                alignment: Alignment.center,
+                child: Text(
+                  appGet.posts[index]['content'],
+                  textAlign: isAlpha(appGet.posts[index]['content'])
+                      ? TextAlign.right
+                      : TextAlign.left,
+                  style: TextStyle(fontSize: 16, color: Colors.white),
+                ),
+              ),
+        PostLikeAndCommentWidget(index),
+        // appGet.postsComments.isNotEmpty
+        //     ? CommentsList(appGet.postsComments)
+        //     : Container(
+        //         height: 200.h,
+        //         alignment: Alignment.center,
+        //         child: Text('No comments! Write the first comment')),
+      ],
+    );
+  }
+
   // bool isPressed = false;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    ScreenUtil.init(context,
-        designSize: Size(375, 812), allowFontScaling: false);
-      
+
     setState(() {});
     return Obx(() {
       return appGet.posts.isNullOrBlank
-          ? Center(child: CircularProgressIndicator())
+          ? Container(child: Center(child: CircularProgressIndicator()))
           : Container(
+              padding: EdgeInsets.only(bottom: 20),
               height: size.height - 100.h,
               child: ListView(
                 children: [
@@ -133,8 +146,29 @@ class _InstaListState extends State<InstaList> {
                     child: ListView.builder(
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
-                        itemCount: appGet.posts.length,
+                        itemCount: _hasMore
+                            ? appGet.postsCount + 1
+                            : appGet.postsCount,
+                        // itemCount: appGet.posts.length,
                         itemBuilder: (BuildContext context, int index) {
+                          // if (appGet.limit == 10) {
+                          //   logger.e('dddddddddddddddddddddddddddddddd');
+                          //   appGet.limit += 10;
+                          //   appGet.skip += 10;
+                          //   getPosts(limit: appGet.limit, skip: appGet.skip);
+                          // }
+                          if (index >= appGet.posts.length) {
+                            if (!_isLoading) {
+                              _loadMore();
+                            }
+                            return Center(
+                              child: SizedBox(
+                                child: CircularProgressIndicator(),
+                                height: 24,
+                                width: 24,
+                              ),
+                            );
+                          }
                           return Card(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(0)),
@@ -149,182 +183,175 @@ class _InstaListState extends State<InstaList> {
                                   Padding(
                                     padding: const EdgeInsets.fromLTRB(
                                         16.0, 16.0, 8.0, 16.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Row(
-                                          children: <Widget>[
-                                            GestureDetector(
-                                              onTap: () {
-                                                appGet.setOtherUserMap(appGet
-                                                    .posts[index]['author']
-                                                        ['id']
-                                                    .toString());
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        appGet.setOtherUserMap(appGet
+                                            .posts[index]['author']['id']
+                                            .toString());
 
-                                                Get.to(ProfilePage(
+                                        Get.to(ProfilePage(
+                                          appGet.posts[index]['author']['name']
+                                              .toString(),
+                                        ));
+                                      },
+                                      child: Row(
+                                        children: [
+                                          ///////////////
+                                          appGet.posts[index]['author']
+                                                      ['profile_picture'] !=
+                                                  null
+                                              ? Container(
+                                                  height:
+                                                      ScreenUtil().setWidth(40),
+                                                  width:
+                                                      ScreenUtil().setWidth(40),
+                                                  decoration: new BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    image: new DecorationImage(
+                                                        fit: BoxFit.fill,
+                                                        image:
+                                                            CachedNetworkImageProvider(
+                                                          appGet.posts[index]
+                                                                  ['author'][
+                                                                  'profile_picture']
+                                                              .toString(),
+                                                        )),
+                                                  ),
+                                                )
+                                              : Container(
+                                                  alignment: Alignment.center,
+                                                  height:
+                                                      ScreenUtil().setWidth(40),
+                                                  width:
+                                                      ScreenUtil().setWidth(40),
+                                                  decoration: new BoxDecoration(
+                                                    color: primaryColor,
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                  child: Text(
+                                                    appGet.posts[index]
+                                                            ['author']['name']
+                                                        .toString()[0]
+                                                        .toUpperCase(),
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ),
+                                          new SizedBox(
+                                            width: 10.0,
+                                          ),
+                                          Column(
+                                            children: [
+                                              SizedBox(
+                                                width:
+                                                    ScreenUtil().setWidth(150),
+                                                child: new Text(
                                                   appGet.posts[index]['author']
                                                           ['name']
                                                       .toString(),
-                                                ));
-                                              },
-                                              child: Row(
-                                                children: [
-                                                  ///////////////
-                                                  appGet.posts[index]['author'][
-                                                              'profile_picture'] !=
-                                                          null
-                                                      ? Container(
-                                                          height: ScreenUtil()
-                                                              .setWidth(40),
-                                                          width: ScreenUtil()
-                                                              .setWidth(40),
-                                                          decoration:
-                                                              new BoxDecoration(
-                                                            shape:
-                                                                BoxShape.circle,
-                                                            image:
-                                                                new DecorationImage(
-                                                                    fit: BoxFit
-                                                                        .fill,
-                                                                    image:
-                                                                        CachedNetworkImageProvider(
-                                                                      appGet
-                                                                          .posts[
-                                                                              index]
-                                                                              [
-                                                                              'author']
-                                                                              [
-                                                                              'profile_picture']
-                                                                          .toString(),
-                                                                    )),
-                                                          ),
-                                                        )
-                                                      : Container(
-                                                          alignment:
-                                                              Alignment.center,
-                                                          height: ScreenUtil()
-                                                              .setWidth(40),
-                                                          width: ScreenUtil()
-                                                              .setWidth(40),
-                                                          decoration:
-                                                              new BoxDecoration(
-                                                            color: primaryColor,
-                                                            shape:
-                                                                BoxShape.circle,
-                                                          ),
-                                                          child: Text(
-                                                            appGet.posts[index]
-                                                                    ['author']
-                                                                    ['name']
-                                                                .toString()[0]
-                                                                .toUpperCase(),
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          ),
-                                                        ),
-                                                  new SizedBox(
-                                                    width: 10.0,
-                                                  ),
-                                                  Column(
-                                                    children: [
-                                                      SizedBox(
-                                                        width: ScreenUtil()
-                                                            .setWidth(150),
-                                                        child: new Text(
-                                                          appGet.posts[index]
-                                                                  ['author']
-                                                                  ['name']
-                                                              .toString(),
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        ),
-                                                      ),
-                                                      SizedBox(
-                                                        width: ScreenUtil()
-                                                            .setWidth(150),
-                                                        child: new Text(
-                                                          // "10 min",
-                                                          readTimestamp(DateTime
-                                                              .parse(appGet
-                                                                          .posts[
-                                                                      index][
-                                                                  'created_at'])),
-                                                          style: TextStyle(
-                                                              color: Colors
-                                                                  .grey[500]),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  )
-                                                ],
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                        new IconButton(
-                                          icon: Icon(Icons.more_vert),
-                                          onPressed: () {},
-                                        )
-                                      ],
+                                              SizedBox(
+                                                width:
+                                                    ScreenUtil().setWidth(150),
+                                                child: new Text(
+                                                  // "10 min",
+                                                  readTimestamp(DateTime.parse(
+                                                      appGet.posts[index]
+                                                          ['created_at'])),
+                                                  style: TextStyle(
+                                                      color: Colors.grey[500]),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Spacer(),
+                                          appGet.posts[index]['author']['id'] ==
+                                                  appGet.userMap['user']['id']
+                                              ? GestureDetector(
+                                                  onTapDown: (TapDownDetails
+                                                      details) async {
+                                                    double left = details
+                                                        .globalPosition.dx;
+                                                    double top = details
+                                                        .globalPosition.dy;
+                                                    var x = await showMenu(
+                                                      context: context,
+                                                      position:
+                                                          RelativeRect.fromLTRB(
+                                                              left, top, 0, 0),
+                                                      items: [
+                                                        PopupMenuItem<String>(
+                                                            child: const Text(
+                                                                'Delete post'),
+                                                            value: 'delete'),
+                                                      ],
+                                                      elevation: 8.0,
+                                                    );
+                                                    if (x == 'delete') {
+                                                      deletepost(
+                                                          appGet.posts[index]
+                                                              ['id'],
+                                                          index);
+                                                    }
+                                                  },
+                                                  child: Icon(Icons.more_vert))
+                                              : GestureDetector(
+                                                  onTapDown: (TapDownDetails
+                                                      details) async {
+                                                    double left = details
+                                                        .globalPosition.dx;
+                                                    double top = details
+                                                        .globalPosition.dy;
+                                                    var x = await showMenu(
+                                                      context: context,
+                                                      position:
+                                                          RelativeRect.fromLTRB(
+                                                              left, top, 0, 0),
+                                                      items: [
+                                                        PopupMenuItem<String>(
+                                                            child: const Text(
+                                                                'Block'),
+                                                            value: 'block'),
+                                                        PopupMenuItem<String>(
+                                                            child: const Text(
+                                                                'Report post'),
+                                                            value: 'report'),
+                                                      ],
+                                                      elevation: 8.0,
+                                                    );
+                                                    if (x == 'block') {
+                                                      blockUser(
+                                                          appGet.posts[index]
+                                                              ['author']['id']);
+                                                    } else if (x == 'report') {
+                                                      reportPost(
+                                                          appGet.posts[index]
+                                                              ['id'],
+                                                          index);
+                                                    }
+                                                  },
+                                                  child: Icon(Icons.more_vert)),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                  // GestureDetector(
-                                  //   onTap: () {
-                                  //     Get.to(PostDetailscr(
-                                  //       appGet.posts[index]['id'].toString(),
-                                  //       appGet.posts[index]['author']
-                                  //               ['profile_picture']
-                                  //           .toString(),
-                                  //       appGet.posts[index]['author']['name']
-                                  //           .toString(),
-                                  //       appGet.posts[index]['media'].toString(),
-                                  //       appGet.posts[index]['likes'].toString(),
-                                  //       appGet.posts[index]['comments']
-                                  //           .toString(),
-                                  //       appGet.posts[index]['content'].toString(),
-                                  //     ));
-                                  //   },
-                                  //   child: new Image.network(
-                                  //     appGet.posts[index]['media'][0]['url'].toString(),
-                                  //     fit: BoxFit.cover,
-                                  //   ),
-                                  // ),
                                   postimg(
                                       appGet.posts[index]['content'].toString(),
                                       appGet.posts[index]['media'],
                                       index),
-                                  Container(
-                                    child: Postlike(
-                                      appGet.posts[index]['id'],
-                                      appGet.posts[index]['my_like'],
-                                      appGet.posts[index]['likes'],
-                                    ),
-                                  ),
-                                  // Padding(
-                                  //   padding: const EdgeInsets.all(8.0),
-                                  //   child: Container(
-                                  //       child: appGet.posts[index]['id'] > 0
-                                  //           ? Commentbyid(
-                                  //               appGet.posts[index]['id'],
-                                  //               appGet.posts[index]['comments'],
-                                  //             )
-                                  //           : Commentbyid(
-                                  //               0,
-                                  //               appGet.posts[index]['comments'],
-                                  //             )),
-                                  // ),
                                   Divider(),
                                   GestureDetector(
                                     onTap: () {
-                                      Get.to(Listcommentpost(
-                                        appGet.posts[index],
+                                      getAcommentlist(
+                                          appGet.posts[index]['id']);
+                                      Get.to(PostDetailsa(
+                                        index,
                                       ));
                                     },
                                     child: Padding(
@@ -383,16 +410,6 @@ class _InstaListState extends State<InstaList> {
                                         ],
                                       ),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 16.0),
-                                    child: Text(
-                                        readTimestamp(DateTime.parse(appGet
-                                                .posts[index]['created_at']
-                                                .toString())) +
-                                            ' Ago',
-                                        style: TextStyle(color: Colors.grey)),
                                   ),
                                 ],
                               ),

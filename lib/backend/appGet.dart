@@ -7,6 +7,28 @@ import 'package:logger/logger.dart';
 import 'dart:io';
 
 class AppGet extends GetxController {
+  File profileUserImage;
+  setProfileEditImage(File file) {
+    profileUserImage = file;
+    update();
+  }
+
+  var acceptConditions = false.obs;
+  var postsComments = [].obs;
+
+  likePost(int index, int id) {
+    posts[index]['my_like'] = id;
+    posts[index]['likes']++;
+    update();
+  }
+
+  desLikePost(int index) {
+    appGet.posts[index]['my_like'] = 0;
+    appGet.posts[index]['likes']--;
+    update();
+  }
+
+  int postsCount = 0;
   double screenWidth;
   double screenHeight;
   var testArray = [1, 2, 3, 4, 5, 6, 7].obs;
@@ -16,7 +38,7 @@ class AppGet extends GetxController {
   var following = {}.obs;
   var posts = [].obs;
   var story = Map().obs;
-  var completcycle=false.obs;
+  var completcycle = false.obs;
   Map testMap = {};
   var appBarTitleStyle = TextStyle().obs;
   bool isFingerprint;
@@ -26,6 +48,8 @@ class AppGet extends GetxController {
   var gLikes = [].obs;
   var usersMap = {}.obs;
   File postvideo;
+  int currentPage = 0;
+  PageController pagcontroller = PageController(initialPage: 0);
 
   setUsersMap(Map map) {
     this.usersMap.value = map;
@@ -57,10 +81,15 @@ class AppGet extends GetxController {
     this.following.value = map;
   }
 
+  int limit = 10;
+  int skip = 0;
   setPosts(List list) {
-    this.posts.value = list;
+    this.posts.addAll(list);
+    // update();
   }
 
+  int postIndex;
+  var blockMap = {}.obs;
   setUserMap(Map map) {
     this.userMap.value = map;
   }

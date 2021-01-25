@@ -17,9 +17,6 @@ class Postnew extends StatefulWidget {
 class _PostnewState extends State<Postnew> {
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context,
-        designSize: Size(375, 812), allowFontScaling: false);
-
     return GestureDetector(
       onTap: () {
         print('vvv');

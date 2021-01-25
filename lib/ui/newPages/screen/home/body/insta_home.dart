@@ -45,11 +45,9 @@ class _InstaHomeState extends State<InstaHome> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context,
-        designSize: Size(375, 812), allowFontScaling: false);
     return new Scaffold(
         backgroundColor: Colors.grey[200],
-        appBar: hiapp ? Headbar(titles, 1) : null,
+        appBar: hiapp ? Headbar(titles, 1, createPost) : null,
         body: [
           InstaBody(createPost),
           Searchscr(),
@@ -85,23 +83,23 @@ class _InstaHomeState extends State<InstaHome> {
                     });
                   },
                 ),
-                new IconButton(
-                  icon: currentIndex == 1
-                      ? SvgPicture.asset('assets/svgs/SearchFilled.svg',
-                          color: Colors.black)
-                      : SvgPicture.asset('assets/svgs/Group 4384.svg',
-                          color: Colors.black),
-                  // Icon(
-                  //   Icons.search,
-                  // ),
-                  onPressed: () {
-                    setState(() {
-                      currentIndex = 1;
-                      titles = 'Search';
-                      hiapp = true;
-                    });
-                  },
-                ),
+                // new IconButton(
+                //   icon: currentIndex == 1
+                //       ? SvgPicture.asset('assets/svgs/SearchFilled.svg',
+                //           color: Colors.black)
+                //       : SvgPicture.asset('assets/svgs/Group 4384.svg',
+                //           color: Colors.black),
+                //   // Icon(
+                //   //   Icons.search,
+                //   // ),
+                //   onPressed: () {
+                //     setState(() {
+                //       currentIndex = 1;
+                //       titles = 'Search';
+                //       hiapp = true;
+                //     });
+                //   },
+                // ),
                 new IconButton(
                     icon: SvgPicture.asset('assets/svgs/Iconly-Light-Plus.svg',
                         color: Colors.black),

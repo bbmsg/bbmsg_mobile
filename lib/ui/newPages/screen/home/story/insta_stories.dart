@@ -82,8 +82,6 @@ class InstaStories extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context,
-        designSize: Size(375, 812), allowFontScaling: false);
     return new Container(
       margin: const EdgeInsets.all(16.0),
       child: Postnew(),

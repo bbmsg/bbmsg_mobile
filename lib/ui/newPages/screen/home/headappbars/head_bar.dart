@@ -8,7 +8,8 @@ class Headbar extends StatefulWidget with PreferredSizeWidget {
   final Size preferredSize;
   final String titles;
   final int ico;
-  Headbar(this.titles, this.ico, {Key key})
+  Function fun;
+  Headbar(this.titles, this.ico, this.fun, {Key key})
       : preferredSize = Size.fromHeight(60.0),
         super(key: key);
 
@@ -29,7 +30,7 @@ class _HeadbarState extends State<Headbar> {
           color: Colors.black,
         ),
         onPressed: () {
-          Navigator.pop(context, 'Yep!');
+          widget.fun();
         },
       ),
       title: SizedBox(
@@ -47,7 +48,9 @@ class _HeadbarState extends State<Headbar> {
                 child: IconButton(
                   icon: SvgPicture.asset('assets/svgs/send.svg'),
                   onPressed: () {
-                    getActivity();
+                    widget.fun();
+                    // getPosts();
+                    // widget.fun();
                     // String token = SPHelper.spHelper.getToken();
 
                     // UserCredential userCredential = await signInWithTwitter();

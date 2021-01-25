@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bbmsg_mobile/backend/appGet.dart';
 import 'package:bbmsg_mobile/backend/server.dart';
 import 'package:bbmsg_mobile/main.dart';
-import 'package:bbmsg_mobile/main_page_mockup.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:bbmsg_mobile/services/connectvity_service.dart';
 import 'package:bbmsg_mobile/services/shared_prefrences_helper.dart';
 import 'package:bbmsg_mobile/testApi.dart';
@@ -46,6 +46,7 @@ class _SplashState extends State<Splash> {
         getMyLikes(myId: '${map['user']['id']}');
         getUsers();
         getActivity();
+        getAllBlocks();
       }
     }
   }
@@ -72,11 +73,16 @@ class _SplashState extends State<Splash> {
       }
     });
     return Scaffold(
-        backgroundColor: const Color(0xff98b119),
-        body: Container(
-            decoration: BoxDecoration(
-          color: primaryColor,
-        )));
+        backgroundColor: primaryColor,
+        body: Center(
+          child: Container(
+              height: 200.h,
+              width: 200.h,
+              alignment: Alignment.center,
+              child: Image.asset('assets/pngs/logo.png'),
+              decoration:
+                  BoxDecoration(shape: BoxShape.circle, color: Colors.white)),
+        ));
   }
 }
 

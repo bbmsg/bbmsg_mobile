@@ -15,8 +15,6 @@ class _TooltxtState extends State<Tooltxt> {
   bool colr = true;
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context,
-        designSize: Size(375, 812), allowFontScaling: false);
     return GestureDetector(
       onTap: () {
         setState(() {

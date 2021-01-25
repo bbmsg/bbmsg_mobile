@@ -1,5 +1,6 @@
 import 'package:bbmsg_mobile/Splash.dart';
 import 'package:bbmsg_mobile/backend/appGet.dart';
+import 'package:bbmsg_mobile/backend/server.dart';
 import 'package:bbmsg_mobile/services/shared_prefrences_helper.dart';
 import 'package:bbmsg_mobile/testApi.dart';
 import 'package:bbmsg_mobile/ui/pages/Sign_in.dart';
@@ -11,6 +12,7 @@ import 'package:bbmsg_mobile/values/styles.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -35,15 +37,19 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return GetMaterialApp(
-      theme: themeData,
-      title: 'BBMSG',
-      debugShowCheckedModeBanner: false,
-      localizationsDelegates: translator.delegates,
-      locale: translator.locale,
-      supportedLocales: translator.locals(),
-      home: MaterialApp(
-        home: MiddlePage(),
+    return ScreenUtilInit(
+      designSize: Size(392.72727272727275, 850.9090909090909),
+      allowFontScaling: true,
+      child: GetMaterialApp(
+        theme: themeData,
+        title: 'BBMSG',
+        debugShowCheckedModeBanner: false,
+        localizationsDelegates: translator.delegates,
+        locale: translator.locale,
+        supportedLocales: translator.locals(),
+        home: MaterialApp(
+          home: MiddlePage(),
+        ),
       ),
     );
   }
@@ -56,9 +62,7 @@ class MiddlePage extends StatelessWidget {
   Widget build(BuildContext context) {
     appGet.screenHeight = MediaQuery.of(context).size.height;
     appGet.screenWidth = MediaQuery.of(context).size.width;
-    ScreenUtil.init(context,
-        designSize: Size(392.72727272727275, 850.9090909090909),
-        allowFontScaling: true);
+
     return FutureBuilder(
       // Initialize FlutterFire:
       future: _initialization,
@@ -86,9 +90,18 @@ class MiddlePage extends StatelessWidget {
   }
 }
 
-class MainPage extends StatelessWidget {
+class MainPage extends StatefulWidget {
+  @override
+  _MainPageState createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
   final controller = PageController(viewportFraction: 0.8);
+
   List svgs = ['assets/svgs/'];
+
+  int index = 0;
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -107,6 +120,10 @@ class MainPage extends StatelessWidget {
                   SizedBox(
                     height: ScreenUtil().setHeight(300),
                     child: PageView.builder(
+                      onPageChanged: (value) {
+                        this.index = value;
+                        setState(() {});
+                      },
                       controller: controller,
                       itemCount: 3,
                       itemBuilder: (context, index) {
@@ -123,17 +140,32 @@ class MainPage extends StatelessWidget {
                     effect: WormEffect(dotHeight: 10, dotWidth: 10),
                   )),
                   SizedBox(height: 16),
-                  Container(
-                      child: Text(
-                    'BBmsg Social Network',
-                    style: Styles.titleTextStyle,
-                  )),
-                  Container(
-                      child: Text(
-                    '''Lorem Ipsum is simply dummy text of the printing and typesetting industry. ''',
-                    style: Styles.secondTitleTextStyle,
-                    textAlign: TextAlign.center,
-                  ))
+                  Column(
+                    children: [
+                      Container(
+                          child: Text(
+                        index == 0
+                            ? 'Share your Favorites'
+                            : index == 1
+                                ? 'Customize your Profile'
+                                : 'Safe Content',
+                        style: Styles.titleTextStyle,
+                      )),
+                      SizedBox(
+                        height: 15.h,
+                      ),
+                      Container(
+                          child: Text(
+                        index == 0
+                            ? '''You can share your photos, videos and diaries with other users and make new friends '''
+                            : index == 1
+                                ? '''You can customize your profile to display it to other user '''
+                                : '''we handle with reported posts seriously and act on objectionable content reports within 24 hours''',
+                        style: Styles.secondTitleTextStyle,
+                        textAlign: TextAlign.center,
+                      )),
+                    ],
+                  )
                 ],
               ),
               Container(

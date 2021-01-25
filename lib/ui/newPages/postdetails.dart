@@ -31,7 +31,7 @@ class _PostDetailscrState extends State<PostDetailscr> {
   @override
   void initState() {
     ids = widget.id;
-  //  getPosts(userId: ids);
+    //  getPosts(userId: ids);
     super.initState();
   }
 
@@ -40,8 +40,6 @@ class _PostDetailscrState extends State<PostDetailscr> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context,
-        designSize: Size(375, 812), allowFontScaling: false);
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
     return Scaffold(
       backgroundColor: Colors.white,

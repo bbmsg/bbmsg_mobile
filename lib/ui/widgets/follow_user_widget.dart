@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bbmsg_mobile/backend/server.dart';
 import 'package:bbmsg_mobile/values/app_colors.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -30,25 +31,44 @@ class _FollowUserWidgetState extends State<FollowUserWidget> {
     // TODO: implement build
     return Container(
         margin: EdgeInsets.symmetric(horizontal: 15.w, vertical: 1.h),
-        height: 75.h,
+        width: 70.w,
+        height: 70.h,
         alignment: Alignment.center,
         child: Row(
           children: [
-            Container(
-              width: 70.w,
-              height: 70.h,
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.white, width: 5.w),
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                      image: CachedNetworkImageProvider(widget.imageUrl),
-                      fit: BoxFit.cover)),
-            ),
+            widget.imageUrl != null
+                ? Container(
+                    height: ScreenUtil().setWidth(55),
+                    width: ScreenUtil().setWidth(55),
+                    decoration: new BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: new DecorationImage(
+                          fit: BoxFit.fill,
+                          image: CachedNetworkImageProvider(
+                            widget.imageUrl.toString(),
+                          )),
+                    ),
+                  )
+                : Container(
+                    alignment: Alignment.center,
+                    height: ScreenUtil().setWidth(55),
+                    width: ScreenUtil().setWidth(55),
+                    decoration: new BoxDecoration(
+                      color: primaryColor,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Text(
+                      widget.userName.toString()[0].toUpperCase(),
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                  ),
             SizedBox(
               width: 10.w,
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(widget.userName,
                     style: TextStyle(color: Colors.black, fontSize: 15)),
@@ -77,7 +97,9 @@ class _FollowUserWidgetState extends State<FollowUserWidget> {
                         borderRadius: BorderRadius.circular(20)),
                     onPressed: () {
                       widget.isFollow = !widget.isFollow;
-                      widget.fun(widget.id, widget.isFollow);
+                      followUser(widget.id, false,
+                          appGet.userMap['user']['id'].toString());
+
                       setState(() {});
                     })
           ],
@@ -114,58 +136,76 @@ class _FollowingWidgetState extends State<FollowingWidget> {
         alignment: Alignment.center,
         child: Row(
           children: [
-            widget.imageUrl != null
-                ? Container(
-                    width: 70.w,
-                    height: 70.h,
-                    decoration: BoxDecoration(
+            Expanded(
+              flex: 2,
+              child: widget.imageUrl != null
+                  ? Container(
+                      width: 70.w,
+                      height: 70.h,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.white, width: 5.w),
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                              image:
+                                  CachedNetworkImageProvider(widget.imageUrl),
+                              fit: BoxFit.cover)),
+                    )
+                  : Container(
+                      alignment: Alignment.center,
+                      width: 70.w,
+                      height: 70.h,
+                      decoration: BoxDecoration(
                         border: Border.all(color: Colors.white, width: 5.w),
                         shape: BoxShape.circle,
-                        image: DecorationImage(
-                            image: CachedNetworkImageProvider(widget.imageUrl),
-                            fit: BoxFit.cover)),
-                  )
-                : Container(
-                    alignment: Alignment.center,
-                    width: 70.w,
-                    height: 70.h,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.white, width: 5.w),
-                      shape: BoxShape.circle,
-                      color: primaryColor,
+                        color: primaryColor,
+                      ),
+                      child: Text(
+                        widget.userName[0].toUpperCase(),
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
-                    child: Text(
-                      widget.userName[0].toUpperCase(),
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
+            ),
             SizedBox(
               width: 10.w,
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(widget.userName,
-                    style: TextStyle(color: Colors.black, fontSize: 15)),
-                Text(widget.address ?? '')
-              ],
+            Expanded(
+              flex: 6,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AutoSizeText(
+                    widget.userName,
+                    style: TextStyle(color: Colors.black, fontSize: 15),
+                    maxLines: 1,
+                  ),
+                  AutoSizeText(
+                    widget.address ?? '',
+                    style: TextStyle(color: Colors.black),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
             ),
-            Spacer(),
-            RaisedButton(
-                elevation: 0,
-                child: Text(
-                  'Following',
-                  style: TextStyle(color: Colors.white),
-                ),
-                color: primaryColor,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-                onPressed: () {
-                  widget.isFollow = !widget.isFollow;
-                  widget.fun(widget.id.toString(), true);
-                  setState(() {});
-                })
+            Expanded(
+              flex: 3,
+              child: RaisedButton(
+                  elevation: 0,
+                  child: AutoSizeText(
+                    'Following',
+                    style: TextStyle(color: Colors.white),
+                    maxLines: 1,
+                  ),
+                  color: primaryColor,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  onPressed: () {
+                    widget.isFollow = !widget.isFollow;
+                    widget.fun(widget.id.toString(), true);
+                    setState(() {});
+                  }),
+            )
           ],
         ));
   }

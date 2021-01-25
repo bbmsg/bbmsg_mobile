@@ -40,8 +40,6 @@ class _ExplorerState extends State<Searchscr> {
   ];
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context,
-        designSize: Size(375, 812), allowFontScaling: false);
     return Scaffold(
         body: Center(
       child: Image.asset('assets/pngs/UnderConstruction.png'),
