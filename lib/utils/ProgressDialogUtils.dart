@@ -1,10 +1,7 @@
 import 'package:bbmsg_mobile/values/app_colors.dart';
-import 'package:bbmsg_mobile/values/radii.dart';
 import 'package:flutter/material.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
-
 import 'package:progress_dialog/progress_dialog.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProgressDialogUtils extends ProgressDialog {
   static ProgressDialog pr;

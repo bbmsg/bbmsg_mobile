@@ -1,17 +1,13 @@
 import 'package:bbmsg_mobile/backend/appGet.dart';
-import 'package:bbmsg_mobile/backend/server.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/home/story/custom_image_editor.dart';
-import 'package:bbmsg_mobile/ui/newPages/screen/home/story/newstory.dart';
-import 'package:bbmsg_mobile/ui/newPages/screen/home/story/opennewstory.dart';
+import 'package:bbmsg_mobile/ui/newPages/screen/home/story/elementstroy/pageviewstory.dart';
 import 'package:bbmsg_mobile/values/app_colors.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:image_editor_pro/image_editor_pro.dart';
+
 import 'instalist/insta_list.dart';
-import 'package:bbmsg_mobile/ui/newPages/screen/home/story/elementstroy/photostoryshow.dart';
-import 'package:bbmsg_mobile/ui/newPages/screen/home/story/elementstroy/pageviewstory.dart';
 
 class InstaBody extends StatelessWidget {
   Function fun;
@@ -19,7 +15,9 @@ class InstaBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Container(child: InstaList(fun));
+    return Container(
+        color: Get.isDarkMode ? Colors.black : Colors.white,
+        child: InstaList(fun));
   }
 }
 
@@ -68,7 +66,7 @@ class HeaderMock extends StatelessWidget {
                               color: Colors.white, fontWeight: FontWeight.bold),
                         ),
                       ),
-                new SizedBox(
+                SizedBox(
                   width: 8.0.w,
                 ),
                 Expanded(
@@ -82,7 +80,11 @@ class HeaderMock extends StatelessWidget {
                           width: ScreenUtil().setWidth(150),
                           child: new Text(
                             appGet.userMap['user']['name'].toString(),
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color:
+                                  Get.isDarkMode ? Colors.white : Colors.black,
+                            ),
                           ),
                         ),
                         SizedBox(
@@ -101,7 +103,14 @@ class HeaderMock extends StatelessWidget {
                               border: Border.all(color: Color(0xff9B9B9B)),
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: Text('What\'s in your mind?'),
+                            child: Text(
+                              'What\'s in your mind?',
+                              style: TextStyle(
+                                color: Get.isDarkMode
+                                    ? Colors.white
+                                    : Colors.black,
+                              ),
+                            ),
                           ),
                         )
                       ],
@@ -143,7 +152,7 @@ class HeaderMock extends StatelessWidget {
                                   child: Center(
                                       child: Icon(
                                     Icons.add,
-                                    color: Colors.white,
+                                    // color: Colors.white,
                                   )),
                                 ),
                               )
@@ -298,7 +307,7 @@ class HeaderMock extends StatelessWidget {
                                 child: Center(
                                     child: Icon(
                                   Icons.add,
-                                  color: Colors.white,
+                                  // color: Colors.white,
                                 )),
                               ),
                             )

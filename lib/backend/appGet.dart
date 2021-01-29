@@ -39,6 +39,7 @@ class AppGet extends GetxController {
   var posts = [].obs;
   var story = Map().obs;
   var completcycle = false.obs;
+ 
   Map testMap = {};
   var appBarTitleStyle = TextStyle().obs;
   bool isFingerprint;

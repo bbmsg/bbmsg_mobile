@@ -70,6 +70,7 @@ class _InstaListState extends State<InstaList> {
   Widget postimg(String txt, List img, int index) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         appGet.posts[index]['media'].isNotEmpty
             ? Column(
@@ -113,12 +114,9 @@ class _InstaListState extends State<InstaList> {
                 ),
               ),
         PostLikeAndCommentWidget(index),
-        // appGet.postsComments.isNotEmpty
-        //     ? CommentsList(appGet.postsComments)
-        //     : Container(
-        //         height: 200.h,
-        //         alignment: Alignment.center,
-        //         child: Text('No comments! Write the first comment')),
+
+        //TODO this comment
+        CommentsList(appGet.posts[index]['comments']['data'], true),
       ],
     );
   }
@@ -138,7 +136,9 @@ class _InstaListState extends State<InstaList> {
               child: ListView(
                 children: [
                   Container(
-                    color: Colors.white,
+                    color: Get.isDarkMode
+                        ? Colors.black.withOpacity(0.12)
+                        : Colors.white,
                     child: HeaderMock(widget.fun),
                     padding: EdgeInsets.symmetric(vertical: 20.h),
                   ),
@@ -157,6 +157,7 @@ class _InstaListState extends State<InstaList> {
                           //   appGet.skip += 10;
                           //   getPosts(limit: appGet.limit, skip: appGet.skip);
                           // }
+
                           if (index >= appGet.posts.length) {
                             if (!_isLoading) {
                               _loadMore();
@@ -172,9 +173,12 @@ class _InstaListState extends State<InstaList> {
                           return Card(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(0)),
-                            margin: EdgeInsets.symmetric(vertical: 8.h),
+                            margin: EdgeInsets.symmetric(vertical: 2.h),
                             child: Container(
                               padding: EdgeInsets.only(bottom: 10.h),
+                              color: Get.isDarkMode
+                                  ? Colors.black.withOpacity(0.6)
+                                  : Colors.white,
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 mainAxisSize: MainAxisSize.min,
@@ -336,7 +340,8 @@ class _InstaListState extends State<InstaList> {
                                                           index);
                                                     }
                                                   },
-                                                  child: Icon(Icons.more_vert)),
+                                                  child:
+                                                      Icon(Icons.more_horiz)),
                                         ],
                                       ),
                                     ),
@@ -345,72 +350,70 @@ class _InstaListState extends State<InstaList> {
                                       appGet.posts[index]['content'].toString(),
                                       appGet.posts[index]['media'],
                                       index),
-                                  Divider(),
-                                  GestureDetector(
-                                    onTap: () {
-                                      getAcommentlist(
-                                          appGet.posts[index]['id']);
-                                      Get.to(PostDetailsa(
-                                        index,
-                                      ));
-                                    },
-                                    child: Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          16.0, 5, 0.0, 8.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: <Widget>[
-                                          appGet.userMap['user']
-                                                      ['profile_picture'] !=
-                                                  null
-                                              ? Container(
-                                                  height:
-                                                      ScreenUtil().setWidth(22),
-                                                  width:
-                                                      ScreenUtil().setWidth(22),
-                                                  decoration: new BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    image: new DecorationImage(
-                                                      fit: BoxFit.fill,
-                                                      image: CachedNetworkImageProvider(
-                                                          appGet.userMap['user']
-                                                              [
-                                                              'profile_picture']),
-                                                    ),
-                                                  ),
-                                                )
-                                              : Container(
-                                                  alignment: Alignment.center,
-                                                  height:
-                                                      ScreenUtil().setWidth(30),
-                                                  width:
-                                                      ScreenUtil().setWidth(30),
-                                                  decoration: new BoxDecoration(
-                                                    color: primaryColor,
-                                                    shape: BoxShape.circle,
-                                                  ),
-                                                  child: Text(
-                                                    appGet.userMap['user']
-                                                            ['name']
-                                                        .toString()[0]
-                                                        .toUpperCase(),
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                ),
-                                          new SizedBox(
-                                            width: 10.0,
-                                          ),
-                                          Addcomments(
-                                              appGet.posts[index]['id']),
-                                          SizedBox(width: 10.w)
-                                        ],
-                                      ),
-                                    ),
-                                  ),
+                                  // GestureDetector(
+                                  //   onTap: () {
+
+                                  // Get.to(PostDetailsa(
+                                  //   index,
+                                  // ));
+                                  //   },
+                                  //   child: Padding(
+                                  //     padding: const EdgeInsets.fromLTRB(
+                                  //         16.0, 5, 0.0, 8.0),
+                                  //     child: Row(
+                                  //       mainAxisAlignment:
+                                  //           MainAxisAlignment.start,
+                                  //       children: <Widget>[
+                                  //         appGet.userMap['user']
+                                  //                     ['profile_picture'] !=
+                                  //                 null
+                                  //             ? Container(
+                                  //                 height:
+                                  //                     ScreenUtil().setWidth(22),
+                                  //                 width:
+                                  //                     ScreenUtil().setWidth(22),
+                                  //                 decoration: new BoxDecoration(
+                                  //                   shape: BoxShape.circle,
+                                  //                   image: new DecorationImage(
+                                  //                     fit: BoxFit.fill,
+                                  //                     image: CachedNetworkImageProvider(
+                                  //                         appGet.userMap['user']
+                                  //                             [
+                                  //                             'profile_picture']),
+                                  //                   ),
+                                  //                 ),
+                                  //               )
+                                  //             : Container(
+                                  //                 alignment: Alignment.center,
+                                  //                 height:
+                                  //                     ScreenUtil().setWidth(30),
+                                  //                 width:
+                                  //                     ScreenUtil().setWidth(30),
+                                  //                 decoration: new BoxDecoration(
+                                  //                   color: primaryColor,
+                                  //                   shape: BoxShape.circle,
+                                  //                 ),
+                                  //                 child: Text(
+                                  //                   appGet.userMap['user']
+                                  //                           ['name']
+                                  //                       .toString()[0]
+                                  //                       .toUpperCase(),
+                                  //                   style: TextStyle(
+                                  //                       color: Colors.white,
+                                  //                       fontWeight:
+                                  //                           FontWeight.bold),
+                                  //                 ),
+                                  //               ),
+                                  //         new SizedBox(
+                                  //           width: 10.0,
+                                  //         ),
+                                  //         Addcomments(
+                                  //             appGet.posts[index]['id']),
+                                  //         SizedBox(width: 10.w)
+                                  //       ],
+                                  //     ),
+                                  //   ),
+                                  // ),
                                 ],
                               ),
                             ),

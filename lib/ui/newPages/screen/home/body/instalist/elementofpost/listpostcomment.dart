@@ -3,19 +3,15 @@ import 'dart:ui';
 import 'package:bbmsg_mobile/backend/appGet.dart';
 import 'package:bbmsg_mobile/backend/server.dart';
 import 'package:bbmsg_mobile/ui/newPages/element/timstampclass.dart';
-import 'package:bbmsg_mobile/ui/newPages/screen/home/body/instalist/elementofpost/likeornotcomment.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/home/body/postlike.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/home/headappbars/head_bar.dart';
 import 'package:bbmsg_mobile/ui/pages/profile_page.dart';
 import 'package:bbmsg_mobile/values/app_colors.dart';
-import 'package:bbmsg_mobile/values/styles.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:string_validator/string_validator.dart';
 
 class PostDetailsa extends StatelessWidget {
@@ -38,6 +34,7 @@ class PostDetailsa extends StatelessWidget {
       child: Scaffold(
         appBar: Headbar('Post Details', 3, createPost),
         body: Obx(() {
+          // getAcommentlist(appGet.posts[index]['id']);
           return Container(
             child: Column(
               children: [
@@ -63,7 +60,7 @@ class PostDetailsa extends StatelessWidget {
                         ),
                         PostLikeAndCommentWidget(index),
                         appGet.postsComments.isNotEmpty
-                            ? CommentsList(appGet.postsComments)
+                            ? CommentsList(appGet.postsComments, false)
                             : Container(
                                 height: 200.h,
                                 alignment: Alignment.center,
@@ -111,43 +108,53 @@ class PostDetailsa extends StatelessWidget {
 
 class CommentsList extends StatelessWidget {
   List comments;
-  CommentsList(this.comments);
+  bool isFirst;
+  CommentsList(this.comments, this.isFirst);
   Widget generateComments() {
     List<Widget> usersComments = comments.map((e) {
       return Container(
         margin: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
         child: Row(
           children: [
-            e['author']['profile_picture'] != null
-                ? Container(
-                    height: ScreenUtil().setWidth(30),
-                    width: ScreenUtil().setWidth(30),
-                    decoration: new BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: new DecorationImage(
-                          fit: BoxFit.fill,
-                          image: CachedNetworkImageProvider(
-                            e['author']['profile_picture'].toString(),
-                          )),
+            isFirst
+                ? Text(
+                    e['author']['name'].toString().toUpperCase(),
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontWeight: FontWeight.w700,
                     ),
                   )
-                : Container(
-                    alignment: Alignment.center,
-                    height: ScreenUtil().setWidth(30),
-                    width: ScreenUtil().setWidth(30),
-                    decoration: new BoxDecoration(
-                      color: primaryColor,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Text(
-                      e['author']['name'].toString()[0].toUpperCase(),
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
-                    ),
-                  ),
+                : e['author']['profile_picture'] != null
+                    ? Container(
+                        height: ScreenUtil().setWidth(30),
+                        width: ScreenUtil().setWidth(30),
+                        decoration: new BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: new DecorationImage(
+                              fit: BoxFit.fill,
+                              image: CachedNetworkImageProvider(
+                                e['author']['profile_picture'].toString(),
+                              )),
+                        ),
+                      )
+                    : Container(
+                        alignment: Alignment.center,
+                        height: ScreenUtil().setWidth(30),
+                        width: ScreenUtil().setWidth(30),
+                        decoration: new BoxDecoration(
+                          color: primaryColor,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Text(
+                          e['author']['name'].toString()[0].toUpperCase(),
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                      ),
             SizedBox(
               width: 10.w,
             ),
+
             Expanded(
               child: Text(
                 e['content'],
@@ -177,8 +184,12 @@ class CommentsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    return Container(child: generateComments());
+    return Container(
+      // color: Get.isDarkMode
+      //                             ? Colors.black.withOpacity(0.6)
+      //                             : Colors.white,
+      child: generateComments(),
+    );
   }
 }
 
@@ -301,12 +312,10 @@ class PostHeader extends StatelessWidget {
                         Get.back();
                       }
                     },
-                    child: Icon(Icons.more_vert)),
-            // IconButton(
-            //     icon: Icon(Icons.more_vert),
-            //     onPressed: () {
-
-            //     })
+                    child: Icon(
+                      Icons.more_horiz,
+                    ),
+                  ),
           ],
         ),
       ),
@@ -330,9 +339,9 @@ class _PostWidgetState extends State<PostImages> {
     final List<Widget> imageSliders = widget.images
         .map((item) => Container(
               child: Container(
-                margin: EdgeInsets.all(5.0),
+                // margin: EdgeInsets.all(5.0),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                  // borderRadius: BorderRadius.all(Radius.circular(5.0)),
                   child: CachedNetworkImage(
                     imageUrl: item['url'],
                     fit: BoxFit.cover,
@@ -387,12 +396,12 @@ class _PostWidgetState extends State<PostImages> {
                       setState(() {});
                     },
                   ))),
-          Container(
-              child: AnimatedSmoothIndicator(
-            activeIndex: indexPage,
-            count: widget.images.length,
-            effect: WormEffect(dotHeight: 10.h, dotWidth: 10.w),
-          )),
+          // Container(
+          //     child: AnimatedSmoothIndicator(
+          //   activeIndex: indexPage,
+          //   count: widget.images.length,
+          //   effect: WormEffect(dotHeight: 10.h, dotWidth: 10.w),
+          // )),
         ],
       ),
     );

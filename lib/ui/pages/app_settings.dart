@@ -131,7 +131,7 @@ class _AppSettingsState extends State<AppSettings> {
                     Get.changeTheme(
                         Get.isDarkMode ? ThemeData.light() : ThemeData.dark());
                     appGet.appBarTitleStyle.value = TextStyle(
-                        color: Get.isDarkMode ? Colors.black : Colors.white);
+                        color: Get.isDarkMode ? Colors.white : Colors.black);
                   },
                 ),
                 // ListTile(

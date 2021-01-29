@@ -298,6 +298,7 @@ blockUser(int userId) async {
     logger.e(resultMap);
     getPosts();
     getAllBlocks();
+    getstory('10');
     appGet.pr.hide();
   } on DioError catch (e) {
     appGet.pr.hide();
@@ -364,7 +365,7 @@ reportPost(int postId, int index) async {
     CustomDialougs.utils
         .showDialoug(titleKey: 'success', messageKey: resultMap['message']);
     appGet.posts.removeAt(index);
-
+    getstory('10');
     appGet.pr.hide();
   } on DioError catch (e) {
     appGet.pr.hide();
@@ -416,7 +417,7 @@ Future<Map<String, dynamic>> getPosts(
     appGet.postsCount = mmnlist1['total'];
 
     appGet.setPosts(mmnlist1['data']);
-    logger.e(appGet.posts);
+    logger.e('appGet.posts ${appGet.posts}');
     return mmnlist1;
   } on DioError catch (e) {
     logger.e(e.response);
@@ -657,6 +658,18 @@ deletepost(int id, int index) async {
   }
 }
 
+deleteStories(int id, int index) async {
+  try {
+    var response = await dio.delete(baseUrl + '/stories/$id',
+        options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
+    // Map<String, dynamic> mmnlist1 = response.data;
+    //  appGet.posts.removeAt(index);
+    getstory('10');
+  } on DioError catch (e) {
+    logger.e(e.response.data['message']);
+  }
+}
+
 /////////////////////////////////////////////////////////////////////////////////////
 
 getcomments() async {
@@ -665,6 +678,7 @@ getcomments() async {
         options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
     Map<String, dynamic> mmnlist1 = response.data;
     appGet.setcommentpost(mmnlist1);
+    print('commentpost $mmnlist1');
   } on DioError catch (e) {
     logger.e(e.response.data['message']);
   }
@@ -699,6 +713,7 @@ getAcommentlist(int id) async {
         options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
     getlistcomment = response.data['data'];
     appGet.postsComments.value = getlistcomment;
+    print('getlistcomment $getlistcomment');
   } on DioError catch (e) {
     logger.e(e.response.data['message']);
   }
@@ -920,12 +935,13 @@ Future likereply(int replyid) async {
 
 Future getActivity({String limit = '10', String skip = '0'}) async {
   try {
-    var response = await dio.get(
-        baseUrl + '/activities?\$limit=$limit&\$skip=$skip',
-        options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
-    Map mmnlist1 = response.data;
-    appGet.mapActivity.value = mmnlist1;
-    return mmnlist1;
+  var response = await dio.get(
+      baseUrl + '/activities?\$limit=$limit&\$skip=$skip',
+      options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
+  Map mmnlist1 = response.data;
+  appGet.mapActivity.value = mmnlist1;
+  print('Activity ${response.data}');
+  return mmnlist1;
   } on DioError catch (e) {
     logger.e(e.response.data['message']);
   }

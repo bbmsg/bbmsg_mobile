@@ -57,12 +57,13 @@ class InstaStories extends StatelessWidget {
                         height: ScreenUtil().setHeight(83),
                         decoration: new BoxDecoration(
                           gradient: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [
-                                HexColor('#00ADEE'),
-                                HexColor('#7850FF'),
-                              ]),
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              HexColor('#00ADEE'),
+                              HexColor('#7850FF'),
+                            ],
+                          ),
                           // shape: BoxShape.circle,
                           borderRadius: BorderRadius.circular(8),
                         ),

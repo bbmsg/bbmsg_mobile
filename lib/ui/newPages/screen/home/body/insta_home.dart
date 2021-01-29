@@ -1,14 +1,12 @@
 import 'package:bbmsg_mobile/backend/server.dart';
-import 'package:bbmsg_mobile/ui/newPages/activity.dart';
 import 'package:bbmsg_mobile/ui/newPages/createpost.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/activity/activity.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/home/headappbars/head_bar.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/profile/profile.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/search/searchscr.dart';
-import 'package:bbmsg_mobile/ui/pages/profile_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 
 import 'insta_body.dart';
 
@@ -68,10 +66,12 @@ class _InstaHomeState extends State<InstaHome> {
                   icon: currentIndex == 0
                       ? SvgPicture.asset(
                           'assets/svgs/FilledHome.svg',
-                          color: Colors.black,
+                          // color: Colors.black,
                         )
-                      : SvgPicture.asset('assets/svgs/Home.svg',
-                          color: Colors.black),
+                      : SvgPicture.asset(
+                          'assets/svgs/Home.svg',
+                          color: Get.isDarkMode ? Colors.white : Colors.black,
+                        ),
                   // Icon(
                   //   // Icons.home,
                   // ),
@@ -101,8 +101,10 @@ class _InstaHomeState extends State<InstaHome> {
                 //   },
                 // ),
                 new IconButton(
-                    icon: SvgPicture.asset('assets/svgs/Iconly-Light-Plus.svg',
-                        color: Colors.black),
+                    icon: SvgPicture.asset(
+                      'assets/svgs/Iconly-Light-Plus.svg',
+                      color: Get.isDarkMode ? Colors.white : Colors.black,
+                    ),
                     // Icon(
                     //   Icons.add_box,
                     // ),
@@ -114,8 +116,10 @@ class _InstaHomeState extends State<InstaHome> {
                       });
                     }),
                 new IconButton(
-                  icon: SvgPicture.asset('assets/svgs/Group 4385.svg',
-                      color: Colors.black),
+                  icon: SvgPicture.asset(
+                    'assets/svgs/Group 4385.svg',
+                    color: Get.isDarkMode ? Colors.white : Colors.black,
+                  ),
 
                   // Icon(
                   //   Icons.favorite,
@@ -130,8 +134,12 @@ class _InstaHomeState extends State<InstaHome> {
                   },
                 ),
                 new IconButton(
-                  icon: SvgPicture.asset('assets/svgs/Iconly-Light-Profile.svg',
-                      color: Colors.black),
+                  icon: SvgPicture.asset(
+                    'assets/svgs/Iconly-Light-Profile.svg',
+                    // color: Colors.black,
+
+                    color: Get.isDarkMode ? Colors.white : Colors.black,
+                  ),
 
                   // Icon(
                   //   Icons.account_box,

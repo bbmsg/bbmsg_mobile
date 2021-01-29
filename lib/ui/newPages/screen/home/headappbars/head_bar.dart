@@ -21,13 +21,13 @@ class _HeadbarState extends State<Headbar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.white,
+      // backgroundColor: Colors.white,
       centerTitle: true,
       elevation: 0.0,
       leading: IconButton(
         icon: SvgPicture.asset(
           'assets/svgs/camera.svg',
-          color: Colors.black,
+          color: Get.isDarkMode ? Colors.white : Colors.black,
         ),
         onPressed: () {
           widget.fun();
@@ -37,7 +37,9 @@ class _HeadbarState extends State<Headbar> {
         height: 35.0,
         child: Text(
           widget.titles,
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(
+            color: Get.isDarkMode ? Colors.white : Colors.black,
+          ),
         ),
         // Image.asset("assets/images/insta_logo.png")
       ),
@@ -46,7 +48,10 @@ class _HeadbarState extends State<Headbar> {
             ? Padding(
                 padding: const EdgeInsets.only(right: 12.0),
                 child: IconButton(
-                  icon: SvgPicture.asset('assets/svgs/send.svg'),
+                  icon: SvgPicture.asset(
+                    'assets/svgs/send.svg',
+                    color: Get.isDarkMode ? Colors.white : Colors.black,
+                  ),
                   onPressed: () {
                     widget.fun();
                     // getPosts();
