@@ -1,4 +1,4 @@
-package com.example.bbmsg_mobile
+package com.bbmsg.app
 
 import io.flutter.embedding.android.FlutterActivity
 

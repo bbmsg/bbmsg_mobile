@@ -8,18 +8,18 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:558723805226:android:26ee36da132a9a8f915353",
+        "mobilesdk_app_id": "1:558723805226:android:96fa1e0767bed7de915353",
         "android_client_info": {
-          "package_name": "com.example.bbmsg_mobile"
+          "package_name": "com.bbmsg.app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "558723805226-03v6nkcjm63fis9jicklqgb2v67erm26.apps.googleusercontent.com",
+          "client_id": "558723805226-sj33hlltjpkafrkj1si2ohv2btlt8odq.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.bbmsg_mobile",
-            "certificate_hash": "ab30d85c460e1a5edd9898e797528b6b6418b2ab"
+            "package_name": "com.bbmsg.app",
+            "certificate_hash": "a3327dfeba27a9f6acf66a56809e7102df91efb2"
           }
         },
         {
@@ -38,6 +38,13 @@
             {
               "client_id": "558723805226-b120j1e0p7tdahfbij7q4sqpdutbp5f3.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "558723805226-k4q3f7dvra1kks24o686obg6k30lm9k2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.bbmsgMobile"
+              }
             }
           ]
         }
