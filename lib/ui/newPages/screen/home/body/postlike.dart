@@ -1,17 +1,22 @@
 import 'package:bbmsg_mobile/backend/appGet.dart';
 import 'package:bbmsg_mobile/backend/server.dart';
+import 'package:bbmsg_mobile/services/theme_notifier.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/home/body/instalist/elementofpost/listpostcomment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 class PostLikeAndCommentWidget extends StatelessWidget {
   int index;
   PostLikeAndCommentWidget(this.index);
+  var _darkTheme = true;
+
   @override
   Widget build(BuildContext context) {
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
+    _darkTheme = (themeNotifier.getTheme() == darkTheme);
     return GetBuilder<AppGet>(
         init: AppGet(), // INIT IT ONLY THE FIRST TIME
         builder: (x) {
@@ -26,13 +31,10 @@ class PostLikeAndCommentWidget extends StatelessWidget {
                       padding: EdgeInsets.all(0),
                       iconSize: 28,
                       icon: x.posts[index]['my_like'] == 0
-                          ? SvgPicture.asset(
-                              'assets/svgs/fav.svg',
+                          ? SvgPicture.asset('assets/svgs/fav.svg',
                               width: 20,
                               height: 20,
-                              color:
-                                  Get.isDarkMode ? Colors.white : Colors.black,
-                            )
+                              color: _darkTheme ? Colors.white : Colors.grey)
                           : Icon(Icons.favorite),
                       color: x.posts[index]['my_like'] == 0
                           ? Colors.grey
@@ -55,12 +57,9 @@ class PostLikeAndCommentWidget extends StatelessWidget {
                           index,
                         ));
                       },
-                      child: SvgPicture.asset(
-                        'assets/svgs/chat.svg',
-                        width: 20,
-                        height: 20, color:
-                                  Get.isDarkMode ? Colors.white : Colors.black,
-                      ),
+                      child: SvgPicture.asset('assets/svgs/chat.svg',
+                          width: 20,
+                          color: _darkTheme ? Colors.white : Colors.grey),
                     ),
                     SizedBox(
                       width: ScreenUtil().setWidth(4.w),
@@ -69,23 +68,16 @@ class PostLikeAndCommentWidget extends StatelessWidget {
                     //   appGet.posts[index]['comments'].toString(),
                     // ),
                     IconButton(
-                      icon: SvgPicture.asset(
-                        'assets/svgs/share.svg',
-                        width: 20,
-                        height: 20, color:
-                                  Get.isDarkMode ? Colors.white : Colors.black,
-                      ),
+                      icon: SvgPicture.asset('assets/svgs/share.svg',
+                          width: 20,
+                          color: _darkTheme ? Colors.white : Colors.grey),
                       onPressed: () {},
                     ),
                   ],
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 15.w),
-                  child: Divider(
-                    height: 1,
-                    thickness: 1, color:
-                                  Get.isDarkMode ? Colors.white : Colors.black,
-                  ),
+                  child: Divider(),
                 ),
                 SizedBox(
                   height: 8.h,

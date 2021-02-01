@@ -1,7 +1,7 @@
-import 'package:bbmsg_mobile/backend/server.dart';
+import 'package:bbmsg_mobile/services/theme_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 class Headbar extends StatefulWidget with PreferredSizeWidget {
   @override
@@ -18,8 +18,12 @@ class Headbar extends StatefulWidget with PreferredSizeWidget {
 }
 
 class _HeadbarState extends State<Headbar> {
+  var _darkTheme = true;
+
   @override
   Widget build(BuildContext context) {
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
+    _darkTheme = (themeNotifier.getTheme() == darkTheme);
     return AppBar(
       // backgroundColor: Colors.white,
       centerTitle: true,
@@ -27,7 +31,7 @@ class _HeadbarState extends State<Headbar> {
       leading: IconButton(
         icon: SvgPicture.asset(
           'assets/svgs/camera.svg',
-          color: Get.isDarkMode ? Colors.white : Colors.black,
+          color: _darkTheme ? Colors.white : Colors.black,
         ),
         onPressed: () {
           widget.fun();
@@ -37,9 +41,7 @@ class _HeadbarState extends State<Headbar> {
         height: 35.0,
         child: Text(
           widget.titles,
-          style: TextStyle(
-            color: Get.isDarkMode ? Colors.white : Colors.black,
-          ),
+          
         ),
         // Image.asset("assets/images/insta_logo.png")
       ),
@@ -50,7 +52,7 @@ class _HeadbarState extends State<Headbar> {
                 child: IconButton(
                   icon: SvgPicture.asset(
                     'assets/svgs/send.svg',
-                    color: Get.isDarkMode ? Colors.white : Colors.black,
+                    color: _darkTheme ? Colors.white : Colors.black,
                   ),
                   onPressed: () {
                     widget.fun();

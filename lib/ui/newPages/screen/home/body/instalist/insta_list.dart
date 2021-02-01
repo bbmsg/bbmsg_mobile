@@ -1,13 +1,8 @@
 import 'package:bbmsg_mobile/backend/appGet.dart';
 import 'package:bbmsg_mobile/backend/items_fetcher.dart';
 import 'package:bbmsg_mobile/backend/server.dart';
-import 'package:bbmsg_mobile/utils/custom_dialoug.dart';
 import 'package:bbmsg_mobile/ui/newPages/element/timstampclass.dart';
-import 'package:bbmsg_mobile/ui/newPages/postdetails.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/home/body/insta_body.dart';
-import 'package:bbmsg_mobile/ui/newPages/screen/home/body/instalist/elementofpost/commentbyid.dart';
-
-import 'package:bbmsg_mobile/ui/newPages/screen/home/body/instalist/elementofpost/addcomment.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/home/body/instalist/elementofpost/listpostcomment.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/home/body/postlike.dart';
 import 'package:bbmsg_mobile/ui/pages/profile_page.dart';
@@ -16,9 +11,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:logger/logger.dart';
 import 'package:string_validator/string_validator.dart';
-import '../../story/insta_stories.dart';
 
 class InstaList extends StatefulWidget {
   Function fun;
@@ -136,9 +129,9 @@ class _InstaListState extends State<InstaList> {
               child: ListView(
                 children: [
                   Container(
-                    color: Get.isDarkMode
-                        ? Colors.black.withOpacity(0.12)
-                        : Colors.white,
+                    // color: Get.isDarkMode
+                    //     ? Colors.black.withOpacity(0.12)
+                    //     : Colors.white,
                     child: HeaderMock(widget.fun),
                     padding: EdgeInsets.symmetric(vertical: 20.h),
                   ),
@@ -170,15 +163,15 @@ class _InstaListState extends State<InstaList> {
                               ),
                             );
                           }
-                          return Card(
-                            shape: RoundedRectangleBorder(
+                          return Container(
+                            decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(0)),
                             margin: EdgeInsets.symmetric(vertical: 2.h),
                             child: Container(
                               padding: EdgeInsets.only(bottom: 10.h),
-                              color: Get.isDarkMode
-                                  ? Colors.black.withOpacity(0.6)
-                                  : Colors.white,
+                              // color: Get.isDarkMode
+                              //     ? Colors.black.withOpacity(0.6)
+                              //     : Colors.white,
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 mainAxisSize: MainAxisSize.min,

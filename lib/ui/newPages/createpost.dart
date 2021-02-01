@@ -67,7 +67,7 @@ class _CreatepostscrState extends State<Createpostscr> {
             Text(
               'Create Post',
               style: TextStyle(
-                  // color: HexColor('#1A1818'),
+                  //HexColor('#1A1818')
                   fontSize: isPortrait
                       ? ScreenUtil().setSp(16)
                       : ScreenUtil().setSp(10)),
@@ -153,9 +153,9 @@ class _CreatepostscrState extends State<Createpostscr> {
                           Text(
                             appGet.userMap['user']['name'],
                             style: TextStyle(
-                                color: Get.isDarkMode
-                                    ? Colors.white
-                                    : Colors.black,
+                                // color: Get.isDarkMode
+                                //     ? Colors.white
+                                //     : Colors.black,
                                 fontSize: isPortrait
                                     ? ScreenUtil().setSp(16)
                                     : ScreenUtil().setSp(10)),
@@ -255,9 +255,9 @@ class _CreatepostscrState extends State<Createpostscr> {
                                 fontSize: isPortrait
                                     ? ScreenUtil().setSp(14)
                                     : ScreenUtil().setSp(8),
-                                color: Get.isDarkMode
-                                    ? Colors.white
-                                    : HexColor('#606060'),
+                                // color: Get.isDarkMode
+                                //     ? Colors.white
+                                //     : HexColor('#606060'),
                               ),
                               border: InputBorder.none,
                             ),
@@ -342,9 +342,9 @@ class _CreatepostscrState extends State<Createpostscr> {
                             fontSize: isPortrait
                                 ? ScreenUtil().setSp(14)
                                 : ScreenUtil().setSp(8),
-                            color: Get.isDarkMode
-                                ? Colors.white
-                                : HexColor('#3A3A3A'),
+                            // color: Get.isDarkMode
+                            //     ? Colors.white
+                            //     : HexColor('#3A3A3A'),
                           ),
                         )
                       ],

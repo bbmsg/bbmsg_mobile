@@ -13,7 +13,7 @@
 
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="bbmsg"
+        android:label="BBMSG"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"

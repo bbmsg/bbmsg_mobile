@@ -1,4 +1,5 @@
 import 'package:bbmsg_mobile/backend/appGet.dart';
+import 'package:bbmsg_mobile/services/theme_notifier.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/home/story/custom_image_editor.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/home/story/elementstroy/pageviewstory.dart';
 import 'package:bbmsg_mobile/values/app_colors.dart';
@@ -6,6 +7,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 import 'instalist/insta_list.dart';
 
@@ -15,9 +17,7 @@ class InstaBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Container(
-        color: Get.isDarkMode ? Colors.black : Colors.white,
-        child: InstaList(fun));
+    return InstaList(fun);
   }
 }
 
@@ -25,10 +25,10 @@ class HeaderMock extends StatelessWidget {
   Function fun;
   HeaderMock(this.fun);
   AppGet appGet = Get.find();
-
+ 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
+      return Obx(() {
       return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -82,8 +82,7 @@ class HeaderMock extends StatelessWidget {
                             appGet.userMap['user']['name'].toString(),
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color:
-                                  Get.isDarkMode ? Colors.white : Colors.black,
+                             
                             ),
                           ),
                         ),
@@ -106,9 +105,9 @@ class HeaderMock extends StatelessWidget {
                             child: Text(
                               'What\'s in your mind?',
                               style: TextStyle(
-                                color: Get.isDarkMode
-                                    ? Colors.white
-                                    : Colors.black,
+                                // color: Get.isDarkMode
+                                //     ? Colors.white
+                                //     : Colors.black,
                               ),
                             ),
                           ),

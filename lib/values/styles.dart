@@ -1,6 +1,7 @@
 import 'package:bbmsg_mobile/values/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class Styles {
   static TextStyle titleTextStyle = TextStyle(
@@ -9,7 +10,7 @@ class Styles {
       fontWeight: FontWeight.w700,
       fontSize: 20);
   static TextStyle secondTitleTextStyle =
-      TextStyle(fontFamily: 'second_header', color: Colors.black, fontSize: 15);
+      TextStyle(fontFamily: 'second_header', fontSize: 15);
 
   static TextStyle subTitleTextStyle =
       TextStyle(fontSize: ScreenUtil().setSp(15, allowFontScalingSelf: true));

@@ -7,8 +7,28 @@ import 'package:bbmsg_mobile/ui/newPages/screen/search/searchscr.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'insta_body.dart';
+import 'package:bbmsg_mobile/Splash.dart';
+import 'package:bbmsg_mobile/backend/appGet.dart';
+import 'package:bbmsg_mobile/services/theme_notifier.dart';
+import 'package:bbmsg_mobile/ui/pages/block_screen.dart';
+import 'package:bbmsg_mobile/ui/pages/contact_us.dart';
+import 'package:bbmsg_mobile/ui/widgets/custom_appbar.dart';
+import 'package:bbmsg_mobile/values/app_colors.dart';
+import 'package:bbmsg_mobile/values/radii.dart';
+import 'package:bbmsg_mobile/values/styles.dart';
+import 'package:flutter/material.dart';
+
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:bbmsg_mobile/backend/server.dart';
+import 'package:get/get.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
+import 'package:provider/provider.dart';
+import 'package:settings_ui/settings_ui.dart';
+import 'package:bbmsg_mobile/services/shared_prefrences_helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class InstaHome extends StatefulWidget {
   final int scrindex;
@@ -40,11 +60,13 @@ class _InstaHomeState extends State<InstaHome> {
       hiapp = false;
     });
   }
+  var _darkTheme = true;
 
   @override
   Widget build(BuildContext context) {
+     final themeNotifier = Provider.of<ThemeNotifier>(context);
+    _darkTheme = (themeNotifier.getTheme() == darkTheme);
     return new Scaffold(
-        backgroundColor: Colors.grey[200],
         appBar: hiapp ? Headbar(titles, 1, createPost) : null,
         body: [
           InstaBody(createPost),
@@ -54,27 +76,26 @@ class _InstaHomeState extends State<InstaHome> {
           Profilescreen()
         ][currentIndex],
         bottomNavigationBar: new Container(
-          color: Colors.white,
-          height: 50.0,
+           height: Get.isDarkMode ? 40.h : 60.h,
           alignment: Alignment.center,
-          child: new BottomAppBar(
-            child: new Row(
-              // alignment: MainAxisAlignment.spaceAround,
+          child: BottomAppBar(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                new IconButton(
+                IconButton(
                   icon: currentIndex == 0
                       ? SvgPicture.asset(
                           'assets/svgs/FilledHome.svg',
-                          // color: Colors.black,
+                          color: _darkTheme? Colors.white : Colors.black,
+                          width: 20.w,
+                          height: 30.h,
                         )
                       : SvgPicture.asset(
                           'assets/svgs/Home.svg',
-                          color: Get.isDarkMode ? Colors.white : Colors.black,
+                          color: _darkTheme? Colors.white : Colors.black,
+                          width: 20.w,
+                          height: 30.h,
                         ),
-                  // Icon(
-                  //   // Icons.home,
-                  // ),
                   onPressed: () {
                     setState(() {
                       currentIndex = 0;
@@ -100,10 +121,10 @@ class _InstaHomeState extends State<InstaHome> {
                 //     });
                 //   },
                 // ),
-                new IconButton(
+                IconButton(
                     icon: SvgPicture.asset(
                       'assets/svgs/Iconly-Light-Plus.svg',
-                      color: Get.isDarkMode ? Colors.white : Colors.black,
+                      color: _darkTheme ? Colors.white : Colors.black,
                     ),
                     // Icon(
                     //   Icons.add_box,
@@ -115,10 +136,10 @@ class _InstaHomeState extends State<InstaHome> {
                         hiapp = false;
                       });
                     }),
-                new IconButton(
+                IconButton(
                   icon: SvgPicture.asset(
                     'assets/svgs/Group 4385.svg',
-                    color: Get.isDarkMode ? Colors.white : Colors.black,
+                    color: _darkTheme ? Colors.white : Colors.black,
                   ),
 
                   // Icon(
@@ -133,12 +154,12 @@ class _InstaHomeState extends State<InstaHome> {
                     });
                   },
                 ),
-                new IconButton(
+                IconButton(
                   icon: SvgPicture.asset(
                     'assets/svgs/Iconly-Light-Profile.svg',
                     // color: Colors.black,
 
-                    color: Get.isDarkMode ? Colors.white : Colors.black,
+                    color: _darkTheme ? Colors.white : Colors.black,
                   ),
 
                   // Icon(

@@ -1,19 +1,16 @@
-import 'package:bbmsg_mobile/Splash.dart';
 import 'package:bbmsg_mobile/backend/appGet.dart';
+import 'package:bbmsg_mobile/backend/server.dart';
+import 'package:bbmsg_mobile/services/shared_prefrences_helper.dart';
+import 'package:bbmsg_mobile/services/theme_notifier.dart';
 import 'package:bbmsg_mobile/ui/pages/block_screen.dart';
 import 'package:bbmsg_mobile/ui/pages/contact_us.dart';
 import 'package:bbmsg_mobile/ui/widgets/custom_appbar.dart';
-import 'package:bbmsg_mobile/values/app_colors.dart';
-import 'package:bbmsg_mobile/values/radii.dart';
-import 'package:bbmsg_mobile/values/styles.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:bbmsg_mobile/backend/server.dart';
 import 'package:get/get.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
-import 'package:settings_ui/settings_ui.dart';
-import 'package:bbmsg_mobile/services/shared_prefrences_helper.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AppSettings extends StatefulWidget {
@@ -48,9 +45,12 @@ class _AppSettingsState extends State<AppSettings> {
 
   bool isDark = Get.isDarkMode;
   bool isFingerprint = false;
+  var _darkTheme = true;
+
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
+    _darkTheme = (themeNotifier.getTheme() == darkTheme);
     return Scaffold(
       appBar: CustomAppBar('Settings'),
       body: Container(
@@ -126,12 +126,9 @@ class _AppSettingsState extends State<AppSettings> {
                 ToggleSwitch(
                   title: 'Dark Mode',
                   image: 'assets/pngs/darkmode.png',
-                  value: Get.isDarkMode,
+                  value: _darkTheme,
                   fun: (value) {
-                    Get.changeTheme(
-                        Get.isDarkMode ? ThemeData.light() : ThemeData.dark());
-                    appGet.appBarTitleStyle.value = TextStyle(
-                        color: Get.isDarkMode ? Colors.white : Colors.black);
+                    onThemeChanged(value, themeNotifier);
                   },
                 ),
                 // ListTile(
@@ -226,4 +223,12 @@ class _toggleSwitchState extends State<ToggleSwitch> {
       ),
     );
   }
+}
+
+void onThemeChanged(bool value, ThemeNotifier themeNotifier) async {
+  (value)
+      ? themeNotifier.setTheme(darkTheme)
+      : themeNotifier.setTheme(lightTheme);
+  var prefs = await SharedPreferences.getInstance();
+  prefs.setBool('darkMode', value);
 }

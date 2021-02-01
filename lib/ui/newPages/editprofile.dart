@@ -35,8 +35,7 @@ class _EditprofilescrState extends State<Editprofilescr> {
             Text(
               'Edit Profile',
               style: TextStyle(
-                  color: HexColor('#1A1818'),
-                  fontSize: isPortrait
+                   fontSize: isPortrait
                       ? ScreenUtil().setSp(16)
                       : ScreenUtil().setSp(10)),
             ),

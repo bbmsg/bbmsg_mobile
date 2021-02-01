@@ -9,21 +9,36 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   AppGet appGet = Get.find();
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    return CupertinoNavigationBar(
+    return AppBar(
       backgroundColor: Colors.transparent,
-      border: Border.all(color: Colors.transparent),
-      middle: Obx(() {
-        return Text(
-          title,
-          style: appGet.appBarTitleStyle.value,
-        );
-      }),
+      // border: Border.all(color: Colors.transparent),
+      elevation: 0,
+      centerTitle: true,
+      leading: GestureDetector(
+        onTap: () {
+          Get.back();
+        },
+        child: Icon(
+          Icons.arrow_back_ios,
+        ),
+      ),
+      title: Text(
+        title,
+      ),
     );
+    // return CupertinoNavigationBar(
+    //   backgroundColor: Colors.transparent,
+    //   border: Border.all(color: Colors.transparent),
+    //   middle: Obx(() {
+    //     return Text(
+    //       title,
+    //       style: appGet.appBarTitleStyle.value,
+    //     );
+    //   }),
+    // );
   }
 
   @override
-  // TODO: implement preferredSize
   Size get preferredSize =>
       Size.fromHeight(CupertinoNavigationBar().preferredSize.height);
 }

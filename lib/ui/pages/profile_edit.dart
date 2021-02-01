@@ -35,7 +35,6 @@ class _ProfileEditState extends State<ProfileEdit> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -69,10 +68,10 @@ class _ProfileEditState extends State<ProfileEdit> {
           },
         ),
         centerTitle: true,
-        title: new Text(
+        title: Text(
           "Edit Profile",
-          style: TextStyle(
-              color: Colors.black, fontWeight: FontWeight.w400, fontSize: 17),
+          // style: TextStyle(
+          //     color: Colors.black, fontWeight: FontWeight.w400, fontSize: 17),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0.0,
@@ -236,13 +235,12 @@ class GenderDisplay extends StatefulWidget {
 class _GenderDisplayState extends State<GenderDisplay> {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
           'Gender',
-          style: TextStyle(color: Colors.black, fontSize: 17),
+          style: TextStyle(fontSize: 17),
         ),
         Row(
           children: [
@@ -251,9 +249,7 @@ class _GenderDisplayState extends State<GenderDisplay> {
                 Text(
                   'Male',
                   style: TextStyle(
-                      color: widget.genderValue != 'male'
-                          ? Colors.black
-                          : primaryColor,
+                      color: widget.genderValue != 'male' ? null : primaryColor,
                       fontSize: 17),
                 ),
                 Radio(
@@ -274,9 +270,8 @@ class _GenderDisplayState extends State<GenderDisplay> {
                 Text(
                   'FeMale',
                   style: TextStyle(
-                      color: widget.genderValue != 'female'
-                          ? Colors.black
-                          : primaryColor,
+                      color:
+                          widget.genderValue != 'female' ? null : primaryColor,
                       fontSize: 17),
                 ),
                 Radio(
@@ -324,7 +319,7 @@ class _EditableTextState extends State<EditableCustomText> {
           children: [
             Text(
               widget.title,
-              style: TextStyle(color: Colors.black, fontSize: 17),
+              style: TextStyle(fontSize: 17),
             ),
             isEditable == false
                 ? Text(widget.value,
@@ -382,7 +377,7 @@ class _BirthDateState extends State<BirthDate> {
           children: [
             Text(
               'Birthdate',
-              style: TextStyle(color: Colors.black, fontSize: 17),
+              style: TextStyle(fontSize: 17),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

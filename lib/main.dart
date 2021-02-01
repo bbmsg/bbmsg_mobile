@@ -1,6 +1,7 @@
 import 'package:bbmsg_mobile/Splash.dart';
 import 'package:bbmsg_mobile/backend/appGet.dart';
 import 'package:bbmsg_mobile/services/shared_prefrences_helper.dart';
+import 'package:bbmsg_mobile/services/theme_notifier.dart';
 import 'package:bbmsg_mobile/ui/pages/Sign_in.dart';
 import 'package:bbmsg_mobile/ui/pages/register_page.dart';
 import 'package:bbmsg_mobile/values/app_colors.dart';
@@ -14,6 +15,7 @@ import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
+import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 void main() async {
@@ -25,34 +27,43 @@ void main() async {
     assetsDirectory: 'assets/langs/',
   );
   await SPHelper.spHelper.initSharedPreferences();
-  runApp(MyApp());
+  bool mode = await SPHelper.spHelper.getMode() ?? true;
+
+  runApp(
+    ChangeNotifierProvider<ThemeNotifier>(
+      create: (context) {
+        return ThemeNotifier(mode ? darkTheme : lightTheme);
+      },
+      child: MyApp(),
+    ),
+  );
 }
 
-ThemeData themeData = ThemeData(
-  scaffoldBackgroundColor: Colors.white,
-);
-ThemeData themeDataDark = ThemeData(
-  scaffoldBackgroundColor: Colors.white,
-  iconTheme: IconThemeData(color: Colors.blue),
-);
+// ThemeData themeData = ThemeData(
+//   scaffoldBackgroundColor: Colors.white,
+// );
+// ThemeData themeDataDark = ThemeData(
+//   scaffoldBackgroundColor: Colors.white,
+//   iconTheme: IconThemeData(color: Colors.blue),
+// );
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
+
     return ScreenUtilInit(
       designSize: Size(392.72727272727275, 850.9090909090909),
       allowFontScaling: true,
       child: GetMaterialApp(
-        theme: ThemeData.dark(),
         title: 'BBMSG',
         debugShowCheckedModeBanner: false,
         localizationsDelegates: translator.delegates,
         locale: translator.locale,
         supportedLocales: translator.locals(),
         showSemanticsDebugger: false,
-        home: MaterialApp(
-          home: MiddlePage(),
-        ),
+        theme: themeNotifier.getTheme(),
+        home: MiddlePage(),
       ),
     );
   }

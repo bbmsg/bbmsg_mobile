@@ -56,9 +56,9 @@ class Profilescreen extends StatelessWidget {
                                     child: SvgPicture.asset(
                                       'assets/svgs/Iconly-Light-Setting.svg',
                                       semanticsLabel: 'Acme Logo',
-                                      color: Get.isDarkMode
-                                          ? Colors.black
-                                          : Colors.white,
+                                      // color: Get.isDarkMode
+                                      //     ? Colors.black
+                                      //     : Colors.white,
                                       height: 20.h,
                                     ),
                                   ),
@@ -70,9 +70,9 @@ class Profilescreen extends StatelessWidget {
                                   child: SvgPicture.asset(
                                     'assets/svgs/edit.svg',
                                     semanticsLabel: 'Acme Logo',
-                                    color: Get.isDarkMode
-                                        ? Colors.black
-                                        : Colors.white,
+                                    // color: Get.isDarkMode
+                                    //     ? Colors.black
+                                    //     : Colors.white,
                                     height: 20.h,
                                   ),
                                 )
@@ -219,28 +219,23 @@ class Profilescreen extends StatelessWidget {
                       ),
                     ),
                     Container(
-                        child: TabBar(
-                      indicatorColor:
-                          Get.isDarkMode ? Colors.white : Colors.black,
+                         child: TabBar(
+                      
                       tabs: [
                         Tab(
                           child: Text(
                             'Posts',
                             style: TextStyle(
-                                color: Get.isDarkMode
-                                    ? Colors.white
-                                    : Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400),
+                                fontSize: 16, fontWeight: FontWeight.w400),
                           ),
                         ),
                         Tab(
                           child: Text(
                             'Likes',
                             style: TextStyle(
-                                color: Get.isDarkMode
-                                    ? Colors.white
-                                    : Colors.black,
+                                // color: Get.isDarkMode
+                                //     ? Colors.white
+                                //     : Colors.black,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400),
                           ),
