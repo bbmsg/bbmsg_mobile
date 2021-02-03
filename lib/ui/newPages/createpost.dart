@@ -11,7 +11,10 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 
 class Createpostscr extends StatefulWidget {
-  Createpostscr({Key key}) : super(key: key);
+  final bool isShare;
+  final String postId;
+
+  Createpostscr(this.isShare, {this.postId, Key key}) : super(key: key);
 
   @override
   _CreatepostscrState createState() => _CreatepostscrState();
@@ -65,7 +68,7 @@ class _CreatepostscrState extends State<Createpostscr> {
           children: [
             Container(),
             Text(
-              'Create Post',
+              widget.isShare ? 'Share Post' : 'Create Post',
               style: TextStyle(
                   //HexColor('#1A1818')
                   fontSize: isPortrait
@@ -76,7 +79,10 @@ class _CreatepostscrState extends State<Createpostscr> {
               onTap: () async {
                 bool result = appGet.userMap.isEmpty
                     ? false
-                    : await createPost(contentController.text, images);
+                    : widget.isShare
+                        ? await sharePost(contentController.text, widget.postId)
+                        : await createPost(contentController.text, images);
+
                 if (result == true) {
                   this.images = [];
                   contentController.clear();
@@ -85,7 +91,7 @@ class _CreatepostscrState extends State<Createpostscr> {
                 }
               },
               child: Text(
-                'Post',
+                widget.isShare ? 'Share' : 'Post',
                 style: TextStyle(
                     color: HexColor('#00ADEE'),
                     fontSize: isPortrait
@@ -250,7 +256,9 @@ class _CreatepostscrState extends State<Createpostscr> {
                                     ? ScreenUtil().setWidth(16)
                                     : ScreenUtil().setWidth(10),
                               ),
-                              hintText: 'What\'s in your mind?',
+                              hintText: widget.isShare
+                                  ? 'Say something about this...'
+                                  : 'What\'s in your mind?',
                               hintStyle: TextStyle(
                                 fontSize: isPortrait
                                     ? ScreenUtil().setSp(14)
@@ -318,39 +326,41 @@ class _CreatepostscrState extends State<Createpostscr> {
                 SizedBox(
                   height: 20.h,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    loadAssets();
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                        left: isPortrait
-                            ? ScreenUtil().setWidth(26)
-                            : ScreenUtil().setWidth(18)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SvgPicture.asset('assets/svgs/image.svg'),
-                        SizedBox(
-                          width: isPortrait
-                              ? ScreenUtil().setWidth(10)
-                              : ScreenUtil().setWidth(10),
-                        ),
-                        Text(
-                          'Photo/Video',
-                          style: TextStyle(
-                            fontSize: isPortrait
-                                ? ScreenUtil().setSp(14)
-                                : ScreenUtil().setSp(8),
-                            // color: Get.isDarkMode
-                            //     ? Colors.white
-                            //     : HexColor('#3A3A3A'),
+                widget.isShare
+                    ? Container()
+                    : GestureDetector(
+                        onTap: () {
+                          loadAssets();
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              left: isPortrait
+                                  ? ScreenUtil().setWidth(26)
+                                  : ScreenUtil().setWidth(18)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              SvgPicture.asset('assets/svgs/image.svg'),
+                              SizedBox(
+                                width: isPortrait
+                                    ? ScreenUtil().setWidth(10)
+                                    : ScreenUtil().setWidth(10),
+                              ),
+                              Text(
+                                'Photo/Video',
+                                style: TextStyle(
+                                  fontSize: isPortrait
+                                      ? ScreenUtil().setSp(14)
+                                      : ScreenUtil().setSp(8),
+                                  // color: Get.isDarkMode
+                                  //     ? Colors.white
+                                  //     : HexColor('#3A3A3A'),
+                                ),
+                              )
+                            ],
                           ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
+                        ),
+                      ),
                 SizedBox(
                   height: isPortrait
                       ? ScreenUtil().setHeight(12)

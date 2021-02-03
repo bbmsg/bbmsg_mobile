@@ -627,6 +627,26 @@ Future<bool> createPost(String content, List<Asset> images) async {
 }
 
 /////////////////////////////////////////////////////////////////////////////////////
+/////Share Post
+Future<bool> sharePost(String content, String postId) async {
+  appGet.pr.show();
+
+  try {
+    var response = await dio.post(baseUrl + '/posts',
+        data: FormData.fromMap({'content': content, 'shared_post_id': postId}),
+        options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
+    Map<String, dynamic> mmnlist1 = response.data;
+    getMyPosts(myId: appGet.userMap['user']['id'].toString());
+    getPosts();
+    appGet.pr.hide();
+    print('Shareee $mmnlist1');
+    return true;
+  } on DioError catch (e) {
+    appGet.pr.hide();
+    logger.e(e.response.data['message']);
+    return false;
+  }
+}
 
 editPost(int id, String content, File img, int tags) async {
   String fileName = img.path.split('/').last;
@@ -935,13 +955,13 @@ Future likereply(int replyid) async {
 
 Future getActivity({String limit = '10', String skip = '0'}) async {
   try {
-  var response = await dio.get(
-      baseUrl + '/activities?\$limit=$limit&\$skip=$skip',
-      options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
-  Map mmnlist1 = response.data;
-  appGet.mapActivity.value = mmnlist1;
-  print('Activity ${response.data}');
-  return mmnlist1;
+    var response = await dio.get(
+        baseUrl + '/activities?\$limit=$limit&\$skip=$skip',
+        options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
+    Map mmnlist1 = response.data;
+    appGet.mapActivity.value = mmnlist1;
+    print('Activity ${response.data}');
+    return mmnlist1;
   } on DioError catch (e) {
     logger.e(e.response.data['message']);
   }

@@ -8,8 +8,8 @@ class Headbar extends StatefulWidget with PreferredSizeWidget {
   final Size preferredSize;
   final String titles;
   final int ico;
-  Function fun;
-  Headbar(this.titles, this.ico, this.fun, {Key key})
+   Function fun;
+  Headbar(this.titles, this.ico, this.fun,   {Key key})
       : preferredSize = Size.fromHeight(60.0),
         super(key: key);
 
@@ -41,7 +41,6 @@ class _HeadbarState extends State<Headbar> {
         height: 35.0,
         child: Text(
           widget.titles,
-          
         ),
         // Image.asset("assets/images/insta_logo.png")
       ),

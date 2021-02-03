@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:bbmsg_mobile/ui/newPages/createpost.dart';
 
 class PostLikeAndCommentWidget extends StatelessWidget {
   int index;
@@ -71,7 +72,15 @@ class PostLikeAndCommentWidget extends StatelessWidget {
                       icon: SvgPicture.asset('assets/svgs/share.svg',
                           width: 20,
                           color: _darkTheme ? Colors.white : Colors.grey),
-                      onPressed: () {},
+                      onPressed: () {
+                        print('idddd ${appGet.posts[index]['id'].toString()}');
+                        Get.to(
+                          Createpostscr(
+                            true,
+                            postId: appGet.posts[index]['id'].toString(),
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),
