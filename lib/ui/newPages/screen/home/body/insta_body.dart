@@ -1,4 +1,5 @@
 import 'package:bbmsg_mobile/backend/appGet.dart';
+import 'package:bbmsg_mobile/backend/server.dart';
 import 'package:bbmsg_mobile/services/theme_notifier.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/home/story/custom_image_editor.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/home/story/elementstroy/pageviewstory.dart';
@@ -7,6 +8,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 import 'instalist/insta_list.dart';
@@ -25,10 +27,10 @@ class HeaderMock extends StatelessWidget {
   Function fun;
   HeaderMock(this.fun);
   AppGet appGet = Get.find();
- 
+
   @override
   Widget build(BuildContext context) {
-      return Obx(() {
+    return Obx(() {
       return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -82,7 +84,6 @@ class HeaderMock extends StatelessWidget {
                             appGet.userMap['user']['name'].toString(),
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                             
                             ),
                           ),
                         ),
@@ -105,10 +106,10 @@ class HeaderMock extends StatelessWidget {
                             child: Text(
                               'What\'s in your mind?',
                               style: TextStyle(
-                                // color: Get.isDarkMode
-                                //     ? Colors.white
-                                //     : Colors.black,
-                              ),
+                                  // color: Get.isDarkMode
+                                  //     ? Colors.white
+                                  //     : Colors.black,
+                                  ),
                             ),
                           ),
                         )
@@ -195,8 +196,9 @@ class HeaderMock extends StatelessWidget {
                                 return appGet.story['data'][index]['total'] != 0
                                     ? InkWell(
                                         onTap: () {
+                                          logger.e(appGet.story['data']);
                                           Get.to(Pageviewstory(
-                                              appGet.story['data'], index));
+                                              appGet.story['data']));
                                         },
                                         child: Container(
                                           margin: EdgeInsets.symmetric(
@@ -246,7 +248,7 @@ class HeaderMock extends StatelessWidget {
                                     : InkWell(
                                         onTap: () {
                                           Get.to(Pageviewstory(
-                                              appGet.story['data'], 1));
+                                              appGet.story['data']));
                                         },
                                         child: Container(
                                           alignment: Alignment.center,

@@ -9,9 +9,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class Pageviewstory extends StatefulWidget {
-  final List listall;
-  final int pagini;
-  Pageviewstory(this.listall, this.pagini, {Key key}) : super(key: key);
+  final List storiesData;
+  // final int pagini;
+  Pageviewstory(this.storiesData, {Key key}) : super(key: key);
 
   @override
   _PageviewstoryState createState() => _PageviewstoryState();
@@ -26,45 +26,45 @@ class _PageviewstoryState extends State<Pageviewstory> {
   // }
 
   AppGet appGet = Get.find();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    appGet.numberOfStories = widget.storiesData.length;
+  }
+
   final pagcontroller = PageController(initialPage: 0);
   @override
   Widget build(BuildContext context) {
-    print('storiesesss ${widget.listall[0]['stories']}');
-
     return SafeArea(
       child: Scaffold(
         body: PageView(
-          controller: appGet.pagcontroller,
-          onPageChanged: (value) {
-            logger.e('finished');
-            if (appGet.completcycle == true.obs) {
-              logger.e('finished');
-              // _currentPage++;
-              // pagcontroller.animateToPage(
-              //   _currentPage,
-              //   duration: Duration(milliseconds: 350),
-              //   curve: Curves.easeIn,
-              // );
-            }
-          },
-          children: [
-            for (var i = 0; i < widget.listall.length; i++)
-              Stack(
+            controller: appGet.pagcontroller,
+
+            // onPageChanged: (value) {
+            //   logger.e('shady $value');
+            //   if (appGet.completcycle == true.obs) {
+            //     // _currentPage++;
+            //     // pagcontroller.animateToPage(
+            //     //   _currentPage,
+            //     //   duration: Duration(milliseconds: 350),
+            //     //   curve: Curves.easeIn,
+            //     // );
+            //   }
+            // },
+            children: widget.storiesData.map((e) {
+              return Stack(
                 children: [
-                  PhotoStoryshow('tt', widget.listall[i]['stories'],
-                      widget.listall[i]['author']),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: 25.h,
-                      horizontal: 10.w,
-                    ),
+                  PhotoStoryshow(e['stories'], e['author']),
+                  Container(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
                     child: Row(
-                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Row(
                           children: [
-                            widget.listall[i]['author']['profile_picture'] !=
-                                    null
+                            e['author']['profile_picture'] != null
                                 ? Container(
                                     height: ScreenUtil().setWidth(35),
                                     width: ScreenUtil().setWidth(35),
@@ -73,8 +73,7 @@ class _PageviewstoryState extends State<Pageviewstory> {
                                       image: new DecorationImage(
                                           fit: BoxFit.fill,
                                           image: CachedNetworkImageProvider(
-                                            widget.listall[i]['author']
-                                                    ['profile_picture']
+                                            e['author']['profile_picture']
                                                 .toString(),
                                           )),
                                     ),
@@ -88,7 +87,7 @@ class _PageviewstoryState extends State<Pageviewstory> {
                                       shape: BoxShape.circle,
                                     ),
                                     child: Text(
-                                      widget.listall[i]['author']['name']
+                                      e['author']['name']
                                           .toString()[0]
                                           .toUpperCase(),
                                       style: TextStyle(
@@ -100,10 +99,7 @@ class _PageviewstoryState extends State<Pageviewstory> {
                               width: 10.w,
                             ),
                             Text(
-                              widget.listall[i]['author']['name'].length == 10
-                                  ? widget.listall[i]['author']['name']
-                                  : widget.listall[i]['author']['name']
-                                      .substring(0, 11),
+                              e['author']['name'],
                               style: TextStyle(
                                 fontSize: 15,
                                 color: Colors.white,
@@ -117,105 +113,96 @@ class _PageviewstoryState extends State<Pageviewstory> {
                               child: new Text(
                                 // "10 min",
 
-                                readTimestamp(DateTime.parse(widget.listall[i]
-                                    ['stories'][0]['created_at'])),
+                                readTimestamp(DateTime.parse(
+                                    e['stories'][0]['created_at'])),
                                 style: TextStyle(color: Colors.grey[500]),
                               ),
                             ),
                           ],
                         ),
-                        Expanded(
-                          child: Row(
-                            children: [
-                              widget.listall[i]['author']['id'] ==
-                                      appGet.userMap['user']['id']
-                                  ? GestureDetector(
-                                      onTapDown:
-                                          (TapDownDetails details) async {
-                                        double left = details.globalPosition.dx;
-                                        double top = details.globalPosition.dy;
-                                        var x = await showMenu(
-                                          context: context,
-                                          position: RelativeRect.fromLTRB(
-                                              left, top, 0, 0),
-                                          items: [
-                                            PopupMenuItem<String>(
-                                                child:
-                                                    const Text('Delete post'),
-                                                value: 'delete'),
-                                          ],
-                                          elevation: 8.0,
-                                        );
-                                        if (x == 'delete') {
-                                          deleteStories(
-                                              widget.listall[i]['stories'][i]
-                                                  ['id'],
-                                              i);
-                                          Get.back();
-                                        }
-                                      },
-                                      child: Icon(
-                                        Icons.more_horiz,
-                                        color: Colors.white,
-                                      ),
-                                    )
-                                  : GestureDetector(
-                                      onTapDown:
-                                          (TapDownDetails details) async {
-                                        double left = details.globalPosition.dx;
-                                        double top = details.globalPosition.dy;
-                                        var x = await showMenu(
-                                          context: context,
-                                          position: RelativeRect.fromLTRB(
-                                              left, top, 0, 0),
-                                          items: [
-                                            PopupMenuItem<String>(
-                                                child: const Text('Block'),
-                                                value: 'block'),
-                                            PopupMenuItem<String>(
-                                                child:
-                                                    const Text('Report post'),
-                                                value: 'report'),
-                                          ],
-                                          elevation: 8.0,
-                                        );
-                                        if (x == 'block') {
-                                          blockUser(widget.listall[i]['author']
-                                              ['id']);
-                                        } else if (x == 'report') {
-                                          reportPost(
-                                              widget.listall[i]['stories'][i]
-                                                  ['id'],
-                                              i);
-                                        }
-                                      },
-                                      child: Icon(
-                                        Icons.more_horiz,
-                                        color: Colors.white,
-                                      ),
+                        Row(
+                          children: [
+                            e['author']['id'] == appGet.userMap['user']['id']
+                                ? GestureDetector(
+                                    onTapDown: (TapDownDetails details) async {
+                                      double left = details.globalPosition.dx;
+                                      double top = details.globalPosition.dy;
+                                      var x = await showMenu(
+                                        context: context,
+                                        position: RelativeRect.fromLTRB(
+                                            left, top, 0, 0),
+                                        items: [
+                                          PopupMenuItem<String>(
+                                              child: const Text('Delete post'),
+                                              value: 'delete'),
+                                        ],
+                                        elevation: 8.0,
+                                      );
+                                      if (x == 'delete') {
+                                        // deleteStories(
+                                        //     widget.storiesData[i]['stories'][i]
+                                        //         ['id'],
+                                        //     i);
+                                        Get.back();
+                                      }
+                                    },
+                                    child: Icon(
+                                      Icons.more_horiz,
+                                      color: Colors.white,
                                     ),
-                              SizedBox(
-                                width: 5.w,
+                                  )
+                                : GestureDetector(
+                                    onTapDown: (TapDownDetails details) async {
+                                      double left = details.globalPosition.dx;
+                                      double top = details.globalPosition.dy;
+                                      var x = await showMenu(
+                                        context: context,
+                                        position: RelativeRect.fromLTRB(
+                                            left, top, 0, 0),
+                                        items: [
+                                          PopupMenuItem<String>(
+                                              child: const Text('Block'),
+                                              value: 'block'),
+                                          PopupMenuItem<String>(
+                                              child: const Text('Report post'),
+                                              value: 'report'),
+                                        ],
+                                        elevation: 8.0,
+                                      );
+                                      if (x == 'block') {
+                                        blockUser(e['author']['id']);
+                                      } else if (x == 'report') {
+                                        // reportPost(
+                                        //    e['stories']
+                                        //         [i]['id'],
+                                        //     i);
+                                      }
+                                    },
+                                    child: Icon(
+                                      Icons.more_horiz,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                            SizedBox(
+                              width: 5.w,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Get.back();
+                              },
+                              child: Icon(
+                                Icons.close,
+                                color: Colors.white,
                               ),
-                              InkWell(
-                                onTap: () {
-                                  Get.back();
-                                },
-                                child: Icon(
-                                  Icons.close,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
                   ),
                 ],
-              )
-          ],
-        ),
+              );
+            }).toList()),
       ),
     );
   }

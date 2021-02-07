@@ -8,8 +8,8 @@ class Headbar extends StatefulWidget with PreferredSizeWidget {
   final Size preferredSize;
   final String titles;
   final int ico;
-   Function fun;
-  Headbar(this.titles, this.ico, this.fun,   {Key key})
+  Function fun;
+  Headbar(this.titles, this.ico, this.fun, {Key key})
       : preferredSize = Size.fromHeight(60.0),
         super(key: key);
 

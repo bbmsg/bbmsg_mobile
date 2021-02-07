@@ -61,6 +61,7 @@ dependencies:
   string_validator: ^0.1.4
   transparent_image: null
   url_launcher: ^5.7.10
+  country_code_picker: ^1.7.0
   
 
 dev_dependencies:

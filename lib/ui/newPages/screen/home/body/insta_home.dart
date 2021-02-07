@@ -60,7 +60,7 @@ class _InstaHomeState extends State<InstaHome> {
           Profilescreen()
         ][currentIndex],
         bottomNavigationBar: new Container(
-          height: Get.isDarkMode ? 40.h : 60.h,
+          height: Get.isDarkMode ? 80.h : 80.h,
           alignment: Alignment.center,
           child: BottomAppBar(
             child: Row(
@@ -71,14 +71,10 @@ class _InstaHomeState extends State<InstaHome> {
                       ? SvgPicture.asset(
                           'assets/svgs/FilledHome.svg',
                           color: _darkTheme ? Colors.white : Colors.black,
-                          width: 20.w,
-                          height: 30.h,
                         )
                       : SvgPicture.asset(
                           'assets/svgs/Home.svg',
                           color: _darkTheme ? Colors.white : Colors.black,
-                          width: 20.w,
-                          height: 30.h,
                         ),
                   onPressed: () {
                     setState(() {

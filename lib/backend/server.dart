@@ -133,7 +133,8 @@ updateUser(String userId, Map map) async {
 
     appGet.pr.hide();
   } on DioError catch (e) {
-    logger.e(e.response);
+    appGet.pr.hide();
+    CustomDialougs.utils.showDialoug(titleKey: 'error', messageKey: e.message);
   }
 }
 
