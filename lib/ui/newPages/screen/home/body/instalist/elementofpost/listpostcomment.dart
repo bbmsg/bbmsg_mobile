@@ -66,7 +66,13 @@ class PostDetailsa extends StatelessWidget {
                                 ),
                               )
                             : Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                crossAxisAlignment: isAlpha(appGet.posts[index]
+                                            ['content']
+                                        .toString()
+                                        .toLowerCase()
+                                        .removeAllWhitespace)
+                                    ? CrossAxisAlignment.start
+                                    : CrossAxisAlignment.end,
                                 children: [
                                   Container(
                                     padding: EdgeInsets.only(

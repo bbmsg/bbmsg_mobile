@@ -169,74 +169,72 @@ class _CreatepostscrState extends State<Createpostscr> {
                                 ? ScreenUtil().setHeight(10)
                                 : ScreenUtil().setHeight(20),
                           ),
-                          Obx(() {
-                            return GestureDetector(
-                              onTap: () {},
-                              child: Container(
-                                width: isPortrait
-                                    ? ScreenUtil().setWidth(90)
-                                    : ScreenUtil().setWidth(45),
-                                height: isPortrait
-                                    ? ScreenUtil().setHeight(21)
-                                    : ScreenUtil().setHeight(42),
-                                decoration: BoxDecoration(
-                                    border:
-                                        Border.all(color: HexColor('#E1E1E1')),
-                                    borderRadius: BorderRadius.circular(3)),
-                                child: Padding(
-                                  padding: EdgeInsets.only(
-                                      left: isPortrait
-                                          ? ScreenUtil().setWidth(6)
-                                          : ScreenUtil().setWidth(5)),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      SvgPicture.asset(
-                                          'assets/svgs/Shield Done.svg'),
-                                      SizedBox(
-                                        width: 70.w,
-                                        child: DropdownButton<String>(
-                                          underline: Container(),
-                                          isExpanded: true,
-                                          value: dropdownValue,
-                                          //   icon: Icon(Icons.arrow_downward),
-                                          //  iconSize: 24,
-                                          elevation: 16,
-                                          style: TextStyle(
-                                              color: Colors.deepPurple),
-                                          // underline: Container(
-                                          //   height: 2,
-                                          //   color: Colors.deepPurpleAccent,
-                                          // ),
-                                          onChanged: (String newValue) {
-                                            setState(() {
-                                              dropdownValue = newValue;
-                                            });
-                                          },
-                                          items: <String>{
-                                            'Public',
-                                            // 'Private',
-                                            // 'Friend'
-                                          }.map<DropdownMenuItem<String>>(
-                                              (String value) {
-                                            return DropdownMenuItem<String>(
-                                              value: value,
-                                              child: Text(
-                                                value,
-                                                style: TextStyle(
-                                                    color: Colors.black),
-                                              ),
-                                            );
-                                          }).toList(),
-                                        ),
+                          GestureDetector(
+                            onTap: () {},
+                            child: Container(
+                              width: isPortrait
+                                  ? ScreenUtil().setWidth(90)
+                                  : ScreenUtil().setWidth(45),
+                              height: isPortrait
+                                  ? ScreenUtil().setHeight(21)
+                                  : ScreenUtil().setHeight(42),
+                              decoration: BoxDecoration(
+                                  border:
+                                      Border.all(color: HexColor('#E1E1E1')),
+                                  borderRadius: BorderRadius.circular(3)),
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                    left: isPortrait
+                                        ? ScreenUtil().setWidth(6)
+                                        : ScreenUtil().setWidth(5)),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    SvgPicture.asset(
+                                        'assets/svgs/Shield Done.svg'),
+                                    SizedBox(
+                                      width: 70.w,
+                                      child: DropdownButton<String>(
+                                        underline: Container(),
+                                        isExpanded: true,
+                                        value: dropdownValue,
+                                        //   icon: Icon(Icons.arrow_downward),
+                                        //  iconSize: 24,
+                                        elevation: 16,
+                                        style:
+                                            TextStyle(color: Colors.deepPurple),
+                                        // underline: Container(
+                                        //   height: 2,
+                                        //   color: Colors.deepPurpleAccent,
+                                        // ),
+                                        onChanged: (String newValue) {
+                                          setState(() {
+                                            dropdownValue = newValue;
+                                          });
+                                        },
+                                        items: <String>{
+                                          'Public',
+                                          // 'Private',
+                                          // 'Friend'
+                                        }.map<DropdownMenuItem<String>>(
+                                            (String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(
+                                              value,
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                          );
+                                        }).toList(),
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            );
-                          })
+                            ),
+                          )
                         ],
                       ),
                     ],

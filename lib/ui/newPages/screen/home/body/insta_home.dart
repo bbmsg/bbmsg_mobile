@@ -66,7 +66,7 @@ class _InstaHomeState extends State<InstaHome> {
           ][currentIndex],
           bottomNavigationBar: Obx(() {
             return Container(
-              height: 50.h,
+              height: 70.h,
               alignment: Alignment.center,
               child: BottomAppBar(
                 child: Row(

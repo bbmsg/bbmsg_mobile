@@ -67,7 +67,10 @@ class _InstaListState extends State<InstaList> {
       children: [
         appGet.posts[index]['media'].isNotEmpty
             ? Column(
-                crossAxisAlignment: isAlpha(appGet.posts[index]['content'])
+                crossAxisAlignment: isAlpha(appGet.posts[index]['content']
+                        .toString()
+                        .toLowerCase()
+                        .removeAllWhitespace)
                     ? CrossAxisAlignment.start
                     : CrossAxisAlignment.end,
                 children: [
