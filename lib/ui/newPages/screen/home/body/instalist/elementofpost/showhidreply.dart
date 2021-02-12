@@ -71,7 +71,7 @@ class _ShohidreplyState extends State<Shohidreply> {
           ),
         ),
         Visibility(
-            visible: shoreplyorhid, child: Listrplaycomment(widget.commentid))
+            visible: shoreplyorhid, child: Listrplaycommentt(widget.commentid))
       ],
     );
   }

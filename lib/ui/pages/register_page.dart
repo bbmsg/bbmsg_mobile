@@ -169,6 +169,7 @@ class RegisterPage extends StatelessWidget {
                                 iconData: Icons.lock,
                                 validateFunction: validatepasswordFunction,
                                 saveFunction: savePassword1,
+                                isPassword: true,
                               ),
                               SizedBox(
                                 height: 20.h,
@@ -180,6 +181,7 @@ class RegisterPage extends StatelessWidget {
                                 iconData: Icons.lock,
                                 validateFunction: validateConformPassword,
                                 saveFunction: savePasword2,
+                                isPassword: true,
                               ),
                             ],
                           ),

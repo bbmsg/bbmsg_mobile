@@ -16,6 +16,7 @@ class MyTextField extends StatelessWidget {
   String content;
   Color borderColor;
   String svgAsset;
+  bool isPassword;
   MyTextField(
       {this.hintTextKey,
       this.iconData,
@@ -25,7 +26,8 @@ class MyTextField extends StatelessWidget {
       this.inputType = TextInputType.text,
       this.content,
       this.borderColor,
-      this.svgAsset}) {
+      this.svgAsset,
+      this.isPassword = false}) {
     if (content != null) {
       editingController.text = content;
     }
@@ -56,6 +58,7 @@ class MyTextField extends StatelessWidget {
               width: double.infinity,
               alignment: Alignment.center,
               child: TextFormField(
+                obscureText: isPassword,
                 controller: editingController,
                 maxLines: nofLines,
                 onFieldSubmitted: (value) {

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:bbmsg_mobile/backend/appGet.dart';
 import 'package:bbmsg_mobile/main.dart';
+import 'package:bbmsg_mobile/utils/ProgressDialogUtils.dart';
 import 'package:flutter/services.dart';
 import 'package:bbmsg_mobile/services/shared_prefrences_helper.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/home/body/insta_home.dart';
@@ -25,7 +26,7 @@ AppGet appGet = myget.Get.put(AppGet());
 Logger logger = Logger();
 
 registerNewUser({String userName, String credintial, String password}) async {
-  appGet.pr.show();
+  ProgressDialogUtils.pr.show();
   Map map = isEmail(credintial)
       ? {"name": userName, "email": credintial, "password": password}
       : {"name": userName, "phone_number": credintial, "password": password};
@@ -41,11 +42,11 @@ registerNewUser({String userName, String credintial, String password}) async {
     getPosts();
     getUsers();
 
-    appGet.pr.hide();
+    ProgressDialogUtils.pr.dismiss();
 
     myget.Get.off(InstaHome(0));
   } on DioError catch (e) {
-    appGet.pr.hide();
+    ProgressDialogUtils.pr.dismiss();
     CustomDialougs.utils
         .showDialoug(titleKey: 'error', messageKey: e.response.data['message']);
   }
@@ -54,7 +55,7 @@ registerNewUser({String userName, String credintial, String password}) async {
 ///////////////////////////////////////////////////////////////////////////////////
 getUserToken(
     {String credintial, String strategy = 'local', String password}) async {
-  appGet.pr.show();
+  ProgressDialogUtils.pr.show();
   try {
     Map map = isEmail(credintial)
         ? {"strategy": strategy, "email": credintial, "password": password}
@@ -77,11 +78,11 @@ getUserToken(
     getMyPosts(myId: '${resultMap['user']['id']}');
     getMyLikes(myId: '${resultMap['user']['id']}');
     getstory('10');
-    appGet.pr.hide();
+    ProgressDialogUtils.pr.dismiss();
 
     myget.Get.off(InstaHome(0));
   } on DioError catch (e) {
-    appGet.pr.hide();
+    ProgressDialogUtils.pr.dismiss();
 
     CustomDialougs.utils
         .showDialoug(titleKey: 'Error', messageKey: e.response.data['message']);
@@ -103,7 +104,7 @@ Future<Map<String, dynamic>> retrieveUser(
     Map<String, dynamic> resultMap = response.data;
     appGet.setToken(resultMap['accessToken']);
     appGet.setUserMap(resultMap);
-    appGet.pr.hide();
+    ProgressDialogUtils.pr.dismiss();
     return resultMap;
   } on DioError catch (e) {
     logger.e(e.response.data['message']);
@@ -121,7 +122,7 @@ signOut() {
 ///////////////////////////////////////////////////////////////////////////////
 updateUser(String userId, Map map) async {
   try {
-    appGet.pr.show();
+    ProgressDialogUtils.pr.show();
     var response = await dio.put(
       baseUrl + '/users/$userId',
       data: FormData.fromMap({...map}),
@@ -131,9 +132,9 @@ updateUser(String userId, Map map) async {
 
     appGet.setUserMap({'user': resultMap});
 
-    appGet.pr.hide();
+    ProgressDialogUtils.pr.dismiss();
   } on DioError catch (e) {
-    appGet.pr.hide();
+    ProgressDialogUtils.pr.dismiss();
     CustomDialougs.utils.showDialoug(titleKey: 'error', messageKey: e.message);
   }
 }
@@ -300,9 +301,9 @@ blockUser(int userId) async {
     getPosts();
     getAllBlocks();
     getstory('10');
-    appGet.pr.hide();
+    ProgressDialogUtils.pr.dismiss();
   } on DioError catch (e) {
-    appGet.pr.hide();
+    ProgressDialogUtils.pr.dismiss();
     logger.e(e);
     // CustomDialougs.utils
     //     .showDialoug(titleKey: 'Error', messageKey: e.response.data['message']);
@@ -322,9 +323,9 @@ unBlockUser(int userId) async {
     logger.e(resultMap);
     getPosts();
     getAllBlocks();
-    appGet.pr.hide();
+    ProgressDialogUtils.pr.dismiss();
   } on DioError catch (e) {
-    appGet.pr.hide();
+    ProgressDialogUtils.pr.dismiss();
     logger.e(e);
     // CustomDialougs.utils
     //     .showDialoug(titleKey: 'Error', messageKey: e.response.data['message']);
@@ -343,9 +344,9 @@ getAllBlocks() async {
     Map<String, dynamic> resultMap = response.data;
     logger.e(resultMap);
     appGet.blockMap.value = resultMap;
-    appGet.pr.hide();
+    ProgressDialogUtils.pr.dismiss();
   } on DioError catch (e) {
-    appGet.pr.hide();
+    ProgressDialogUtils.pr.dismiss();
     logger.e(e);
     // CustomDialougs.utils
     //     .showDialoug(titleKey: 'Error', messageKey: e.response.data['message']);
@@ -367,9 +368,9 @@ reportPost(int postId, int index) async {
         .showDialoug(titleKey: 'success', messageKey: resultMap['message']);
     appGet.posts.removeAt(index);
     getstory('10');
-    appGet.pr.hide();
+    ProgressDialogUtils.pr.dismiss();
   } on DioError catch (e) {
-    appGet.pr.hide();
+    ProgressDialogUtils.pr.dismiss();
     logger.e(e);
     // CustomDialougs.utils
     //     .showDialoug(titleKey: 'Error', messageKey: e.response.data['message']);
@@ -389,9 +390,9 @@ reportUser(String userId) async {
     Map<String, dynamic> resultMap = response.data;
     logger.e(resultMap);
 
-    appGet.pr.hide();
+    ProgressDialogUtils.pr.dismiss();
   } on DioError catch (e) {
-    appGet.pr.hide();
+    ProgressDialogUtils.pr.dismiss();
     logger.e(e);
     // CustomDialougs.utils
     //     .showDialoug(titleKey: 'Error', messageKey: e.response.data['message']);
@@ -555,7 +556,7 @@ User checkUser() {
 
 /////////////////////////////////////////////////////////////////////////////////////
 socialMediaAuth({String token, String strategy}) async {
-  appGet.pr.show();
+  ProgressDialogUtils.pr.show();
   try {
     Map map = {"strategy": strategy, "accessToken": token};
 
@@ -565,11 +566,11 @@ socialMediaAuth({String token, String strategy}) async {
     Map<String, dynamic> resultMap = response.data;
     appGet.setToken(resultMap['accessToken']);
     appGet.setUserMap(resultMap);
-    appGet.pr.hide();
+    ProgressDialogUtils.pr.dismiss();
 
     myget.Get.off(InstaHome(0));
   } on DioError catch (e) {
-    appGet.pr.hide();
+    ProgressDialogUtils.pr.dismiss();
     logger.e(e.response.data['message']);
     CustomDialougs.utils
         .showDialoug(titleKey: 'Error', messageKey: e.response.data['message']);
@@ -585,7 +586,7 @@ socialMediaAuth({String token, String strategy}) async {
 /////////////////////////////////////////////////////////////////////////////////////////
 
 Future<MultipartFile> convertAssetToMultipart(Asset image) async {
-  ByteData byteData = await image.getByteData();
+  ByteData byteData = await image.getByteData(quality: 10);
   List<int> imageData = byteData.buffer.asUint8List();
   MultipartFile multipartFile = await MultipartFile.fromBytes(imageData,
       filename: image.name.substring(0, image.name.lastIndexOf('.')) + '.jpeg',
@@ -603,7 +604,7 @@ Future<List<MultipartFile>> ListAssetToListMultipart(List<Asset> images) async {
 }
 
 Future<bool> createPost(String content, List<Asset> images) async {
-  appGet.pr.show();
+  ProgressDialogUtils.pr.show();
 
   List<MultipartFile> multiParts;
   if (images != null) {
@@ -617,11 +618,13 @@ Future<bool> createPost(String content, List<Asset> images) async {
     Map<String, dynamic> mmnlist1 = response.data;
     getMyPosts(myId: appGet.userMap['user']['id'].toString());
     getPosts();
-    appGet.pr.hide();
+
+    ProgressDialogUtils.pr.dismiss();
+    myget.Get.offAll(InstaHome(0));
     logger.d(mmnlist1);
     return true;
   } on DioError catch (e) {
-    appGet.pr.hide();
+    ProgressDialogUtils.pr.dismiss();
     logger.e(e.response.data['message']);
     return false;
   }
@@ -630,7 +633,7 @@ Future<bool> createPost(String content, List<Asset> images) async {
 /////////////////////////////////////////////////////////////////////////////////////
 /////Share Post
 Future<bool> sharePost(String content, String postId) async {
-  appGet.pr.show();
+  ProgressDialogUtils.pr.show();
 
   try {
     var response = await dio.post(baseUrl + '/posts',
@@ -639,11 +642,11 @@ Future<bool> sharePost(String content, String postId) async {
     Map<String, dynamic> mmnlist1 = response.data;
     getMyPosts(myId: appGet.userMap['user']['id'].toString());
     getPosts();
-    appGet.pr.hide();
+    ProgressDialogUtils.pr.dismiss();
     print('Shareee $mmnlist1');
     return true;
   } on DioError catch (e) {
-    appGet.pr.hide();
+    ProgressDialogUtils.pr.dismiss();
     logger.e(e.response.data['message']);
     return false;
   }
@@ -969,7 +972,7 @@ Future getActivity({String limit = '10', String skip = '0'}) async {
 }
 
 Future creatstory(File images, String content, bool public) async {
-  appGet.pr.show();
+  ProgressDialogUtils.pr.show();
   print('image');
   String fileName;
   FormData frmdat;
@@ -990,17 +993,17 @@ Future creatstory(File images, String content, bool public) async {
   print('image' + fileName.toString());
 
   try {
-    // appGet.pr.hide();
+    // ProgressDialogUtils.pr.dismiss();
     var response = await dio.post(baseUrl + '/stories',
         data: frmdat,
         options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
     Map<String, dynamic> mmnlist1 = response.data;
 
-    appGet.pr.hide();
+    ProgressDialogUtils.pr.dismiss();
     logger.d(mmnlist1);
     return true;
   } on DioError catch (e) {
-    appGet.pr.hide();
+    ProgressDialogUtils.pr.dismiss();
     logger.e(e.response.data['message']);
     return false;
   }
@@ -1051,7 +1054,7 @@ Future<Map<String, dynamic>> getstory(String limit) async {
 }
 
 Future<bool> createPostwithvedio(String content, PickedFile images) async {
-  appGet.pr.show();
+  ProgressDialogUtils.pr.show();
 
   // var multiParts = await MultipartFile.fromFile(
   //   images.path,
@@ -1070,11 +1073,11 @@ Future<bool> createPostwithvedio(String content, PickedFile images) async {
         options: Options(headers: {'Authorization': 'Bearer ${appGet.token}'}));
     Map<String, dynamic> mmnlist1 = response.data;
     getMyPosts(myId: appGet.userMap['user']['id'].toString());
-    appGet.pr.hide();
+    ProgressDialogUtils.pr.dismiss();
     logger.d(mmnlist1);
     return true;
   } on DioError catch (e) {
-    appGet.pr.hide();
+    ProgressDialogUtils.pr.dismiss();
     logger.e(e.response.data['message']);
     return false;
   }

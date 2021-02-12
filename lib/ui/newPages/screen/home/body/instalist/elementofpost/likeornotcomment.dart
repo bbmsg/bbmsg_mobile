@@ -2,13 +2,13 @@ import 'package:bbmsg_mobile/backend/server.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class Likornotcomment extends StatefulWidget {
+class Likornotcommentt extends StatefulWidget {
   final String commentid;
   final String likeornotno;
   final int commnt_or_reply;
 
   ///commnorreply= 1 then comment// commnorreply=2 the reply
-  Likornotcomment(this.commentid, this.likeornotno, this.commnt_or_reply,
+  Likornotcommentt(this.commentid, this.likeornotno, this.commnt_or_reply,
       {Key key})
       : super(key: key);
 
@@ -16,7 +16,7 @@ class Likornotcomment extends StatefulWidget {
   _LikornotcommentState createState() => _LikornotcommentState();
 }
 
-class _LikornotcommentState extends State<Likornotcomment> {
+class _LikornotcommentState extends State<Likornotcommentt> {
   bool likeornot = false;
   @override
   void initState() {

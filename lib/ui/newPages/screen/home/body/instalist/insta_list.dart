@@ -60,7 +60,7 @@ class _InstaListState extends State<InstaList> {
   int griditm = 1;
   String isarabic;
   int liklocal = 0;
-  Widget postimg(String txt, List img, int index) {
+  Widget postimge(String txt, List img, int index) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -68,8 +68,8 @@ class _InstaListState extends State<InstaList> {
         appGet.posts[index]['media'].isNotEmpty
             ? Column(
                 crossAxisAlignment: isAlpha(appGet.posts[index]['content'])
-                    ? CrossAxisAlignment.end
-                    : CrossAxisAlignment.start,
+                    ? CrossAxisAlignment.start
+                    : CrossAxisAlignment.end,
                 children: [
                   Container(
                     padding:
@@ -93,17 +93,23 @@ class _InstaListState extends State<InstaList> {
                   ),
                 ],
               )
-            : Container(
-                padding: EdgeInsets.symmetric(horizontal: 10.w),
-                color: primaryColor,
-                height: 300.h,
-                alignment: Alignment.center,
-                child: Text(
-                  appGet.posts[index]['content'],
-                  textAlign: isAlpha(appGet.posts[index]['content'])
-                      ? TextAlign.right
-                      : TextAlign.left,
-                  style: TextStyle(fontSize: 16, color: Colors.white),
+            : GestureDetector(
+                onTap: () {
+                  getAcommentlist(appGet.posts[index]['id']);
+                  Get.to(PostDetailsa(index));
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10.w),
+                  color: primaryColor,
+                  height: 300.h,
+                  alignment: Alignment.center,
+                  child: Text(
+                    appGet.posts[index]['content'],
+                    textAlign: isAlpha(appGet.posts[index]['content'])
+                        ? TextAlign.right
+                        : TextAlign.left,
+                    style: TextStyle(fontSize: 16, color: Colors.white),
+                  ),
                 ),
               ),
         PostLikeAndCommentWidget(index),
@@ -129,9 +135,6 @@ class _InstaListState extends State<InstaList> {
               child: ListView(
                 children: [
                   Container(
-                    // color: Get.isDarkMode
-                    //     ? Colors.black.withOpacity(0.12)
-                    //     : Colors.white,
                     child: HeaderMock(widget.fun),
                     padding: EdgeInsets.symmetric(vertical: 20.h),
                   ),
@@ -169,9 +172,6 @@ class _InstaListState extends State<InstaList> {
                             margin: EdgeInsets.symmetric(vertical: 2.h),
                             child: Container(
                               padding: EdgeInsets.only(bottom: 10.h),
-                              // color: Get.isDarkMode
-                              //     ? Colors.black.withOpacity(0.6)
-                              //     : Colors.white,
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 mainAxisSize: MainAxisSize.min,
@@ -339,10 +339,21 @@ class _InstaListState extends State<InstaList> {
                                       ),
                                     ),
                                   ),
-                                  postimg(
-                                      appGet.posts[index]['content'].toString(),
-                                      appGet.posts[index]['media'],
-                                      index),
+                                  GestureDetector(
+                                    onDoubleTap: () {
+                                      appGet.posts[index]['my_like'] == 0
+                                          ? like(
+                                              appGet.posts[index]['id'], index)
+                                          : removelike(
+                                              appGet.posts[index]['my_like'],
+                                              index);
+                                    },
+                                    child: postimge(
+                                        appGet.posts[index]['content']
+                                            .toString(),
+                                        appGet.posts[index]['media'],
+                                        index),
+                                  ),
                                   // GestureDetector(
                                   //   onTap: () {
 

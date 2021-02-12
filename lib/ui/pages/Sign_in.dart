@@ -132,6 +132,7 @@ class _SignInState extends State<SignIn> {
                                 iconData: Icons.lock,
                                 validateFunction: validatepasswordFunction,
                                 saveFunction: savePassword,
+                                isPassword: true,
                               )
                             ],
                           ),
@@ -191,10 +192,9 @@ class _SignInState extends State<SignIn> {
                           Get.to(RegisterPage());
                         },
                         child: Text(
-                          translator
-                              .translate('Don’t have an Account? Signup'),
-                          style: TextStyle(
-                              color: Color(0xFF717171), fontSize: 17),
+                          translator.translate('Don’t have an Account? Signup'),
+                          style:
+                              TextStyle(color: Color(0xFF717171), fontSize: 17),
                           textAlign: TextAlign.center,
                         ),
                       ),

@@ -32,7 +32,12 @@ class PostDetailsa extends StatelessWidget {
         return Future.value(true);
       },
       child: Scaffold(
-        appBar: Headbar('Post Details', 3, createPost),
+        appBar: Headbar(
+          'Post Details',
+          3,
+          createPost,
+          isCreatePost: true,
+        ),
         body: Obx(() {
           // getAcommentlist(appGet.posts[index]['id']);
           return Container(
@@ -44,20 +49,42 @@ class PostDetailsa extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         PostHeader(index),
-                        Container(
-                          padding: EdgeInsets.only(
-                              left: 10.w, right: 10.w, bottom: 10.h),
-                          child: Text(
-                            appGet.posts[index]['content'],
-                            textAlign: isAlpha(appGet.posts[index]['content'])
-                                ? TextAlign.left
-                                : TextAlign.right,
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ),
-                        PostImages(
-                          images: appGet.posts[index]['media'],
-                        ),
+                        appGet.posts[index]['media'].isEmpty
+                            ? Container(
+                                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                                color: primaryColor,
+                                height: 300.h,
+                                alignment: Alignment.center,
+                                child: Text(
+                                  appGet.posts[index]['content'],
+                                  textAlign:
+                                      isAlpha(appGet.posts[index]['content'])
+                                          ? TextAlign.right
+                                          : TextAlign.left,
+                                  style: TextStyle(
+                                      fontSize: 16, color: Colors.white),
+                                ),
+                              )
+                            : Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.only(
+                                        left: 10.w, right: 10.w, bottom: 10.h),
+                                    child: Text(
+                                      appGet.posts[index]['content'],
+                                      textAlign: isAlpha(
+                                              appGet.posts[index]['content'])
+                                          ? TextAlign.left
+                                          : TextAlign.right,
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  ),
+                                  PostImages(
+                                    images: appGet.posts[index]['media'],
+                                  ),
+                                ],
+                              ),
                         PostLikeAndCommentWidget(index),
                         appGet.postsComments.isNotEmpty
                             ? CommentsList(appGet.postsComments, false)
@@ -71,29 +98,31 @@ class PostDetailsa extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  margin:
-                      EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black),
-                      borderRadius: BorderRadius.circular(10)),
+                  color: Colors.grey[100],
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
                   child: Row(
                     children: [
                       Expanded(
                         child: TextField(
                           controller: replaycontroller,
                           decoration: InputDecoration(
+                              hintText: 'Add a comment...',
                               border: OutlineInputBorder(
                                   borderSide: BorderSide.none)),
                         ),
                       ),
-                      IconButton(
-                          icon: Icon(Icons.send),
-                          onPressed: () {
+                      GestureDetector(
+                          onTap: () {
                             createComment(appGet.posts[index]['id'],
                                 replaycontroller.text);
                             replaycontroller.clear();
                             FocusScope.of(context).unfocus();
-                          })
+                          },
+                          child: Text(
+                            'Post',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600, fontSize: 15),
+                          )),
                     ],
                   ),
                 )
@@ -185,9 +214,6 @@ class CommentsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // color: Get.isDarkMode
-      //                             ? Colors.black.withOpacity(0.6)
-      //                             : Colors.white,
       child: generateComments(),
     );
   }

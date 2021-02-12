@@ -1,3 +1,4 @@
+import 'package:ars_progress_dialog/ars_progress_dialog.dart';
 import 'package:bbmsg_mobile/backend/server.dart';
 import 'package:bbmsg_mobile/services/shared_prefrences_helper.dart';
 import 'package:bbmsg_mobile/utils/ProgressDialogUtils.dart';
@@ -6,7 +7,11 @@ import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'dart:io';
 
+enum bottomItem { home, create, activity, profile }
+
 class AppGet extends GetxController {
+  var selectedItem = bottomItem.home.obs;
+  var selectedIndex = 0.obs;
   File profileUserImage;
   setProfileEditImage(File file) {
     profileUserImage = file;
@@ -14,7 +19,6 @@ class AppGet extends GetxController {
   }
 
   int numberOfStories;
-  var isDarkMode = false.obs;
   var acceptConditions = false.obs;
   var postsComments = [].obs;
 
@@ -103,7 +107,6 @@ class AppGet extends GetxController {
     SPHelper.spHelper.saveToken(value);
   }
 
-  var pr = ProgressDialogUtils.createProgressDialog(Get.context);
   var mapActivity = {}.obs;
   Map myPost = {};
   Map commentpost = {};

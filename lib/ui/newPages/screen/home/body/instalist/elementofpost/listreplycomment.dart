@@ -7,15 +7,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-class Listrplaycomment extends StatefulWidget {
+class Listrplaycommentt extends StatefulWidget {
   final int commentid;
-  Listrplaycomment(this.commentid, {Key key}) : super(key: key);
+  Listrplaycommentt(this.commentid, {Key key}) : super(key: key);
 
   @override
   _ListrplaycommentState createState() => _ListrplaycommentState();
 }
 
-class _ListrplaycommentState extends State<Listrplaycomment> {
+class _ListrplaycommentState extends State<Listrplaycommentt> {
   AppGet appGet = Get.find();
 
   int commentidpublic = 0;
@@ -196,7 +196,7 @@ class _ListrplaycommentState extends State<Listrplaycomment> {
                               ),
                               SizedBox(
                                 width: 70.w,
-                                child: Likornotcomment(
+                                child: Likornotcommentt(
                                     snapshot.data['data'][index]['id']
                                         .toString(),
                                     snapshot.data['data'][index]['my_like']

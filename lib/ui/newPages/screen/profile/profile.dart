@@ -53,13 +53,11 @@ class Profilescreen extends StatelessWidget {
                                     Get.to(AppSettings());
                                   },
                                   child: Container(
+                                    padding: EdgeInsets.all(10),
                                     child: SvgPicture.asset(
                                       'assets/svgs/Iconly-Light-Setting.svg',
                                       semanticsLabel: 'Acme Logo',
-                                      // color: Get.isDarkMode
-                                      //     ? Colors.black
-                                      //     : Colors.white,
-                                      height: 20.h,
+                                      height: 28.h,
                                     ),
                                   ),
                                 ),
@@ -67,13 +65,16 @@ class Profilescreen extends StatelessWidget {
                                   onTap: () {
                                     Get.to(ProfileEdit());
                                   },
-                                  child: SvgPicture.asset(
-                                    'assets/svgs/edit.svg',
-                                    semanticsLabel: 'Acme Logo',
-                                    // color: Get.isDarkMode
-                                    //     ? Colors.black
-                                    //     : Colors.white,
-                                    height: 20.h,
+                                  child: Container(
+                                    padding: EdgeInsets.all(10),
+                                    child: SvgPicture.asset(
+                                      'assets/svgs/edit.svg',
+                                      semanticsLabel: 'Acme Logo',
+                                      // color: Get.isDarkMode
+                                      //     ? Colors.black
+                                      //     : Colors.white,
+                                      height: 25.h,
+                                    ),
                                   ),
                                 )
                               ],
@@ -148,79 +149,80 @@ class Profilescreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 20.w, vertical: 20.h),
-                      // color: Colors.white,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                '${appGet.myPosts['total'] ?? 0}',
-                                style: TextStyle(
-                                    color: primaryColor, fontSize: 20),
+                    Obx(() {
+                      return Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 20.w, vertical: 20.h),
+                        // color: Colors.white,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  '${appGet.myPosts['total'] ?? 0}',
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 20),
+                                ),
+                                Text(
+                                  'Posts',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontFamily: 'second_header',
+                                  ),
+                                )
+                              ],
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                logger.e(appGet.followers);
+                                Get.to(FollowersPage());
+                              },
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    '${appGet.followers['total'] ?? 0}',
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 20),
+                                  ),
+                                  Text(
+                                    'Followers',
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontFamily: 'second_header'),
+                                  )
+                                ],
                               ),
-                              Text(
-                                'Posts',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontFamily: 'second_header',
-                                ),
-                              )
-                            ],
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              logger.e(appGet.followers);
-                              Get.to(FollowersPage());
-                            },
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  '${appGet.followers['total'] ?? 0}',
-                                  style: TextStyle(
-                                      color: primaryColor, fontSize: 20),
-                                ),
-                                Text(
-                                  'Followers',
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontFamily: 'second_header'),
-                                )
-                              ],
                             ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Get.to(FollowingPage());
-                            },
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  '${appGet.following['total'] ?? 0}',
-                                  style: TextStyle(
-                                      color: primaryColor, fontSize: 20),
-                                ),
-                                Text(
-                                  'Following',
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontFamily: 'second_header'),
-                                )
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
+                            GestureDetector(
+                              onTap: () {
+                                Get.to(FollowingPage());
+                              },
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    '${appGet.following['total'] ?? 0}',
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 20),
+                                  ),
+                                  Text(
+                                    'Following',
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontFamily: 'second_header'),
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      );
+                    }),
                     Container(
-                         child: TabBar(
-                      
+                        child: TabBar(
                       tabs: [
                         Tab(
                           child: Text(
@@ -261,9 +263,7 @@ class Profilescreen extends StatelessWidget {
                                   itemBuilder: (context, index) {
                                     return GestureDetector(
                                       onTap: () {
-                                        print(appGet
-                                            .myPosts['data'][index]['media']
-                                            .first['url']);
+                                        logger.e(appGet.myPosts['data'][index]);
                                       },
                                       child:
 //
@@ -273,9 +273,12 @@ class Profilescreen extends StatelessWidget {
 
                                           CachedNetworkImage(
                                               fit: BoxFit.cover,
-                                              imageUrl: appGet
-                                                  .myPosts['data'][index]
-                                                      ['media']
+                                              imageUrl: appGet.myPosts['data']
+                                                  .where((e) {
+                                                    List images = e['media'];
+                                                    return images.isNotEmpty;
+                                                  })
+                                                  .toList()[index]['media']
                                                   .first['url']),
                                     );
                                   },

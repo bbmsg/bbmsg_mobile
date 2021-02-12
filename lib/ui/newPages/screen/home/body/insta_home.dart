@@ -1,3 +1,4 @@
+import 'package:bbmsg_mobile/backend/appGet.dart';
 import 'package:bbmsg_mobile/backend/server.dart';
 import 'package:bbmsg_mobile/services/theme_notifier.dart';
 import 'package:bbmsg_mobile/ui/newPages/createpost.dart';
@@ -5,6 +6,8 @@ import 'package:bbmsg_mobile/ui/newPages/screen/activity/activity.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/home/headappbars/head_bar.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/profile/profile.dart';
 import 'package:bbmsg_mobile/ui/newPages/screen/search/searchscr.dart';
+import 'package:bbmsg_mobile/values/app_colors.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -50,112 +53,135 @@ class _InstaHomeState extends State<InstaHome> {
   Widget build(BuildContext context) {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
     _darkTheme = (themeNotifier.getTheme() == darkTheme);
-    return new Scaffold(
-        appBar: hiapp ? Headbar(titles, 1, createPost) : null,
-        body: [
-          InstaBody(createPost),
-          Searchscr(),
-          Createpostscr(false),
-          ActivityPage(),
-          Profilescreen()
-        ][currentIndex],
-        bottomNavigationBar: new Container(
-          height: Get.isDarkMode ? 80.h : 80.h,
-          alignment: Alignment.center,
-          child: BottomAppBar(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                IconButton(
-                  icon: currentIndex == 0
-                      ? SvgPicture.asset(
-                          'assets/svgs/FilledHome.svg',
-                          color: _darkTheme ? Colors.white : Colors.black,
-                        )
-                      : SvgPicture.asset(
-                          'assets/svgs/Home.svg',
+    return DefaultTabController(
+      length: 5,
+      child: new Scaffold(
+          appBar: hiapp ? Headbar(titles, 1, createPost) : null,
+          body: [
+            InstaBody(createPost),
+            Searchscr(),
+            Createpostscr(false),
+            ActivityPage(),
+            Profilescreen()
+          ][currentIndex],
+          bottomNavigationBar: Obx(() {
+            return Container(
+              height: 50.h,
+              alignment: Alignment.center,
+              child: BottomAppBar(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    IconButton(
+                      icon: appGet.selectedItem == bottomItem.home
+                          ? SvgPicture.asset(
+                              'assets/svgs/home_filled.svg',
+                              height: 30.h,
+                              color: _darkTheme ? Colors.white : Colors.black,
+                            )
+                          : SvgPicture.asset(
+                              'assets/svgs/home.svg',
+                              height: 25.h,
+                              color: _darkTheme ? Colors.white : Colors.black,
+                            ),
+                      onPressed: () {
+                        setState(() {
+                          appGet.selectedItem.value = bottomItem.home;
+                          currentIndex = 0;
+                          titles = 'posts';
+                          hiapp = true;
+                        });
+                      },
+                    ),
+                    IconButton(
+                        icon: SvgPicture.asset(
+                          'assets/svgs/Iconly-Light-Plus.svg',
                           color: _darkTheme ? Colors.white : Colors.black,
                         ),
-                  onPressed: () {
-                    setState(() {
-                      currentIndex = 0;
-                      titles = 'posts';
-                      hiapp = true;
-                    });
-                  },
-                ),
-                // new IconButton(
-                //   icon: currentIndex == 1
-                //       ? SvgPicture.asset('assets/svgs/SearchFilled.svg',
-                //           color: Colors.black)
-                //       : SvgPicture.asset('assets/svgs/Group 4384.svg',
-                //           color: Colors.black),
-                //   // Icon(
-                //   //   Icons.search,
-                //   // ),
-                //   onPressed: () {
-                //     setState(() {
-                //       currentIndex = 1;
-                //       titles = 'Search';
-                //       hiapp = true;
-                //     });
-                //   },
-                // ),
-                IconButton(
-                    icon: SvgPicture.asset(
-                      'assets/svgs/Iconly-Light-Plus.svg',
-                      color: _darkTheme ? Colors.white : Colors.black,
+                        // Icon(
+                        //   Icons.add_box,
+                        // ),
+                        onPressed: () {
+                          setState(() {
+                            appGet.selectedItem.value = bottomItem.create;
+                            currentIndex = 2;
+                            titles = 'Create post';
+                            hiapp = false;
+                          });
+                        }),
+                    IconButton(
+                      icon: SvgPicture.asset(
+                        'assets/svgs/bell.svg',
+                        color: _darkTheme ? Colors.white : Colors.black,
+                      ),
+
+                      // Icon(
+                      //   Icons.favorite,
+                      // ),
+                      onPressed: () {
+                        setState(() {
+                          appGet.selectedItem.value = bottomItem.activity;
+                          currentIndex = 3;
+                          titles = 'Activity';
+                          hiapp = true;
+                          getActivity();
+                        });
+                      },
                     ),
-                    // Icon(
-                    //   Icons.add_box,
-                    // ),
-                    onPressed: () {
-                      setState(() {
-                        currentIndex = 2;
-                        titles = 'Create post';
-                        hiapp = false;
-                      });
-                    }),
-                IconButton(
-                  icon: SvgPicture.asset(
-                    'assets/svgs/Group 4385.svg',
-                    color: _darkTheme ? Colors.white : Colors.black,
-                  ),
-
-                  // Icon(
-                  //   Icons.favorite,
-                  // ),
-                  onPressed: () {
-                    setState(() {
-                      currentIndex = 3;
-                      titles = 'Activity';
-                      hiapp = true;
-                      getActivity();
-                    });
-                  },
+                    appGet.userMap['user']['profile_picture'] != null
+                        ? GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                currentIndex = 4;
+                                titles = 'Profile';
+                                hiapp = false;
+                              });
+                            },
+                            child: Container(
+                              height: ScreenUtil().setWidth(35),
+                              width: ScreenUtil().setWidth(35),
+                              decoration: new BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: new DecorationImage(
+                                    fit: BoxFit.fill,
+                                    image: CachedNetworkImageProvider(
+                                      appGet.userMap['user']['profile_picture']
+                                          .toString(),
+                                    )),
+                              ),
+                            ),
+                          )
+                        : GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                currentIndex = 4;
+                                titles = 'Profile';
+                                hiapp = false;
+                              });
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              height: ScreenUtil().setWidth(35),
+                              width: ScreenUtil().setWidth(35),
+                              decoration: new BoxDecoration(
+                                color: primaryColor,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Text(
+                                appGet.userMap['user']['name']
+                                    .toString()[0]
+                                    .toUpperCase(),
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          )
+                  ],
                 ),
-                IconButton(
-                  icon: SvgPicture.asset(
-                    'assets/svgs/Iconly-Light-Profile.svg',
-                    // color: Colors.black,
-
-                    color: _darkTheme ? Colors.white : Colors.black,
-                  ),
-
-                  // Icon(
-                  //   Icons.account_box,
-                  // ),
-                  onPressed: () {
-                    setState(() {
-                      currentIndex = 4;
-                      titles = 'Profile';
-                      hiapp = false;
-                    });
-                  },
-                ),
-              ],
-            ),
-          ),
-        ));
+              ),
+            );
+          })),
+    );
   }
 }

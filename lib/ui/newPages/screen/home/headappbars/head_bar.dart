@@ -1,6 +1,7 @@
 import 'package:bbmsg_mobile/services/theme_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class Headbar extends StatefulWidget with PreferredSizeWidget {
@@ -9,9 +10,9 @@ class Headbar extends StatefulWidget with PreferredSizeWidget {
   final String titles;
   final int ico;
   Function fun;
-  Headbar(this.titles, this.ico, this.fun, {Key key})
-      : preferredSize = Size.fromHeight(60.0),
-        super(key: key);
+  bool isCreatePost;
+  Headbar(this.titles, this.ico, this.fun, {this.isCreatePost = false})
+      : preferredSize = Size.fromHeight(60.0);
 
   @override
   _HeadbarState createState() => _HeadbarState();
@@ -28,15 +29,22 @@ class _HeadbarState extends State<Headbar> {
       // backgroundColor: Colors.white,
       centerTitle: true,
       elevation: 0.0,
-      leading: IconButton(
-        icon: SvgPicture.asset(
-          'assets/svgs/camera.svg',
-          color: _darkTheme ? Colors.white : Colors.black,
-        ),
-        onPressed: () {
-          widget.fun();
-        },
-      ),
+      leading: widget.isCreatePost
+          ? IconButton(
+              icon: Icon(Icons.arrow_back_ios),
+              onPressed: () {
+                Get.back();
+              },
+            )
+          : IconButton(
+              icon: SvgPicture.asset(
+                'assets/svgs/camera.svg',
+                color: _darkTheme ? Colors.white : Colors.black,
+              ),
+              onPressed: () {
+                widget.fun();
+              },
+            ),
       title: SizedBox(
         height: 35.0,
         child: Text(

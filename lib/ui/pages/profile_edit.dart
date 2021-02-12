@@ -466,8 +466,7 @@ class PhoneNumberWidget extends StatelessWidget {
           Container(
             child: CountryCodePicker(
               initialSelection: appGet.userMap['user']['country_code'] ?? 'QA',
-              dialogBackgroundColor:
-                  appGet.isDarkMode.value ? Colors.black : Colors.white,
+              dialogBackgroundColor: Colors.white,
               showCountryOnly: false,
               alignLeft: false,
               onChanged: (value) {

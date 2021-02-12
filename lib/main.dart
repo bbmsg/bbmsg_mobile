@@ -27,12 +27,11 @@ void main() async {
     assetsDirectory: 'assets/langs/',
   );
   await SPHelper.spHelper.initSharedPreferences();
-  bool mode = await SPHelper.spHelper.getMode() ?? true;
 
   runApp(
     ChangeNotifierProvider<ThemeNotifier>(
       create: (context) {
-        return ThemeNotifier(mode ? darkTheme : lightTheme);
+        return ThemeNotifier(lightTheme);
       },
       child: MyApp(),
     ),

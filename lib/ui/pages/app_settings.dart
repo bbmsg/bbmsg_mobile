@@ -43,7 +43,6 @@ class _AppSettingsState extends State<AppSettings> {
     super.initState();
   }
 
-  bool isDark = Get.isDarkMode;
   bool isFingerprint = false;
   var _darkTheme = true;
 
@@ -125,19 +124,19 @@ class _AppSettingsState extends State<AppSettings> {
                     //   ),
                     // ),
 
-                    Container(
-                      color: appGet.isDarkMode.value
-                          ? Colors.white.withOpacity(0.12)
-                          : Colors.white,
-                      child: ToggleSwitch(
-                        title: 'Dark Mode',
-                        image: 'assets/svgs/newDark.png',
-                        value: _darkTheme,
-                        fun: (value) {
-                          onThemeChanged(value, themeNotifier);
-                        },
-                      ),
-                    ),
+                    // Container(
+                    //   color: appGet.isDarkMode.value
+                    //       ? Colors.white.withOpacity(0.12)
+                    //       : Colors.white,
+                    //   child: ToggleSwitch(
+                    //     title: 'Dark Mode',
+                    //     image: 'assets/svgs/newDark.png',
+                    //     value: _darkTheme,
+                    //     fun: (value) {
+                    //       onThemeChanged(value, themeNotifier);
+                    //     },
+                    //   ),
+                    // ),
                     // ListTile(
                     //     leading: Image.asset(
                     //       'assets/pngs/info.png',
@@ -145,9 +144,7 @@ class _AppSettingsState extends State<AppSettings> {
                     //     title: Text(translator.translate('How it Works'))),
 
                     Container(
-                      color: appGet.isDarkMode.value
-                          ? Colors.white.withOpacity(0.12)
-                          : Colors.white,
+                      color: Colors.white,
                       margin: EdgeInsets.symmetric(vertical: 20.h),
                       child: ListTile(
                           onTap: () {
@@ -162,9 +159,7 @@ class _AppSettingsState extends State<AppSettings> {
                           title: Text(translator.translate('Contact us'))),
                     ),
                     Container(
-                      color: appGet.isDarkMode.value
-                          ? Colors.white.withOpacity(0.12)
-                          : Colors.white,
+                      color: Colors.white,
                       margin: EdgeInsets.symmetric(vertical: 20.h),
                       child: Column(
                         children: [
@@ -182,9 +177,7 @@ class _AppSettingsState extends State<AppSettings> {
                               title: Text(translator
                                   .translate('Draw terms and conditions'))),
                           Divider(
-                            color: appGet.isDarkMode.value
-                                ? Colors.white.withOpacity(0.12)
-                                : Colors.black.withOpacity(0.12),
+                            color: Colors.black.withOpacity(0.12),
                           ),
                           ListTile(
                               onTap: () {
@@ -203,9 +196,7 @@ class _AppSettingsState extends State<AppSettings> {
                       ),
                     ),
                     Container(
-                      color: appGet.isDarkMode.value
-                          ? Colors.white.withOpacity(0.12)
-                          : Colors.white,
+                      color: Colors.white,
                       margin: EdgeInsets.symmetric(vertical: 20.h),
                       child: ListTile(
                           onTap: () {
@@ -220,9 +211,7 @@ class _AppSettingsState extends State<AppSettings> {
                           title: Text(translator.translate('Block area'))),
                     ),
                     Container(
-                      color: appGet.isDarkMode.value
-                          ? Colors.white.withOpacity(0.12)
-                          : Colors.white,
+                      color: Colors.white,
                       margin: EdgeInsets.symmetric(vertical: 20.h),
                       child: ListTile(
                           onTap: () {
@@ -271,18 +260,9 @@ class _toggleSwitchState extends State<ToggleSwitch> {
           setState(() {
             widget.value = value;
             widget.fun(value);
-            appGet.isDarkMode.value = value;
           });
         },
       ),
     );
   }
-}
-
-void onThemeChanged(bool value, ThemeNotifier themeNotifier) async {
-  (value)
-      ? themeNotifier.setTheme(darkTheme)
-      : themeNotifier.setTheme(lightTheme);
-  var prefs = await SharedPreferences.getInstance();
-  prefs.setBool('darkMode', value);
 }

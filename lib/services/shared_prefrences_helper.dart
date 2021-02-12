@@ -26,15 +26,6 @@ class SPHelper {
     appGet.isFingerprint = isFingerprint;
   }
 
-  setMode(bool value) async {
-    prefs.setBool('darkMode', value);
-  }
-
-  Future<bool> getMode() async {
-    bool x = prefs.getBool('darkMode');
-    return x;
-  }
-
   setLanguage(String lan) async {
     prefs.setString('language', lan);
   }

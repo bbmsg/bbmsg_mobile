@@ -1,5 +1,6 @@
 import 'package:bbmsg_mobile/backend/appGet.dart';
 import 'package:bbmsg_mobile/backend/server.dart';
+import 'package:bbmsg_mobile/utils/ProgressDialogUtils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,7 +14,7 @@ class CustomDialougs {
   static CustomDialougs utils = CustomDialougs._();
   Function du = () => Get.back();
   showDialoug({String titleKey, String messageKey, Function fun}) {
-    appGet.pr.hide();
+    ProgressDialogUtils.pr.dismiss();
     Get.defaultDialog(
         confirm: CupertinoButton(
             child: Text('Ok'),

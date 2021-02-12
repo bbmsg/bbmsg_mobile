@@ -1,6 +1,7 @@
 import 'package:bbmsg_mobile/backend/appGet.dart';
 import 'package:bbmsg_mobile/backend/server.dart';
 import 'package:bbmsg_mobile/services/getimage.dart';
+import 'package:bbmsg_mobile/utils/ProgressDialogUtils.dart';
 import 'package:bbmsg_mobile/values/app_colors.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,7 @@ class _CreatepostscrState extends State<Createpostscr> {
 
     try {
       resultList = await MultiImagePicker.pickImages(
-        maxImages: 300,
+        maxImages: 5,
         enableCamera: true,
         selectedAssets: images,
         cupertinoOptions: CupertinoOptions(takePhotoIcon: "chat"),
@@ -159,9 +160,6 @@ class _CreatepostscrState extends State<Createpostscr> {
                           Text(
                             appGet.userMap['user']['name'],
                             style: TextStyle(
-                                // color: Get.isDarkMode
-                                //     ? Colors.white
-                                //     : Colors.black,
                                 fontSize: isPortrait
                                     ? ScreenUtil().setSp(16)
                                     : ScreenUtil().setSp(10)),
@@ -171,68 +169,74 @@ class _CreatepostscrState extends State<Createpostscr> {
                                 ? ScreenUtil().setHeight(10)
                                 : ScreenUtil().setHeight(20),
                           ),
-                          GestureDetector(
-                            onTap: () {},
-                            child: Container(
-                              width: isPortrait
-                                  ? ScreenUtil().setWidth(90)
-                                  : ScreenUtil().setWidth(45),
-                              height: isPortrait
-                                  ? ScreenUtil().setHeight(21)
-                                  : ScreenUtil().setHeight(42),
-                              decoration: BoxDecoration(
-                                  border:
-                                      Border.all(color: HexColor('#E1E1E1')),
-                                  borderRadius: BorderRadius.circular(3)),
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                    left: isPortrait
-                                        ? ScreenUtil().setWidth(6)
-                                        : ScreenUtil().setWidth(5)),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    SvgPicture.asset(
-                                        'assets/svgs/Shield Done.svg'),
-                                    SizedBox(
-                                      width: 70.w,
-                                      child: DropdownButton<String>(
-                                        underline: Container(),
-                                        isExpanded: true,
-                                        value: dropdownValue,
-                                        //   icon: Icon(Icons.arrow_downward),
-                                        //  iconSize: 24,
-                                        elevation: 16,
-                                        style:
-                                            TextStyle(color: Colors.deepPurple),
-                                        // underline: Container(
-                                        //   height: 2,
-                                        //   color: Colors.deepPurpleAccent,
-                                        // ),
-                                        onChanged: (String newValue) {
-                                          setState(() {
-                                            dropdownValue = newValue;
-                                          });
-                                        },
-                                        items: <String>{
-                                          'Public',
-                                          // 'Private',
-                                          // 'Friend'
-                                        }.map<DropdownMenuItem<String>>(
-                                            (String value) {
-                                          return DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(value),
-                                          );
-                                        }).toList(),
+                          Obx(() {
+                            return GestureDetector(
+                              onTap: () {},
+                              child: Container(
+                                width: isPortrait
+                                    ? ScreenUtil().setWidth(90)
+                                    : ScreenUtil().setWidth(45),
+                                height: isPortrait
+                                    ? ScreenUtil().setHeight(21)
+                                    : ScreenUtil().setHeight(42),
+                                decoration: BoxDecoration(
+                                    border:
+                                        Border.all(color: HexColor('#E1E1E1')),
+                                    borderRadius: BorderRadius.circular(3)),
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                      left: isPortrait
+                                          ? ScreenUtil().setWidth(6)
+                                          : ScreenUtil().setWidth(5)),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      SvgPicture.asset(
+                                          'assets/svgs/Shield Done.svg'),
+                                      SizedBox(
+                                        width: 70.w,
+                                        child: DropdownButton<String>(
+                                          underline: Container(),
+                                          isExpanded: true,
+                                          value: dropdownValue,
+                                          //   icon: Icon(Icons.arrow_downward),
+                                          //  iconSize: 24,
+                                          elevation: 16,
+                                          style: TextStyle(
+                                              color: Colors.deepPurple),
+                                          // underline: Container(
+                                          //   height: 2,
+                                          //   color: Colors.deepPurpleAccent,
+                                          // ),
+                                          onChanged: (String newValue) {
+                                            setState(() {
+                                              dropdownValue = newValue;
+                                            });
+                                          },
+                                          items: <String>{
+                                            'Public',
+                                            // 'Private',
+                                            // 'Friend'
+                                          }.map<DropdownMenuItem<String>>(
+                                              (String value) {
+                                            return DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(
+                                                value,
+                                                style: TextStyle(
+                                                    color: Colors.black),
+                                              ),
+                                            );
+                                          }).toList(),
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          )
+                            );
+                          })
                         ],
                       ),
                     ],
@@ -263,9 +267,6 @@ class _CreatepostscrState extends State<Createpostscr> {
                                 fontSize: isPortrait
                                     ? ScreenUtil().setSp(14)
                                     : ScreenUtil().setSp(8),
-                                // color: Get.isDarkMode
-                                //     ? Colors.white
-                                //     : HexColor('#606060'),
                               ),
                               border: InputBorder.none,
                             ),
@@ -347,14 +348,11 @@ class _CreatepostscrState extends State<Createpostscr> {
                                     : ScreenUtil().setWidth(10),
                               ),
                               Text(
-                                'Photo/Video',
+                                'Photo',
                                 style: TextStyle(
                                   fontSize: isPortrait
                                       ? ScreenUtil().setSp(14)
                                       : ScreenUtil().setSp(8),
-                                  // color: Get.isDarkMode
-                                  //     ? Colors.white
-                                  //     : HexColor('#3A3A3A'),
                                 ),
                               )
                             ],

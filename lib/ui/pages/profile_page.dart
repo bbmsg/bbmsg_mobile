@@ -136,7 +136,7 @@ class ProfilePage extends StatelessWidget {
                                   Text(
                                     '${appGet.otherUserMap['posts'] ?? 0}',
                                     style: TextStyle(
-                                        color: primaryColor, fontSize: 20),
+                                        color: Colors.white, fontSize: 20),
                                   ),
                                   Text(
                                     'Posts',
@@ -157,7 +157,7 @@ class ProfilePage extends StatelessWidget {
                                     Text(
                                       '${appGet.otherUserMap['followers'] ?? 0}',
                                       style: TextStyle(
-                                          color: primaryColor, fontSize: 20),
+                                          color: Colors.white, fontSize: 20),
                                     ),
                                     Text(
                                       'Followers',
