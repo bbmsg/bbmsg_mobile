@@ -410,32 +410,28 @@ class _PostWidgetState extends State<PostImages> {
   Widget build(BuildContext context) {
     // List<String> tags =   widget.postMap['tags'];
     // TODO: implement build
-    return Container(
-      child: Column(
-        children: [
-          Container(
-              child: CarouselSlider(
-                  items: buildSlider(),
-                  options: CarouselOptions(
-                    height: 300.h,
-                    viewportFraction: 1,
-                    initialPage: 0,
-                    reverse: false,
-                    enlargeCenterPage: true,
-                    scrollDirection: Axis.horizontal,
-                    onPageChanged: (index, reason) {
-                      this.indexPage = index;
-                      setState(() {});
-                    },
-                  ))),
-          // Container(
-          //     child: AnimatedSmoothIndicator(
-          //   activeIndex: indexPage,
-          //   count: widget.images.length,
-          //   effect: WormEffect(dotHeight: 10.h, dotWidth: 10.w),
-          // )),
-        ],
-      ),
-    );
+    return widget.images.length > 1
+        ? CarouselSlider(
+            items: buildSlider(),
+            options: CarouselOptions(
+              height: 300.h,
+              viewportFraction: 1,
+              initialPage: 0,
+              reverse: false,
+              enlargeCenterPage: true,
+              scrollDirection: Axis.horizontal,
+              onPageChanged: (index, reason) {
+                this.indexPage = index;
+                setState(() {});
+              },
+            ))
+        : Container(
+            height: 300.h,
+            width: double.infinity,
+            child: CachedNetworkImage(
+              imageUrl: widget.images.first['url'],
+              fit: BoxFit.cover,
+            ),
+          );
   }
 }

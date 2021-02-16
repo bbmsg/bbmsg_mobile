@@ -44,7 +44,7 @@ class SPHelper {
     prefs.setBool('showTermCondition', value);
   }
 
-  saveToken(String token) {
+  saveTokenn(String token) {
     prefs.setString('token', token);
   }
 

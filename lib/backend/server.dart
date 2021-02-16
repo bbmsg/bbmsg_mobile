@@ -134,8 +134,9 @@ updateUser(String userId, Map map) async {
 
     ProgressDialogUtils.pr.dismiss();
   } on DioError catch (e) {
+    logger.e(e.toString());
     ProgressDialogUtils.pr.dismiss();
-    CustomDialougs.utils.showDialoug(titleKey: 'error', messageKey: e.message);
+    // CustomDialougs.utils.showDialoug(titleKey: 'error', messageKey: e.message);
   }
 }
 

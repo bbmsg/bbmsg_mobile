@@ -50,7 +50,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
-
+    return ScreenUtilInit(
+      designSize: Size(392.72727272727275, 850.9090909090909),
+      allowFontScaling: true,
+      child: GetMaterialApp(
+        title: 'BBMSG',
+        debugShowCheckedModeBanner: false,
+        localizationsDelegates: translator.delegates,
+        locale: translator.locale,
+        supportedLocales: translator.locals(),
+        showSemanticsDebugger: false,
+        theme: themeNotifier.getTheme(),
+        home: MiddlePage(),
+      ),
+    );
     return ScreenUtilInit(
       designSize: Size(392.72727272727275, 850.9090909090909),
       allowFontScaling: true,

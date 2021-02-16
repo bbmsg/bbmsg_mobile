@@ -161,8 +161,8 @@ class _InstaHomeState extends State<InstaHome> {
                             },
                             child: Container(
                               alignment: Alignment.center,
-                              height: ScreenUtil().setWidth(35),
-                              width: ScreenUtil().setWidth(35),
+                              height: ScreenUtil().setWidth(30),
+                              width: ScreenUtil().setWidth(30),
                               decoration: new BoxDecoration(
                                 color: primaryColor,
                                 shape: BoxShape.circle,

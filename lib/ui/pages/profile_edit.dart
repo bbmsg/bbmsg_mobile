@@ -124,8 +124,8 @@ class _ProfileEditState extends State<ProfileEdit> {
             children: [
               GestureDetector(
                 onTap: () async {
-                  PickedFile pickedFile =
-                      await ImagePicker().getImage(source: ImageSource.gallery);
+                  PickedFile pickedFile = await ImagePicker()
+                      .getImage(source: ImageSource.gallery, imageQuality: 20);
                   file = File(pickedFile.path);
 
                   dio.MultipartFile multipartFile =

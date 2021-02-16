@@ -104,7 +104,7 @@ class AppGet extends GetxController {
   String token;
   setToken(String value) {
     this.token = value;
-    SPHelper.spHelper.saveToken(value);
+    SPHelper.spHelper.saveTokenn(value);
   }
 
   var mapActivity = {}.obs;

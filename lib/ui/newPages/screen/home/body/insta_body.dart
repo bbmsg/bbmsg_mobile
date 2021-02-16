@@ -55,8 +55,8 @@ class HeaderMock extends StatelessWidget {
                       )
                     : Container(
                         alignment: Alignment.center,
-                        height: ScreenUtil().setWidth(55),
-                        width: ScreenUtil().setWidth(55),
+                        height: ScreenUtil().setWidth(60),
+                        width: ScreenUtil().setWidth(60),
                         decoration: new BoxDecoration(
                           color: primaryColor,
                           shape: BoxShape.circle,
@@ -102,7 +102,7 @@ class HeaderMock extends StatelessWidget {
                             margin: EdgeInsets.only(right: 20),
                             padding: EdgeInsets.symmetric(horizontal: 10.w),
                             alignment: Alignment.centerLeft,
-                            height: 30.h,
+                            height: 40.h,
                             width: double.infinity,
                             decoration: BoxDecoration(
                               border: Border.all(
@@ -141,8 +141,8 @@ class HeaderMock extends StatelessWidget {
                                   child: Container(
                                     margin:
                                         EdgeInsets.symmetric(horizontal: 4.w),
-                                    height: 160.h,
-                                    width: 100.w,
+                                    height: 110.h,
+                                    width: 80.w,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
                                       color: Color(0xff047AF2),
@@ -175,10 +175,10 @@ class HeaderMock extends StatelessWidget {
                                   child: Container(
                                     margin:
                                         EdgeInsets.symmetric(horizontal: 4.w),
-                                    height: 160.h,
-                                    width: 100.w,
+                                    height: 110.h,
+                                    width: 80.w,
                                     decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
+                                      borderRadius: BorderRadius.circular(10),
                                       color: Color(0xff047AF2),
                                       image: DecorationImage(
                                           colorFilter: ColorFilter.mode(
@@ -199,7 +199,7 @@ class HeaderMock extends StatelessWidget {
                           ),
                           Expanded(
                             child: Container(
-                              height: 160.h,
+                              height: 110.h,
                               child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
                                 itemCount: appGet.story['data'].length,
@@ -212,8 +212,8 @@ class HeaderMock extends StatelessWidget {
                                                 appGet.story['data']));
                                           },
                                           child: Container(
-                                            height: 160.h,
-                                            width: 100.w,
+                                            height: 110.h,
+                                            width: 80.w,
                                             margin: EdgeInsets.symmetric(
                                                 horizontal: 5),
                                             padding: EdgeInsets.symmetric(
@@ -221,7 +221,7 @@ class HeaderMock extends StatelessWidget {
                                             alignment: Alignment.bottomCenter,
                                             decoration: BoxDecoration(
                                               borderRadius:
-                                                  BorderRadius.circular(20),
+                                                  BorderRadius.circular(10),
                                               image: new DecorationImage(
                                                   colorFilter: ColorFilter.mode(
                                                       Colors.black
@@ -314,8 +314,8 @@ class HeaderMock extends StatelessWidget {
                                             alignment: Alignment.center,
                                             margin: EdgeInsets.symmetric(
                                                 horizontal: 4.w),
-                                            height: 70.h,
-                                            width: 70.w,
+                                            height: 110.h,
+                                            width: 80.w,
                                             decoration: new BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(10),
@@ -342,7 +342,7 @@ class HeaderMock extends StatelessWidget {
                     )
                   : Container(
                       alignment: Alignment.centerLeft,
-                      child: appGet.userMap['profile_picture'] != null
+                      child: appGet.userMap['user']['profile_picture'] != null
                           ? InkWell(
                               onTap: () {
                                 print('object');
@@ -353,10 +353,10 @@ class HeaderMock extends StatelessWidget {
                               },
                               child: Container(
                                 margin: EdgeInsets.symmetric(horizontal: 4.w),
-                                height: 100.h,
-                                width: 70.w,
+                                height: 110.h,
+                                width: 80.w,
                                 decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
+                                  borderRadius: BorderRadius.circular(20),
                                   color: Color(0xff047AF2),
                                   image: DecorationImage(
                                       colorFilter: ColorFilter.mode(
@@ -385,10 +385,10 @@ class HeaderMock extends StatelessWidget {
                               },
                               child: Container(
                                 margin: EdgeInsets.symmetric(horizontal: 4.w),
-                                height: 100.h,
-                                width: 70.w,
+                                height: 110.h,
+                                width: 80.w,
                                 decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
+                                  borderRadius: BorderRadius.circular(10),
                                   color: Color(0xff047AF2),
                                   image: DecorationImage(
                                       colorFilter: ColorFilter.mode(

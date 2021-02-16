@@ -35,7 +35,7 @@ class _EditprofilescrState extends State<Editprofilescr> {
             Text(
               'Edit Profile',
               style: TextStyle(
-                   fontSize: isPortrait
+                  fontSize: isPortrait
                       ? ScreenUtil().setSp(16)
                       : ScreenUtil().setSp(10)),
             ),
@@ -77,36 +77,6 @@ class _EditprofilescrState extends State<Editprofilescr> {
                       'assets/svgs/person.webp',
                       fit: BoxFit.fill,
                     ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                    top: isPortrait
-                        ? ScreenUtil().setHeight(28)
-                        : ScreenUtil().setHeight(28),
-                    left: isPortrait
-                        ? ScreenUtil().setWidth(137)
-                        : ScreenUtil().setWidth(160)),
-                child: Container(
-                  width: isPortrait
-                      ? ScreenUtil().setWidth(100.66)
-                      : ScreenUtil().setWidth(50.99),
-                  height: isPortrait
-                      ? ScreenUtil().setHeight(100.66)
-                      : ScreenUtil().setHeight(200.99),
-                  decoration: BoxDecoration(
-                      color: HexColor('#1A1818').withOpacity(.80),
-                      borderRadius: BorderRadius.circular(50)),
-                  child: Image.asset(
-                    'assets/pngs/camera.png',
-                    // color: Colors.white,
-                    width: isPortrait
-                        ? ScreenUtil().setWidth(20)
-                        : ScreenUtil().setWidth(20),
-                    height: isPortrait
-                        ? ScreenUtil().setHeight(20)
-                        : ScreenUtil().setHeight(20),
                   ),
                 ),
               ),
